@@ -1,0 +1,25 @@
+package com.talenton.organ.server.bean.user;
+
+import java.io.Serializable;
+
+public class GenerateEBookData implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	//"viewurl": “浏览时的URL地址”,
+    //"shareurl": "分享后的URL地址”
+	// “sharetitle”:”分享标题”,
+    // “sharecontent”:”分享内容”
+	
+	public String viewurl;
+	public String shareurl;
+	public String sharetitle;
+	public String sharecontent;
+	public long baobaouid; //宝宝UID
+	public long circleId;
+	public int circleType;
+	public String circleName;
+	public int topicscount;
+}

@@ -1,0 +1,72 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.talenton.organ.widget.dialog.FilterPopup;
+
+/**
+ * @author zjh
+ * @date 2016/5/3
+ */
+public class ClassFilterAge extends FilterPopup.FilterPopupBean implements Parcelable {
+    private long ageid;
+    private String text;
+
+    public ClassFilterAge(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public long getAgeid() {
+        return ageid;
+    }
+
+    public void setAgeid(long ageid) {
+        this.ageid = ageid;
+    }
+
+    @Override
+    public String getTitle() {
+        if (text == null){
+            return "";
+        }
+        return text;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.ageid);
+        dest.writeString(this.text);
+    }
+
+    protected ClassFilterAge(Parcel in) {
+        this.ageid = in.readLong();
+        this.text = in.readString();
+    }
+
+    public static final Parcelable.Creator<ClassFilterAge> CREATOR = new Parcelable.Creator<ClassFilterAge>() {
+        @Override
+        public ClassFilterAge createFromParcel(Parcel source) {
+            return new ClassFilterAge(source);
+        }
+
+        @Override
+        public ClassFilterAge[] newArray(int size) {
+            return new ClassFilterAge[size];
+        }
+    };
+}

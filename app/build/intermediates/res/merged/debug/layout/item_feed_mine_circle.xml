@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <View
+        android:id="@+id/view_holder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_10_0" />
+    <com.talenton.base.widget.CornerView
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_8_0"
+        android:layout_marginBottom="-3dp"
+        lsg:corner_radius="@dimen/space_8_0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingTop="@dimen/space_15_0"
+        android:paddingBottom="@dimen/space_15_0"
+        android:background="@drawable/btn_white_bg_selector"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="@dimen/height_50"
+            android:src="@mipmap/user_photo"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            lsg:civ_border_color="@color/white"
+            lsg:civ_border_width="2dp" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_weight="1"
+            android:gravity="center|start">
+            <TextView
+                android:id="@+id/tv_circle_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:maxLength="9"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_32"/>
+            <TextView
+                android:id="@+id/tv_circle_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:maxLength="7"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_24" />
+            <TextView
+                android:id="@+id/tv_circle_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_circle_name"
+                android:layout_marginTop="@dimen/space_10_0"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_26" />
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/list_div_color"/>
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_15_0"
+        android:background="@mipmap/feeds_list_bg_bottom"
+        android:gravity="center"
+        android:orientation="horizontal" />
+</LinearLayout>

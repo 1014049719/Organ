@@ -1,0 +1,65 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
+/**
+ * @author zjh
+ * @date 2016/4/19
+ */
+public class ClassFilterData implements Parcelable {
+    private String title;
+    private ArrayList<ClassificationData> classificationDatas;
+
+    public ClassFilterData(String title, ArrayList<ClassificationData> classificationDatas) {
+        this.title = title;
+        this.classificationDatas = classificationDatas;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ArrayList<ClassificationData> getClassificationDatas() {
+        return classificationDatas;
+    }
+
+    public void setClassificationDatas(ArrayList<ClassificationData> classificationDatas) {
+        this.classificationDatas = classificationDatas;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeTypedList(classificationDatas);
+    }
+
+    protected ClassFilterData(Parcel in) {
+        this.title = in.readString();
+        this.classificationDatas = in.createTypedArrayList(ClassificationData.CREATOR);
+    }
+
+    public static final Parcelable.Creator<ClassFilterData> CREATOR = new Parcelable.Creator<ClassFilterData>() {
+        @Override
+        public ClassFilterData createFromParcel(Parcel source) {
+            return new ClassFilterData(source);
+        }
+
+        @Override
+        public ClassFilterData[] newArray(int size) {
+            return new ClassFilterData[size];
+        }
+    };
+}

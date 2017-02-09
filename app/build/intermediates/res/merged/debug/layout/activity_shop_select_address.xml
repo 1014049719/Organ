@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    tools:context="com.talenton.organ.ui.shop.ShoppingCartActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ListView
+                android:id="@+id/select_adress_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fastScrollEnabled="true"
+                android:focusable="true"/>
+
+        </LinearLayout>
+        <include
+            android:id="@+id/shop_select_adress_loading_container"
+            layout="@layout/load_fail_view" />
+
+
+
+
+</LinearLayout>

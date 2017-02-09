@@ -1,0 +1,96 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/19
+ */
+public class ClassificationData implements Parcelable {
+    private long catid;
+    private String name;
+    private int fid;
+    private int allowpublish;
+    private List<ClassificationData> childdata;
+
+    public long getCatid() {
+        return catid;
+    }
+
+    public void setCatid(long catid) {
+        this.catid = catid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
+    }
+
+    public int getAllowpublish() {
+        return allowpublish;
+    }
+
+    public void setAllowpublish(int allowpublish) {
+        this.allowpublish = allowpublish;
+    }
+
+    public List<ClassificationData> getChilddata() {
+        return childdata;
+    }
+
+    public void setChilddata(List<ClassificationData> childdata) {
+        this.childdata = childdata;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.catid);
+        dest.writeString(this.name);
+        dest.writeInt(this.fid);
+        dest.writeInt(this.allowpublish);
+        dest.writeTypedList(childdata);
+    }
+
+    public ClassificationData() {
+    }
+
+    protected ClassificationData(Parcel in) {
+        this.catid = in.readLong();
+        this.name = in.readString();
+        this.fid = in.readInt();
+        this.allowpublish = in.readInt();
+        this.childdata = in.createTypedArrayList(ClassificationData.CREATOR);
+    }
+
+    public static final Creator<ClassificationData> CREATOR = new Creator<ClassificationData>() {
+        @Override
+        public ClassificationData createFromParcel(Parcel source) {
+            return new ClassificationData(source);
+        }
+
+        @Override
+        public ClassificationData[] newArray(int size) {
+            return new ClassificationData[size];
+        }
+    };
+}

@@ -1,0 +1,220 @@
+package com.talenton.organ.ui.feed.image;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.BitmapUtil;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.ImageLoaderManager;
+
+import java.io.File;
+
+public final class PicturePreviewActivity extends BaseCompatActivity implements View.OnClickListener {
+
+	public static final String EXTRA_FROM = "from";
+	public static final String EXTRA_IMAGE = "path";
+	public static final String EXTRA_ACTION = "action";
+
+	public static final int FROM_ALBUM = 0;
+	public static final int FROM_TAKE_PICTURE = 1;
+
+	public static final int ACTION_BACK = 0;
+	public static final int ACTION_USE = 1;
+
+	private ImageView mImageView;
+	private Button mBtnUse;
+	private String imagePath;
+	private CheckBox mCbxOrigin;
+	private RelativeLayout mReLayoutBack;
+	private RelativeLayout mReLayoutOriginal;
+	private ProgressBar mCompressBar;
+	private boolean isUseOriginal = false;
+	@SuppressLint("HandlerLeak")
+	private Handler uiHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (msg.what == 0x0f) {
+				mCompressBar.setVisibility(View.GONE);
+				Intent intent = new Intent();
+				intent.setData(getIntent().getData());
+				intent.putExtra(EXTRA_IMAGE, imagePath);
+				intent.putExtra(EXTRA_ACTION, ACTION_USE);
+				setResult(RESULT_OK, intent);
+				// if (bitmap != null) {
+				// bitmap.recycle();
+				// }
+				finish();
+			} else if (msg.what == 0xff) {
+				mCompressBar.setVisibility(View.GONE);
+				showImage(imagePath);
+			}
+		}
+
+	};
+
+	private int from;
+
+	private Bitmap bitmap;
+	private boolean isJustRotate = true;
+
+	private Runnable delayRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			if (isJustRotate) {
+				DisplayMetrics metrics = getResources().getDisplayMetrics();
+				int screenWidth = metrics.widthPixels;
+				int screenHeight = metrics.heightPixels;
+
+				bitmap = BitmapUtil.scaleWithin(imagePath, screenWidth, screenHeight);
+				Message msMessage = new Message();
+				msMessage.what = 0xff;
+				uiHandler.sendMessage(msMessage);
+				isJustRotate = false;
+				return;
+			}
+			// if (!isUseOriginal) {
+			// imagePath = compressImage();
+			// }
+			Message msMessage = new Message();
+			msMessage.what = 0x0f;
+			uiHandler.sendMessage(msMessage);
+		}
+	};
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.prev_back) {
+			tryToDeleteFile();
+			Intent intent = new Intent();
+			intent.putExtra(EXTRA_ACTION, ACTION_BACK);
+			setResult(RESULT_CANCELED, intent);
+			finish();
+		} else if (v.getId() == R.id.preview_cb) {
+			isUseOriginal = !isUseOriginal;
+		} else if (v.getId() == R.id.preview_relayout_original) {
+			isUseOriginal = !isUseOriginal;
+			mCbxOrigin.setChecked(isUseOriginal);
+		} else if (v.getId() == R.id.btn_use) {
+			// if (isUseOriginal) {
+			// Message msMessage = new Message();
+			// msMessage.what = 0x0f;
+			// uiHandler.sendMessage(msMessage);
+			// } else {
+			// mCompressBar.setVisibility(View.VISIBLE);
+			// uiHandler.post(delayRunnable);
+			// }
+
+			mCompressBar.setVisibility(View.GONE);
+			Intent intent = new Intent();
+			intent.setData(getIntent().getData());
+			intent.putExtra(EXTRA_IMAGE, imagePath);
+			intent.putExtra(EXTRA_ACTION, ACTION_USE);
+			setResult(RESULT_OK, intent);
+			finish();
+		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			tryToDeleteFile();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_pic_preview);
+
+		from = getIntent().getIntExtra(EXTRA_FROM, -1);
+		if (from == FROM_TAKE_PICTURE) {
+			imagePath = getIntent().getStringExtra(EXTRA_IMAGE);
+		} else if (from == FROM_ALBUM) {
+			imagePath = FileUtil.getPathFromUri(this, getIntent().getData());
+		}
+
+		initViews();
+	}
+
+	private String compressImage() {
+		File dir = FileUtil.getExternalPath(this, FileUtil.PICTURE_DIR);
+		File destFile = new File(dir, FileUtil.genUploadFileName(FileUtil.PICTURE_SUFFIX));
+		if (BitmapUtil.compressImage(imagePath, destFile)) {
+			return destFile.getAbsolutePath();
+		} else {
+			return imagePath;
+		}
+	}
+
+	private void initViews() {
+		if (TextUtils.isEmpty(imagePath)) {
+			Toast.makeText(PicturePreviewActivity.this, R.string.image_sel_image_fail, Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+		AppLogger.i("preview " + imagePath);
+		mImageView = (ImageView) findViewById(R.id.image);
+		// mBtnBack = (Button) findViewById(R.id.btn_back);
+		mBtnUse = (Button) findViewById(R.id.btn_use);
+		mCbxOrigin = (CheckBox) findViewById(R.id.preview_cb);
+		mCbxOrigin.setOnClickListener(this);
+		mReLayoutBack = (RelativeLayout) findViewById(R.id.prev_back);
+		mReLayoutBack.setOnClickListener(this);
+		mReLayoutOriginal = (RelativeLayout) findViewById(R.id.preview_relayout_original);
+		mReLayoutOriginal.setOnClickListener(this);
+		mCompressBar = (ProgressBar) findViewById(R.id.compress_progressbar);
+		// mBtnBack.setOnClickListener(this);
+		mBtnUse.setOnClickListener(this);
+
+		// mCompressBar.setVisibility(View.VISIBLE);
+		// uiHandler.post(delayRunnable);
+		ImageLoader.getInstance().displayImage("file://" +  imagePath, mImageView,
+				ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+
+	}
+
+	private void showImage(String path) {
+		// DisplayMetrics metrics = getResources().getDisplayMetrics();
+		// int screenWidth = metrics.widthPixels;
+		// int screenHeight = metrics.heightPixels;
+		//
+		// Bitmap bmp = BitmapUtil.scaleWithin(path, screenWidth, screenHeight);
+
+		if (bitmap != null) {
+			mImageView.setImageBitmap(bitmap);
+		} else {
+			Toast.makeText(PicturePreviewActivity.this, R.string.image_decode_fail, Toast.LENGTH_LONG).show();
+			finish();
+		}
+
+	}
+
+	private void tryToDeleteFile() {
+		if (from == FROM_TAKE_PICTURE) {
+			FileUtil.deleteFile(new File(imagePath));
+		}
+	}
+
+}

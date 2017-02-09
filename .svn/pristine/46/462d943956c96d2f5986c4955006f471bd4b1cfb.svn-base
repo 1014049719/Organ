@@ -1,0 +1,96 @@
+package com.talenton.organ.server;
+
+import android.util.Log;
+
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.discovery.ActionParam;
+import com.talenton.organ.server.bean.discovery.LocatoinParam;
+import com.talenton.organ.server.bean.discovery.MessageParam;
+import com.talenton.organ.server.bean.discovery.NumData;
+import com.talenton.organ.server.bean.discovery.RspAction;
+import com.talenton.organ.server.bean.discovery.RspDiscoverNumType;
+import com.talenton.organ.server.bean.discovery.RspShopListType;
+import com.talenton.organ.server.bean.discovery.RspTestSchool;
+import com.talenton.organ.server.bean.discovery.ShareParam;
+import com.talenton.organ.server.bean.discovery.TestSchoolParam;
+
+import org.json.JSONObject;
+
+/**
+ * Created by Administrator on 2016/4/19.
+ */
+public class DiscoveryServer {
+
+    //发现首页未读数字红点
+    public static void getNumData(NumData time, final XLTResponseCallback<RspDiscoverNumType> listener) {
+
+        String ReqURL = "discover.php?mod=noread_num&cmdcode=12";
+        OkHttpClientManager.getInstance().addGsonRequest(ReqURL, RspDiscoverNumType.class, new XLTResponseListener<RspDiscoverNumType>() {
+            @Override
+            public void onResponse(RspDiscoverNumType responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance(
+
+        ).getmGson().toJson(time));
+
+    }
+
+    //获取门店列表
+    public static void getShopListData(LocatoinParam locatoinParam,  String type,final XLTResponseCallback<RspShopListType> listener) {
+
+        //门店 实验校URL
+        final  String shopListUrlStr;
+        if (type.equals("门店")) {
+            shopListUrlStr = locatoinParam.shopListURL;
+        } else {
+            shopListUrlStr = locatoinParam.testSchoolURL;
+        }
+        OkHttpClientManager.getInstance().addGsonRequest(shopListUrlStr, RspShopListType.class, new XLTResponseListener<RspShopListType>() {
+            @Override
+            public void onResponse(RspShopListType responseData, XLTError errorData) {
+
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(locatoinParam));
+
+    }
+
+    //获取活动列表
+    public static void getActionListData(ActionParam actionParam, String type, final XLTResponseCallback<RspAction> listener) {
+
+        //活动 资讯URL
+        final  String actionUrlStr;
+        if (type.equals("活动")) {
+            actionUrlStr = actionParam.actionURL;
+        } else {
+            actionUrlStr = actionParam.messageURL;
+        }
+        OkHttpClientManager.getInstance().addGsonRequest(actionUrlStr, RspAction.class, new XLTResponseListener<RspAction>() {
+            @Override
+            public void onResponse(RspAction responseData, XLTError errorData) {
+
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(actionParam));
+
+    }
+
+    //分享上报
+    public static void reportShareData(ShareParam shareParam,final XLTResponseCallback<ObjectCode>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest(shareParam.URL, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                listener.onResponse(responseData,errorData);
+            }
+        },OkHttpClientManager.getInstance().getmGson().toJson(shareParam));
+
+    }
+
+}

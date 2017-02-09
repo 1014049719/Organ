@@ -1,0 +1,173 @@
+package com.talenton.organ.ui;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
+import com.baidu.autoupdatesdk.UICheckUpdateCallback;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.organ.event.LoginEvent;
+import com.talenton.organ.util.AppManager;
+import com.talenton.organ.util.PushUtil;
+import com.talenton.organ.widget.JYRadioButton;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+public class MainActivity extends BaseCompatActivity {
+    private int lastFragmentId = 0;
+    private static final int MSG_FAKE_EXIT_APP = 1000;
+    private Handler mHandler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        AppInitController.homeAdvertisementInit(this);
+
+        // 恢复上次活动
+        if (savedInstanceState != null) {
+            lastFragmentId = savedInstanceState.getInt("lastFragmentId");
+        }
+        Intent data = getIntent();
+        if (data != null) {
+            if (data.hasExtra("lastFragmentId")) {
+                lastFragmentId = data.getIntExtra("lastFragmentId", 0);
+            }
+        }
+
+        initView();
+        if (isLogin()){
+            PushUtil.start(MainActivity.this, UserServer.getCurrentUser().getUsername());
+        }
+        //检测是否需要更新
+        BDAutoUpdateSDK.uiUpdateAction(this, new UICheckUpdateCallback() {
+            @Override
+            public void onCheckComplete() {
+                //不添加该回调将无法显示更新dialog
+            }
+        });
+        EventBus.getDefault().register(this);
+    }
+
+    private void initView(){
+        RadioGroup bottomRg = (RadioGroup) findViewById(R.id.main_bottom_rg);
+        ((JYRadioButton)findViewById(R.id.main_bottom_feed)).checkModel(AppManager.Model.FEED);
+        ((JYRadioButton)findViewById(R.id.main_bottom_school)).checkModel(AppManager.Model.SCHOOL);
+        ((JYRadioButton)findViewById(R.id.main_bottom_shop)).checkModel(AppManager.Model.SHOP);
+        bottomRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                doClick(checkedId);
+            }
+        });
+
+        if (lastFragmentId != 0) {
+            if (bottomRg.getCheckedRadioButtonId() == lastFragmentId) {
+                doClick(lastFragmentId);
+            } else {
+                bottomRg.check(lastFragmentId);
+            }
+        }else{
+            int checkId = AppManager.getInstance().hasModel(AppManager.Model.FEED) ? 0 :
+                    (AppManager.getInstance().hasModel(AppManager.Model.SCHOOL) ? 1 :
+                            (AppManager.getInstance().hasModel(AppManager.Model.SHOP)? 2 : 3));
+
+            ((RadioButton) bottomRg.getChildAt(checkId)).setChecked(true);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // TODO Auto-generated method stub
+        super.onSaveInstanceState(outState);
+        outState.putInt("lastFragmentId", lastFragmentId);
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);// 必须要调用这句
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mHandler.hasMessages(MSG_FAKE_EXIT_APP)) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(this, R.string.main_exit_app, Toast.LENGTH_SHORT).show();
+            mHandler.sendEmptyMessageDelayed(MSG_FAKE_EXIT_APP, 2000);
+        }
+    }
+
+    private void doClick(int checkedId) {
+        lastFragmentId = checkedId;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        if (checkedId == R.id.main_bottom_feed) {
+
+            fragmentTransaction.show(fragmentManager.findFragmentById(R.id.main_fragment_feed))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_school))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_shop))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_discover))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_mine))
+                    .commitAllowingStateLoss();
+
+        }else if (checkedId == R.id.main_bottom_school){
+            fragmentTransaction.show(fragmentManager.findFragmentById(R.id.main_fragment_school))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_feed))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_shop))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_discover))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_mine))
+                    .commitAllowingStateLoss();
+        } else if (checkedId == R.id.main_bottom_shop){
+            fragmentTransaction.show(fragmentManager.findFragmentById(R.id.main_fragment_shop))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_school))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_feed))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_discover))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_mine))
+                    .commitAllowingStateLoss();
+        }else if (checkedId == R.id.main_bottom_discover){
+            fragmentTransaction.show(fragmentManager.findFragmentById(R.id.main_fragment_discover))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_feed))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_shop))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_school))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_mine))
+                    .commitAllowingStateLoss();
+        }else if (checkedId == R.id.main_bottom_mine){
+            fragmentTransaction.show(fragmentManager.findFragmentById(R.id.main_fragment_mine))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_school))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_shop))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_discover))
+                    .hide(fragmentManager.findFragmentById(R.id.main_fragment_feed))
+                    .commitAllowingStateLoss();
+        }else {
+            return;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LoginEvent loginEvent) {
+        if (loginEvent != null && loginEvent.isLogin()){
+            PushUtil.start(MainActivity.this, UserServer.getCurrentUser().getUsername());
+        }
+    }
+
+}

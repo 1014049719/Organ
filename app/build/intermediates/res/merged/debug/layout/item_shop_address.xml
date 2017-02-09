@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:descendantFocusability="blocksDescendants">
+    <LinearLayout
+        android:id="@+id/address_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="38dp"
+                android:text="收货人:" />
+            <TextView
+                android:id="@+id/address_manage_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="吴小祥" />
+            <TextView
+                android:id="@+id/address_manage_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="38dp"
+                android:text="18620519838" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/address_LinearLayout_u"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_shop_address" />
+            <TextView
+                android:id="@+id/address_manage_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_shop_not_set_defalut_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/shop_not_set_defalut_address"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center"
+                android:background="@mipmap/icon_shop_not_set_defalut_address" />
+            <TextView
+
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="默认地址" />
+        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_shop_address_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                >
+            <ImageButton
+                android:id="@+id/shop_address_edit"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="center"
+                android:background="@mipmap/icon_shop_address_edit" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="编辑" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_shop_delete_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                >
+                <ImageButton
+                    android:id="@+id/shop_delete_address"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/icon_shop_delete_address" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="删除" />
+            </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

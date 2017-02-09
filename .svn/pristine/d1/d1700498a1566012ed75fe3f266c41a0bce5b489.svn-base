@@ -1,0 +1,62 @@
+package com.talenton.organ.widget;
+
+import android.content.Context;
+import android.support.v7.widget.AppCompatRadioButton;
+import android.util.AttributeSet;
+
+import com.talenton.organ.event.FunctionEvent;
+import com.talenton.organ.util.AppManager;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+/**
+ * @author zjh
+ * @date 2016/7/12
+ */
+public class JYRadioButton extends AppCompatRadioButton{
+    private AppManager.Model model;
+    public JYRadioButton(Context context) {
+        super(context);
+        init();
+    }
+
+    public JYRadioButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public JYRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        EventBus.getDefault().register(this);
+    }
+
+    private void updateView() {
+        if (!AppManager.getInstance().hasModel(model)){
+            this.setVisibility(GONE);
+        }else {
+            this.setVisibility(VISIBLE);
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FunctionEvent functionEvent){
+        if (functionEvent != null && functionEvent.getOpt() == FunctionEvent.FUNCTION_UPDATE){
+            updateView();
+        }
+    }
+
+    public void checkModel(AppManager.Model model) {
+        this.model = model;
+        updateView();
+    }
+
+    public void onDestroy(){
+        EventBus.getDefault().unregister(this);
+    }
+}

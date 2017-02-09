@@ -1,0 +1,101 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.user.ShopPoints;
+import com.talenton.organ.ui.user.ConfirmPointActivity;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * Created by Wang.'''' on 2016/5/6.
+ */
+public class ShopPointsAdapter extends LSGBaseAdapter<ShopPoints> {
+
+    //传来的积分值
+    private int pointscount;
+
+    public ShopPointsAdapter(Context context, List datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        final ShopPoints shopPoints = getItem(position);
+        ViewHolder viewHloder = null;
+        if (viewHloder == null) {
+
+            viewHloder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.shoppoints_cell, null);
+            viewHloder.imgurlImageView = (ImageView) convertView.findViewById(R.id.imgurl_imageview);
+            viewHloder.giftnameTV = (TextView) convertView.findViewById(R.id.giftname_tv);
+            viewHloder.pointsTV = (TextView) convertView.findViewById(R.id.points_tv);
+            viewHloder.duihuan_btn = (Button) convertView.findViewById(R.id.duihuan_btn);
+            convertView.setTag(viewHloder);
+        } else {
+
+            viewHloder = (ViewHolder) convertView.getTag();
+        }
+
+        //获取网络图片
+        ImageLoader.getInstance().displayImage(shopPoints.imgurl, viewHloder.imgurlImageView, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+
+        viewHloder.giftnameTV.setText(shopPoints.giftname);
+        viewHloder.pointsTV.setText(shopPoints.points);
+
+        AppLogger.d("积分总值"+pointscount);
+        // 兑换按钮
+        if (Integer.parseInt(shopPoints.points) > pointscount) {
+            viewHloder.duihuan_btn.setEnabled(false);
+            viewHloder.duihuan_btn.setBackgroundColor(Color.GRAY);
+            viewHloder.duihuan_btn.setBackgroundResource(R.drawable.btn_points_bg_gray);
+        } else {
+            viewHloder.duihuan_btn.setEnabled(true);
+        }
+        viewHloder.duihuan_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AppLogger.d("点击了兑换");
+                Intent intent=new Intent(context, ConfirmPointActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("shopPoints",shopPoints);
+                OrganApplication.getAppContext().startActivity(intent);
+            }
+        });
+
+        return convertView;
+    }
+
+    class ViewHolder {
+
+        ImageView imgurlImageView;
+        TextView giftnameTV;
+        TextView pointsTV;
+
+        Button duihuan_btn;
+    }
+
+    public int getPointscount() {
+        return pointscount;
+    }
+
+    public void setPointscount(int pointscount) {
+        this.pointscount = pointscount;
+    }
+}

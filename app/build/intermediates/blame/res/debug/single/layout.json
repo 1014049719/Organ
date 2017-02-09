@@ -1,0 +1,1202 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_pic_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_pic_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_social.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_social.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_social.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_social.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_video_gridview.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_video_gridview.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_action.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_action.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_catalog.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_catalog.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_pic_preview.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_pic_preview.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_splash_02.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_splash_02.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_pingjia.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_pingjia.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_inflater_class_filter.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_inflater_class_filter.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_region_select_fragment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_region_select_fragment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/mypoints_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/mypoints_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/mine_about.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/mine_about.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_screen_toolbar.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_by_other.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_by_other.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_show_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_show_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_experimental_filter.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_experimental_filter.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/wheel_text_view_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/wheel_text_view_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_splash_04.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_splash_04.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_capture_and_pick.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_capture_and_pick.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_child_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_child_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_footer_no_upload_class.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_footer_no_upload_class.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_my_follow_app.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_my_follow_app.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_msg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_msg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_classification.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_classification.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/rb_red_dot.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/rb_red_dot.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_web_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_web_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_my_favorites.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_my_favorites.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_big_media.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_class_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_class_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_welcome.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_welcome.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_sending.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_sending.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/emojicons.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/layout/emojicons.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/menu_feeds_comment_input.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/menu_feeds_comment_input.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/emojicon_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/layout/emojicon_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_icon.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_order.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_order.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_activity_chooser_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_classify.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_classify.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_confirm_point.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_confirm_point.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_perfect_personal_info.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_perfect_personal_info.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_feed.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_feed.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_home_advertisement.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_home_advertisement.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_search_class.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_search_class.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_family.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_family.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_menu_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_menu_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_select_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_select_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_search_dropdown_item_icons_2line.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_popup_menu_item_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_popup_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_pdf_jump.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_pdf_jump.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_main_post_type.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_main_post_type.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_search_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_search_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_brief.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_brief.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_group.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_group.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_pic_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_pic_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_register.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_register.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/indication_viewpager.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/indication_viewpager.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_show_family.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_show_family.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_edit_media.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_edit_media.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_cart.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_cart.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_timeline.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_timeline.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_alert_comment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/dialog_alert_comment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_age.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_age.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/school_class_detaill_bottom.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/school_class_detaill_bottom.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_add_new_adress.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_add_new_adress.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_task.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_task.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/testschool_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/testschool_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_search_hot.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_search_hot.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_header_school_home.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_header_school_home.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_setting.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_setting.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_book_intro.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_book_intro.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_search.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_search.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_social_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_social_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_classify_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_classify_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_circle_feeds_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_circle_feeds_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_checkbox.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_family.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_family.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_dialog_title_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_child_info.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_child_info.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_manage_adress.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_manage_adress.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_media.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_circle_rank.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_circle_rank.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_experimental.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_experimental.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_collection.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_collection.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/shoplist_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/shoplist_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_button_bar_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_mode_bar.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_mode_bar.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_logistics.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_logistics.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_name.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_name.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_type.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_type.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_school_class_evaluate.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_school_class_evaluate.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/search_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/search_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_video_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_video_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_circle_feeds.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_circle_feeds.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_list_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_user_family.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_user_family.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_emojicons.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_emojicons.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_all_orders.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_all_orders.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_model_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_model_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/action_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/action_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_item_header.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_item_header.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_dialog_select_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_dialog_select_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_gift_baby.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_gift_baby.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_select_address.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_select_address.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_pic_preview.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_pic_preview.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_date_select_fragment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/dialog_date_select_fragment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_select_app.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_select_app.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_fullscreen_catalog.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_fullscreen_catalog.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_layout_snackbar_include.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_layout_snackbar_include.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_msg_type_2.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_msg_type_2.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_recorder_video.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_recorder_video.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_school_experimental.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_school_experimental.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_footer_no_join_class.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_footer_no_join_class.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_support_tool.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_support_tool.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_header_school_class.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_header_school_class.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_bar_view_list_nav_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/table_media_info.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/table_media_info.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_preview_ebook_web.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_preview_ebook_web.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_approval.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_approval.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_gift_book_intro.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_gift_book_intro.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_menu_item_action_area.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_menu_item_action_area.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_comment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_comment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/table_media_info_row2.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/table_media_info_row2.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/view_tips_msg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/view_tips_msg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_invitation.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_invitation.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_discount.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_discount.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/pull_to_refresh_header_vertical.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-Refresh/unspecified/res/layout/pull_to_refresh_header_vertical.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_express.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_express.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_class_evaluate.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_class_evaluate.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_mine_home.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_mine_home.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feed_attention_age.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feed_attention_age.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/mypoints_head_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/mypoints_head_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_select_dialog_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_select_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_select_model.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_select_model.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_shoppingcart.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_shoppingcart.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/giraffe_player.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/giraffe_player.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_msg_type_1.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_msg_type_1.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_catalog.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_catalog.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_points.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_points.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_helper_article.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_helper_article.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_paying.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_paying.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_helper_article.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_helper_article.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_msg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_msg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_attention_feeds_cover.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_attention_feeds_cover.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/emojicon_grid.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/layout/emojicon_grid.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_user_app.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_user_app.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_gift_total.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_gift_total.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_search_footer.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_search_footer.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_take_photo.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_take_photo.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/bdp_update_activity_confirm_dialog.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/res/layout/bdp_update_activity_confirm_dialog.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_login_main.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_login_main.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_bar_title_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_alert_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_select_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_select_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_circle_feeds.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_circle_feeds.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_record.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_record.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_receiving.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_receiving.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_chat_album.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_chat_album.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_address.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_address.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_baby_feeds_with_time.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_baby_feeds_with_time.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_test_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_test_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_social_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_social_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_goods_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_goods_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_header_shop.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_header_shop.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_layout_snackbar.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_layout_snackbar.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_app_type.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_app_type.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/global_toast_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/global_toast_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_msg_type_0.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_msg_type_0.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/popup_feeds_detail_menu.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/popup_feeds_detail_menu.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feed_mine_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feed_mine_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_item_subheader.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_item_subheader.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_image_detail_viewer.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_image_detail_viewer.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_my_follow_app_manager.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_my_follow_app_manager.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_splash_03.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_splash_03.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_select_relation.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_select_relation.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_circle_rank.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_circle_rank.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_point_succeed.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_point_succeed.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/global_action_bar.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/global_action_bar.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_media_cancel_action.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_screen_content_include.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_screen_content_include.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_search_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_search_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_splash_01.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_splash_01.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/select_dialog_item_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/select_dialog_item_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_member_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_member_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_empty.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_empty.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_circle_image_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_circle_image_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/mytopic_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/mytopic_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/select_dialog_multichoice_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_user_info.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_user_info.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_class.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_class.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_feeds_task.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_feeds_task.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_approval.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_approval.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_menu.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_menu.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_main.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_layout_tab_text.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_layout_tab_text.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_points.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_points.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_bottom_sheet_dialog.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_bottom_sheet_dialog.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_part_time.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_mine_content.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_mine_content.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_mine_header.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_mine_header.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_shop_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_shop_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_big_media_narrow.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/shoppoints_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/shoppoints_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_search_school_baby.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_search_school_baby.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_password.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_password.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_feeds_comment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_feeds_comment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_all_video_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_all_video_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_my_topic.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_my_topic.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feed_attention_record.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feed_attention_record.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_message.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_message.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_post_type.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_post_type.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/discovery_cell.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/discovery_cell.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/table_media_info_section.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/table_media_info_section.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_input_relation.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_input_relation.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_select_address.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_select_address.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/pull_to_refresh_header_horizontal.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-Refresh/unspecified/res/layout/pull_to_refresh_header_horizontal.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/load_fail_view.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/load_fail_view.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/table_media_info_row1.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/table_media_info_row1.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_mine_zoom.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_mine_zoom.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_header_school_experimental.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_header_school_experimental.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/support_simple_spinner_dropdown_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_activity_chooser_view_list_item.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_activity_chooser_view_list_item.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_feeds_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_feeds_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_menu_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_feeds_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_feeds_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_circle_feeds_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_circle_feeds_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/cell_playing_order.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/cell_playing_order.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_invite_attention.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_invite_attention.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/cell_paying.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/cell_paying.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_screen_simple.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_screen_simple.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_layout_tab_icon.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_web_view2.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_web_view2.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_school_class_detail.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_school_class_detail.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_template_lines.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_template_lines.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_search_history.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_search_history.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_child_app_model.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_child_app_model.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_modify_school_name.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_modify_school_name.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_discovery.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_discovery.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/global_app_bar.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/global_app_bar.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_my_topic.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_my_topic.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_goods.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_goods.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_pdf.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_pdf.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_player.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_player.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_confirm_nodetail_order.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_confirm_nodetail_order.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/notification_media_action.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_class_pay_order_ok.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_class_pay_order_ok.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_baby_feeds.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_baby_feeds.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_expanded_menu_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_expanded_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_pic_album.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_pic_album.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_select_school.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_select_school.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_home.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_home.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_suggestion.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_suggestion.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_user_member_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_user_member_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_attention_school_baby.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_attention_school_baby.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_school_search.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_school_search.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_popup_filter.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_popup_filter.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_all_pic_guide_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_all_pic_guide_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_confirm_order.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_confirm_order.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_pay_order_ok.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_pay_order_ok.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_init.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/layout/activity_init.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_show_personal_info.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_show_personal_info.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_helper_list.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_helper_list.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_support_tool.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_support_tool.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_bind_phone.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_bind_phone.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_radio.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_detail_comment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_detail_comment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_school_create_evaluate.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_school_create_evaluate.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_screen_simple_overlay_action_mode.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_screen_simple_overlay_action_mode.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_splash.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/dialog_splash.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_classify.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_classify.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_class_filter.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_class_filter.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_create_app.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_create_app.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_photo_gridview.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_photo_gridview.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/select_dialog_singlechoice_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_feeds_post.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_feeds_post.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_all_pic_browser.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_all_pic_browser.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/fragment_shop.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/fragment_shop.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_menu_item_layout.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/design_navigation_item_separator.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/layout/design_navigation_item_separator.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_shop_logistics_query.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_shop_logistics_query.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/menu_main_default.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/menu_main_default.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_bar_up_container.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/activity_login.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/activity_login.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/abc_action_mode_close_item_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/layout/abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_group_app_model.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_group_app_model.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_topic_feeds.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_topic_feeds.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/dialog_date_and_hour_select_fragment.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/layout/dialog_date_and_hour_select_fragment.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_school_search_hot.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_school_search_hot.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_feeds_baby_cover.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_feeds_baby_cover.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_shop_address.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_shop_address.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/layout/item_splash_05.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/layout/item_splash_05.xml"
+    }
+]

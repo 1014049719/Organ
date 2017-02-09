@@ -1,0 +1,15 @@
+package com.talenton.organ.event;
+
+public class CommentingEvent {
+	public long circleId;
+	public String guid;
+	public String cguid;
+	public int h;
+
+	public CommentingEvent(long circleId, String guid, String cguid,int h) {
+		this.circleId = circleId;
+		this.guid = guid;
+		this.cguid = cguid;
+		this.h = h;
+	}
+}

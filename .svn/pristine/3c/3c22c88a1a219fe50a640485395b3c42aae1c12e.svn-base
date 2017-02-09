@@ -1,0 +1,18 @@
+package com.talenton.organ.event;
+
+/**
+ * Created by ttt on 2016/5/20.
+ */
+public class ModifyCircleEvent {
+    public long circleId;
+    public String description;
+    public String photo;
+    public String cover;
+
+    public ModifyCircleEvent(long circleId, String description, String photo, String cover){
+        this.circleId = circleId;
+        this.description = description;
+        this.photo = photo;
+        this.cover = cover;
+    }
+}

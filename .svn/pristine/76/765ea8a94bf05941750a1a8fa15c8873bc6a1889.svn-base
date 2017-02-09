@@ -1,0 +1,14 @@
+package com.talenton.organ.event;
+
+/**
+ * Created by xiaoxiang on 2016/5/25.
+ */
+public class PayCommentEvent {
+    private boolean bResult;
+    public PayCommentEvent(boolean bResult){
+        this.bResult=bResult;
+    }
+    public boolean getResult(){
+        return bResult;
+    }
+}

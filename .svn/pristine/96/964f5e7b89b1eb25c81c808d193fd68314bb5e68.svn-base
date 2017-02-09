@@ -1,0 +1,458 @@
+package com.talenton.organ.widget;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.talenton.organ.R;
+import com.talenton.base.widget.wheel.OnWheelChangedListener;
+import com.talenton.base.widget.wheel.WheelView;
+import com.talenton.base.widget.wheel.adapters.ArrayWheelAdapter;
+
+public class RegionSelectFragment extends DialogFragment implements OnClickListener, OnWheelChangedListener {
+	
+	/**
+	 * 所有省
+	 */
+	protected String[] mProvinceDatas;
+	/**
+	 * key - 省 value - 市
+	 */
+	protected Map<String, String[]> mCitisDatasMap = new HashMap<String, String[]>();
+	/**
+	 * key - 市 values - 区
+	 */
+	protected Map<String, String[]> mDistrictDatasMap = new HashMap<String, String[]>();
+	
+	/**
+	 * key - 区 values - 邮编
+	 */
+	protected Map<String, String> mZipcodeDatasMap = new HashMap<String, String>(); 
+
+	/**
+	 * 当前省的名称
+	 */
+	protected String mCurrentProviceName;
+	/**
+	 * 当前市的名称
+	 */
+	protected String mCurrentCityName;
+	/**
+	 * 当前区的名称
+	 */
+	protected String mCurrentDistrictName ="";
+	
+	/**
+	 * 当前区的邮政编码
+	 */
+	protected String mCurrentZipCode ="";
+	
+	private WheelView mViewProvince;
+	private WheelView mViewCity;
+	private WheelView mViewDistrict;
+	private Button mBtnConfirm;
+	private Context mContext;
+	private OnClickReginSelectListener mOnClickReginSelectListener = null;
+	
+	public static RegionSelectFragment newInstance(OnClickReginSelectListener listener) {
+		RegionSelectFragment fragment = new RegionSelectFragment();
+		fragment.mOnClickReginSelectListener = listener;
+		return fragment;
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState){
+		final Dialog dialog = new Dialog(getActivity(), R.style.common_dialog);
+		dialog.setContentView(R.layout.dialog_region_select_fragment);
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		mContext = this.getActivity();
+		setUpViews(dialog);
+		setUpListener();
+		setUpData();
+		return dialog;
+	}
+	
+	private void setUpViews(Dialog v) {
+		mViewProvince = (WheelView) v.findViewById(R.id.id_province);
+		mViewCity = (WheelView) v.findViewById(R.id.id_city);
+		mViewDistrict = (WheelView) v.findViewById(R.id.id_district);
+		mBtnConfirm = (Button) v.findViewById(R.id.btn_confirm);
+		
+		v.findViewById(R.id.btn_cancel).setOnClickListener(this);
+	}
+	
+	private void setUpListener() {
+    	// 添加change事件
+    	mViewProvince.addChangingListener(this);
+    	// 添加change事件
+    	mViewCity.addChangingListener(this);
+    	// 添加change事件
+    	mViewDistrict.addChangingListener(this);
+    	// 添加onclick事件
+    	mBtnConfirm.setOnClickListener(this);
+    }
+	
+	private void setUpData() {
+		initProvinceDatas(mContext);
+		mViewProvince.setViewAdapter(new ArrayWheelAdapter<String>(
+				mContext, R.layout.wheel_text_view_layout, R.id.tv_wheel_text_view, mProvinceDatas));
+		// 设置可见条目数量
+		mViewProvince.setVisibleItems(7);
+		mViewCity.setVisibleItems(7);
+		mViewDistrict.setVisibleItems(7);
+		updateCities();
+		updateAreas();
+	}
+
+	@Override
+	public void onChanged(WheelView wheel, int oldValue, int newValue) {
+		// TODO Auto-generated method stub
+		if (wheel == mViewProvince) {
+			updateCities();
+		} else if (wheel == mViewCity) {
+			updateAreas();
+		} else if (wheel == mViewDistrict) {
+			mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[newValue];
+			mCurrentZipCode = mZipcodeDatasMap.get(mCurrentDistrictName);
+		}
+	}
+
+	/**
+	 * 根据当前的市，更新区WheelView的信息
+	 */
+	private void updateAreas() {
+		int pCurrent = mViewCity.getCurrentItem();
+		mCurrentCityName = mCitisDatasMap.get(mCurrentProviceName)[pCurrent];
+		String[] areas = mDistrictDatasMap.get(mCurrentCityName);
+
+		if (areas == null) {
+			areas = new String[] { "" };
+		}
+		mViewDistrict.setViewAdapter(new ArrayWheelAdapter<String>(
+				mContext, R.layout.wheel_text_view_layout, R.id.tv_wheel_text_view, areas));
+		mViewDistrict.setCurrentItem(0);
+	}
+
+	/**
+	 * 根据当前的省，更新市WheelView的信息
+	 */
+	private void updateCities() {
+		int pCurrent = mViewProvince.getCurrentItem();
+		mCurrentProviceName = mProvinceDatas[pCurrent];
+		String[] cities = mCitisDatasMap.get(mCurrentProviceName);
+		if (cities == null) {
+			cities = new String[] { "" };
+		}
+		mViewCity.setViewAdapter(new ArrayWheelAdapter<String>(
+				mContext, R.layout.wheel_text_view_layout, R.id.tv_wheel_text_view, cities));
+		mViewCity.setCurrentItem(0);
+		updateAreas();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if(v.getId() == R.id.btn_confirm){
+			showSelectedResult();
+		}
+		else if(v.getId() == R.id.btn_cancel){
+			this.dismiss();
+		}
+	}
+
+	private void showSelectedResult() {
+		if(mOnClickReginSelectListener != null){
+			if("全市".equals(mCurrentCityName)){
+				mCurrentCityName = "";
+				mCurrentDistrictName = "";
+			}
+			if("全区".equals(mCurrentDistrictName)){
+				mCurrentDistrictName = "";
+			}
+			mOnClickReginSelectListener.onData(mCurrentProviceName, mCurrentCityName, mCurrentDistrictName);
+			this.dismiss();
+		}else{
+			String region = String.format("%s%s%s", mCurrentProviceName,mCurrentCityName,mCurrentDistrictName);
+			Toast.makeText(mContext, "当前选中:"+region+","+mCurrentZipCode, Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		//int width = getResources().getDimensionPixelSize(R.dimen.width_300);
+		//int height = getResources().getDimensionPixelSize(R.dimen.width_300);
+		//getDialog().getWindow().setLayout(width, height);
+	}
+	
+	/**
+	 * 解析省市区的XML数据
+	 */
+	
+    protected void initProvinceDatas(Context context)
+	{
+		List<ProvinceModel> provinceList = null;
+    	AssetManager asset = context.getAssets();
+        try {
+            InputStream input = asset.open("province_data.xml");
+            // 创建一个解析xml的工厂对象
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			// 解析xml
+			SAXParser parser = spf.newSAXParser();
+			XmlParserHandler handler = new XmlParserHandler();
+			parser.parse(input, handler);
+			input.close();
+			// 获取解析出来的数据
+			provinceList = handler.getDataList();
+			//*/ 初始化默认选中的省、市、区
+			if (provinceList!= null && !provinceList.isEmpty()) {
+				mCurrentProviceName = provinceList.get(0).getName();
+				List<CityModel> cityList = provinceList.get(0).getCityList();
+				if (cityList!= null && !cityList.isEmpty()) {
+					mCurrentCityName = cityList.get(0).getName();
+					List<DistrictModel> districtList = cityList.get(0).getDistrictList();
+					mCurrentDistrictName = districtList.get(0).getName();
+					mCurrentZipCode = districtList.get(0).getZipcode();
+				}
+			}
+			//*/
+			mProvinceDatas = new String[provinceList.size()];
+        	for (int i=0; i< provinceList.size(); i++) {
+        		// 遍历所有省的数据
+        		mProvinceDatas[i] = provinceList.get(i).getName();
+        		List<CityModel> cityList = provinceList.get(i).getCityList();
+        		String[] cityNames = new String[cityList.size()];
+        		for (int j=0; j< cityList.size(); j++) {
+        			// 遍历省下面的所有市的数据
+        			cityNames[j] = cityList.get(j).getName();
+        			List<DistrictModel> districtList = cityList.get(j).getDistrictList();
+					if(cityNames[j].equals("全市")){
+						String[] distrinctNameArray = new String[1];
+						distrinctNameArray[0] = "全区";
+						mDistrictDatasMap.put(cityNames[j], distrinctNameArray);
+						continue;
+					}
+        			String[] distrinctNameArray = new String[districtList.size()+1];
+					distrinctNameArray[0] = "全区";
+					mZipcodeDatasMap.put("全区", "000000");
+        			//DistrictModel[] distrinctArray = new DistrictModel[districtList.size()];
+        			for (int k=0; k<districtList.size(); k++) {
+        				// 遍历市下面所有区/县的数据
+        				DistrictModel districtModel = new DistrictModel(districtList.get(k).getName(), districtList.get(k).getZipcode());
+        				// 区/县对于的邮编，保存到mZipcodeDatasMap
+        				mZipcodeDatasMap.put(districtList.get(k).getName(), districtList.get(k).getZipcode());
+        				//distrinctArray[k] = districtModel;
+        				distrinctNameArray[k+1] = districtModel.getName();
+        			}
+        			// 市-区/县的数据，保存到mDistrictDatasMap
+        			mDistrictDatasMap.put(cityNames[j], distrinctNameArray);
+        		}
+        		// 省-市的数据，保存到mCitisDatasMap
+        		mCitisDatasMap.put(provinceList.get(i).getName(), cityNames);
+        	}
+        } catch (Throwable e) {  
+            e.printStackTrace();  
+        } finally {
+        	
+        } 
+	}
+    
+    private class XmlParserHandler extends DefaultHandler {
+
+    	/**
+    	 * 存储所有的解析对象
+    	 */
+    	private List<ProvinceModel> provinceList = new ArrayList<ProvinceModel>();
+    	 	  
+    	public XmlParserHandler() {
+    		
+    	}
+
+    	public List<ProvinceModel> getDataList() {
+    		return provinceList;
+    	}
+
+    	@Override
+    	public void startDocument() throws SAXException {
+    		// 当读到第一个开始标签的时候，会触发这个方法
+    	}
+
+    	ProvinceModel provinceModel = new ProvinceModel();
+    	CityModel cityModel = new CityModel();
+    	DistrictModel districtModel = new DistrictModel();
+    	
+    	@Override
+    	public void startElement(String uri, String localName, String qName,
+    			Attributes attributes) throws SAXException {
+    		// 当遇到开始标记的时候，调用这个方法
+    		if (qName.equals("province")) {
+    			provinceModel = new ProvinceModel();
+    			provinceModel.setName(attributes.getValue(0));
+    			provinceModel.setCityList(new ArrayList<CityModel>());
+    		} else if (qName.equals("city")) {
+    			cityModel = new CityModel();
+    			cityModel.setName(attributes.getValue(0));
+    			cityModel.setDistrictList(new ArrayList<DistrictModel>());
+    		} else if (qName.equals("district")) {
+    			districtModel = new DistrictModel();
+    			districtModel.setName(attributes.getValue(0));
+    			districtModel.setZipcode(attributes.getValue(1));
+    		}
+    	}
+
+    	@Override
+    	public void endElement(String uri, String localName, String qName)
+    			throws SAXException {
+    		// 遇到结束标记的时候，会调用这个方法
+    		if (qName.equals("district")) {
+    			cityModel.getDistrictList().add(districtModel);
+            } else if (qName.equals("city")) {
+            	provinceModel.getCityList().add(cityModel);
+            } else if (qName.equals("province")) {
+            	provinceList.add(provinceModel);
+            }
+    	}
+    	
+    	@Override
+    	public void characters(char[] ch, int start, int length)
+    			throws SAXException {
+    	}
+
+    }
+    
+    private class ProvinceModel {
+    	private String name;
+    	private List<CityModel> cityList;
+    	
+    	public ProvinceModel() {
+    		super();
+    	}
+
+    	public ProvinceModel(String name, List<CityModel> cityList) {
+    		super();
+    		this.name = name;
+    		this.cityList = cityList;
+    	}
+
+    	public String getName() {
+    		return name;
+    	}
+
+    	public void setName(String name) {
+    		this.name = name;
+    	}
+
+    	public List<CityModel> getCityList() {
+    		return cityList;
+    	}
+
+    	public void setCityList(List<CityModel> cityList) {
+    		this.cityList = cityList;
+    	}
+
+    	@Override
+    	public String toString() {
+    		return "ProvinceModel [name=" + name + ", cityList=" + cityList + "]";
+    	}
+    	
+    }
+    
+    private class CityModel {
+    	private String name;
+    	private List<DistrictModel> districtList;
+    	
+    	public CityModel() {
+    		super();
+    	}
+
+    	public CityModel(String name, List<DistrictModel> districtList) {
+    		super();
+    		this.name = name;
+    		this.districtList = districtList;
+    	}
+
+    	public String getName() {
+    		return name;
+    	}
+
+    	public void setName(String name) {
+    		this.name = name;
+    	}
+
+    	public List<DistrictModel> getDistrictList() {
+    		return districtList;
+    	}
+
+    	public void setDistrictList(List<DistrictModel> districtList) {
+    		this.districtList = districtList;
+    	}
+
+    	@Override
+    	public String toString() {
+    		return "CityModel [name=" + name + ", districtList=" + districtList
+    				+ "]";
+    	}
+    	
+    }
+    
+    private class DistrictModel {
+    	private String name;
+    	private String zipcode;
+    	
+    	public DistrictModel() {
+    		super();
+    	}
+
+    	public DistrictModel(String name, String zipcode) {
+    		super();
+    		this.name = name;
+    		this.zipcode = zipcode;
+    	}
+
+    	public String getName() {
+    		return name;
+    	}
+
+    	public void setName(String name) {
+    		this.name = name;
+    	}
+
+    	public String getZipcode() {
+    		return zipcode;
+    	}
+
+    	public void setZipcode(String zipcode) {
+    		this.zipcode = zipcode;
+    	}
+
+    	@Override
+    	public String toString() {
+    		return "DistrictModel [name=" + name + ", zipcode=" + zipcode + "]";
+    	}
+    }
+    
+    public interface OnClickReginSelectListener{
+    	public void onData(String province, String city, String area);
+    }
+}

@@ -1,0 +1,56 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.talenton.base.server.bean.AppData;
+import com.talenton.organ.R;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+import android.widget.TextView;
+import java.util.List;
+import android.view.LayoutInflater;
+
+/**
+ * @author zjh
+ * @date 2016/7/14
+ */
+public class MyFollowAppManagerAdapter extends LSGBaseAdapter<AppData>{
+
+    @Override
+    public int getViewTypeCount() {
+        return 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public MyFollowAppManagerAdapter(Context context, List<AppData> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (convertView == null){
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_my_follow_app,null);
+            viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        AppData appData = getItem(position);
+        viewHolder.tv_name.setText(appData.appname);
+
+        return convertView;
+    }
+
+
+    class ViewHolder{
+       public TextView tv_name;
+    }
+}

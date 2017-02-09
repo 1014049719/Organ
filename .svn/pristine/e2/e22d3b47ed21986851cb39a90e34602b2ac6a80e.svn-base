@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    tools:context="com.talenton.organ.ui.shop.ShoppingCartActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/adress_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fastScrollEnabled="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
+    <include
+        android:id="@+id/shop_manage_adress_loading_container"
+        layout="@layout/load_fail_view" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/height_15"
+        android:layout_marginTop="@dimen/height_15"
+        >
+
+        <Button
+            android:id="@+id/btn_add_address"
+            style="@style/comment_btn_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加新地址" >
+        </Button>
+    </LinearLayout>
+</LinearLayout>

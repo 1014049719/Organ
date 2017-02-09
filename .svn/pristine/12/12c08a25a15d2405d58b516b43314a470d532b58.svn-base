@@ -1,0 +1,11 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/4/21.
+ */
+public class RecvPayGetOrderData {
+    public Object charge;
+   // public String orderid;
+  //  public String ordertime;
+  //  public String price;
+}

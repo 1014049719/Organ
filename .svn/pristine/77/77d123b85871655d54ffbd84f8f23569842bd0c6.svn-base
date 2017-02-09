@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin:'application'
+
+group = 'de.greenrobot'
+version = '1.4.0-SNAPSHOT'
+mainClassName = "gendao.ExampleDaoGenerator"
+
+dependencies {
+    compile 'de.greenrobot:greendao-generator:2.1.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+            srcDir 'src-gen'
+        }
+    }
+}
+
+artifacts {
+    archives jar
+}

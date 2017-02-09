@@ -1,0 +1,82 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_main_ok.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_main_ok.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/school_class_search.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/school_class_search.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_select_photo.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_select_photo.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_user_login.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_user_login.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_main_complete.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_main_complete.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_main_send.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_main_send.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_user_bind_phone.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_user_bind_phone.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_msg_notice.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_msg_notice.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/school_class_cancel.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/school_class_cancel.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_feeds_detail_more.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_feeds_detail_more.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_feeds_post_text.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_feeds_post_text.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/school_class_evaluate.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/school_class_evaluate.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_invite.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_invite.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_feeds_post.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_feeds_post.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_modify_circle.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_modify_circle.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_shop_manage_address.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_shop_manage_address.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_shop_cart.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_shop_cart.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_delete.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_delete.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_select_location.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_select_location.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/menu/menu_book_share.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/menu/menu_book_share.xml"
+    }
+]

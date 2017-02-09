@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <VideoView
+            android:id="@+id/mVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/layout_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_20_0"
+                android:src="@mipmap/camera_close" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:background="@null"
+            android:gravity="center_horizontal"
+            android:textColor="#FFF"
+            android:text="00:60"
+            android:visibility="gone" />
+        <View
+            android:id="@+id/view_oval"
+            android:layout_width="8dip"
+            android:layout_height="8dip"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dip"
+            android:layout_marginRight="@dimen/space_3_0"
+            android:layout_toLeftOf="@+id/chronometer"
+            android:background="@drawable/shape_red_oval"
+            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/layout_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dip"
+                android:layout_marginRight="@dimen/space_20_0"
+                android:src="@mipmap/camera_switch" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_falshlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/layout_switch"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/iv_flashlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/space_20_0"
+                android:src="@mipmap/camera_flashlight_close" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/recorder_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:src="@mipmap/camera_start"
+            android:layout_marginBottom="@dimen/space_10_0" />
+        <ImageView
+            android:id="@+id/recorder_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:src="@mipmap/camera_stop"
+            android:layout_marginBottom="@dimen/space_10_0"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

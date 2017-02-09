@@ -1,0 +1,1114 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_pay_order_ok.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_pay_order_ok.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dpj_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dpj_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_cart_select.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_cart_select.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_zhifubao.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_zhifubao.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_search.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_search.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_feeds_gallery.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_feeds_gallery.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_menu_family.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_menu_family.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/search_del.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/search_del.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/photo_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/photo_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/popup_delete.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/popup_delete.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/video_player.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/video_player.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/load_image_500.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/load_image_500.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_fx_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_fx_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_school.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_school.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_02.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_02.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_video.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_video.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/perfect_go.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/perfect_go.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_type_keyboard_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_type_keyboard_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/social_circle.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/social_circle.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_xt_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_xt_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_sc_defauit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_sc_defauit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/school.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/school.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wsc_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wsc_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_take_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_take_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/favorite_default.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/favorite_default.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/rank3.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/rank3.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_start.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_start.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_qz_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_qz_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_cart_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/icon_shop_cart_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_price.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_price.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/star_xuanzhong.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/star_xuanzhong.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/ico_heart_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/ico_heart_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/favorite_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/favorite_pressed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_post_area_bg.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_post_area_bg.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/popup_collect.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/popup_collect.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_logo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_logo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/invite_attention.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/invite_attention.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/h_wifi_button.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/h_wifi_button.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tx.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tx.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_recommend_item.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_recommend_item.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/family_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/family_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_type_emoji_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_type_emoji_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_set_default_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_set_default_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_invite.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_invite.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/social_friend.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/social_friend.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_logistics.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_logistics.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/btn_gray.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/btn_gray.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gou.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gou.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_04.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_04.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dz_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dz_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/photo_ysc.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/photo_ysc.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/login_qq.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/login_qq.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_address_edit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_address_edit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/yqhy_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/yqhy_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xj.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xj.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/x_hui_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/x_hui_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/select.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/select.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_like.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_like.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/checkbox_album_img_unselected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/checkbox_album_img_unselected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_price_high.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_price_high.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/delete_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/delete_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_go.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_go.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/delete.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/delete.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/daily_report_checkbox_select.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/daily_report_checkbox_select.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_collect.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_collect.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_addpic_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_addpic_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dfh_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dfh_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_weclome_logo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_weclome_logo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_flashlight_close.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_flashlight_close.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/actionbar_back_btn_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/actionbar_back_btn_pressed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/eye_open.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/eye_open.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/fh_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/fh_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/social_qq.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/social_qq.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gch_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gch_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_type_keyboard_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_type_keyboard_pressed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_02_t.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_02_t.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_01_t.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_01_t.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/checkbox_picture_unselected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/checkbox_picture_unselected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xdz_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xdz_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_close.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_close.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/search.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/search.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_feeds_text.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_feeds_text.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/change_background.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/change_background.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_defalut_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_defalut_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/social_qzone.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/social_qzone.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/st_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/st_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/image_top_back_press.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/image_top_back_press.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_theme.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_theme.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_tj.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_tj.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_report_top7.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_report_top7.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_timeline_bottom.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_timeline_bottom.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/baby_default_cover.jpg",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/baby_default_cover.jpg"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wdjf_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wdjf_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_phone.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_phone.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_qz_defauit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_qz_defauit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_image_time.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_image_time.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xj_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xj_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/go_play.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/go_play.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_more.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_more.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/ypy_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/ypy_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/ying.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/ying.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_gift_send.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_gift_send.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_wd_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_wd_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_same_school.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_same_school.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_operator.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_operator.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/x.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/x.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/up.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/up.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dot_main.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dot_main.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/volume.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/volume.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_wd_defauit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_wd_defauit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/user_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/user_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wifi_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wifi_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_bg.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_bg.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_browser.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_browser.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_media_delete.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_media_delete.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_select_zhifu.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_select_zhifu.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_feed_failed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_feed_failed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/circle_icon_age.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/circle_icon_age.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xdhui_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xdhui_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_feeds_video.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_feeds_video.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_05.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_05.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_type_input_switching.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_type_input_switching.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/select_gray.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/select_gray.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/qbd_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/qbd_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_xt_defauit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_xt_defauit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gift_more.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gift_more.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/social_weixin.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/social_weixin.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xxin_h.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xxin_h.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_like_gray.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_like_gray.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_04_t.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_04_t.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_message.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_message.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_weixin.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_weixin.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_sc_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_sc_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tab_fx_defauit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tab_fx_defauit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/rank1.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/rank1.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/guide_import.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/guide_import.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gift_default_logo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gift_default_logo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_cart.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_cart.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_post_to.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_post_to.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/popup_background.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/popup_background.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/eye_close.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/eye_close.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/picture_xuanzhong.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/picture_xuanzhong.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/actionbar_back_btn_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/actionbar_back_btn_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/download.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/download.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_03.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_03.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_delete_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_delete_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wht_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wht_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_price_low.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_price_low.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/perfect_bg.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/perfect_bg.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/photo_time_more.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/photo_time_more.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_type_emoji_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_type_emoji_pressed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_min.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_min.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/load_image_200.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/load_image_200.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_plaza_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_plaza_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/invite_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/invite_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/hf_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/hf_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_detail_cart.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_detail_cart.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/play_moren.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/play_moren.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_pay_order_error.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_pay_order_error.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_hot_item.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_hot_item.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_error.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/main_error.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_close.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_close.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_cart_not_select.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_cart_not_select.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/post_addpic_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/post_addpic_pressed.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dfk_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dfk_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wb_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wb_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/load_image_failed_500.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/load_image_failed_500.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/back_top.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/back_top.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_add_friend.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_add_friend.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/popup_edit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/popup_edit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/zhankai.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/zhankai.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/lj_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/lj_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_recommend.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_recommend.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_add.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_add.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/picture_moren.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/picture_moren.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/nav_search.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/nav_search.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/share_book.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/share_book.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_border.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_border.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/about_bg.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/about_bg.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_edit.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_edit.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gwc_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gwc_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_01.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_01.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/baby_cover_bottom_bg.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/baby_cover_bottom_bg.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dsh_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dsh_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/bzx_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/bzx_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/qq_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/qq_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_detail_back.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_detail_back.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/edit_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/edit_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_bg_bottom.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_bg_bottom.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/btn_down.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/btn_down.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/shr_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/shr_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/ic_launcher.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/no_picture_preview.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/no_picture_preview.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/rank2.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/rank2.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/like_moren.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/like_moren.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/perfect_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/perfect_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_new.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_new.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/about_logo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/about_logo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_switch.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_switch.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/y_wifi_button.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/y_wifi_button.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/background.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/background.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/checkbox_picture_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/checkbox_picture_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/star_moren.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/star_moren.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/guide_import_p.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/guide_import_p.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_reply.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_reply.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_detail_message.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_detail_message.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/video_player_small.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/video_player_small.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/go.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/go.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_comment_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_comment_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/checkbox_album_img_selected.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/checkbox_album_img_selected.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_stop.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_stop.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/comment.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/comment.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_not_defalut_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_not_defalut_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/daily_report_checkbox.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/daily_report_checkbox.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/share.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/share.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/lxqq_button.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/lxqq_button.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/activity.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/activity.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_like_ok.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_like_ok.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/n_wifi_button.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/n_wifi_button.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_discount_item.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_discount_item.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/login_phone.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/login_phone.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_logistics_arrave.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_logistics_arrave.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/file_xuanzhong.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/file_xuanzhong.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/mendian_back.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/mendian_back.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/qhc_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/qhc_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/szhi_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/szhi_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_plus.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_plus.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_hotsale.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_hotsale.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dot_uncheck.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dot_uncheck.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/zhx_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/zhx_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_03_t.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_03_t.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_05_t.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_05_t.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/login_weixin.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/login_weixin.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_list_gift_sum_bg.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_list_gift_sum_bg.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/shop.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/shop.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/invite_code_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/invite_code_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_delete.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_delete.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/yjfk_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/yjfk_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/xy_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/xy_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_discount.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_discount.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/tc_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/tc_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/load_image.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/load_image.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_sy.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_sy.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/image_top_back_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/image_top_back_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/wx.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/wx.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/popup_share.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/popup_share.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/file_moren.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/file_moren.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_all.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_all.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/news_bg.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/news_bg.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_plaza_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_plaza_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_classify.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_classify.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_feeds_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_feeds_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/guize_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/guize_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/splash_03_in.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/splash_03_in.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/whz_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/whz_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/family_relation_select.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/family_relation_select.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/like_xuanzhong.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/like_xuanzhong.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/gy_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/gy_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/btn_up.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/btn_up.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/shh_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/shh_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_pay_order_pepole.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_pay_order_pepole.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_bg.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_bg.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_shop_not_set_defalut_address.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_shop_not_set_defalut_address.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/load_image_failed_200.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/load_image_failed_200.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/time.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/time.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/mipmap-xhdpi-v4/main_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/globe.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/globe.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_share.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_share.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/dcg_icon.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/dcg_icon.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/camera_flashlight_open.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/camera_flashlight_open.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/play_xuanzhong.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/play_xuanzhong.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/icon_rm.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/icon_rm.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/main_menu_grow_book.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/main_menu_grow_book.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/login_bg.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/login_bg.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_detail_menu_more.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_detail_menu_more.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-xhdpi-v4/feeds_collect_ok.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-xhdpi/feeds_collect_ok.png"
+    }
+]

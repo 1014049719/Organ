@@ -1,0 +1,8 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/4/25.
+ */
+public class SendClassifyGoodsData {
+    public final static String URL = "mobile/cat_all.php?cmdcode=41";
+}

@@ -1,0 +1,78 @@
+package com.talenton.base.util;
+
+import android.widget.Switch;
+
+import com.talenton.base.server.XLTError;
+
+import okhttp3.Response;
+
+/**
+ * Created by ttt on 2016/3/28.
+ */
+public class OkHttpException extends Exception {
+    private XLTError errorData = null;
+
+    /**
+     * Constructs a new {@code OkHttpException} that includes the current stack
+     * trace.
+     */
+    public OkHttpException(){
+
+    }
+
+    /**
+     * Constructs a new {@code OkHttpException} with the current stack trace
+     * and the specified detail message.
+     *
+     * @param response
+     *
+     */
+    public OkHttpException(Response response, String detailMessage) {
+        super(detailMessage);
+        switch(response.code()){
+            case 501:
+                errorData = new XLTError(501, "连接超时，请重试");
+                break;
+            case 502:
+                errorData = new XLTError(502, "网络错误，请重试");
+                break;
+            case 503:
+                errorData = new XLTError(503, "暂无网络，请稍候再试");
+                break;
+            case 504:
+                errorData = new XLTError(504, "服务器错误，请重试");
+                break;
+            default:
+                errorData = new XLTError(500, detailMessage == null ? "系统错误" : detailMessage);
+                break;
+        }
+    }
+
+    /**
+     * Constructs a new {@code OkHttpException} with the current stack trace,
+     * the specified detail message and the specified cause.
+     *
+     * @param detailMessage
+     *            the detail message for this exception.
+     * @param throwable
+     *            the cause of this exception.
+     */
+    public OkHttpException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
+
+    /**
+     * Constructs a new {@code OkHttpException} with the current stack trace
+     * and the specified cause.
+     *
+     * @param throwable
+     *            the cause of this exception.
+     */
+    public OkHttpException(Throwable throwable) {
+        super(throwable);
+    }
+
+    public XLTError getErrorData(){
+        return errorData;
+    }
+}

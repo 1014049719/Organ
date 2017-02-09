@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.SelectSchoolActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <EditText
+        android:id="@+id/query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_10_0"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginBottom="@dimen/space_10_0"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:textColorHint="#8C8C8C"
+        android:textSize="16sp"
+        android:hint="请输入学校名称"
+        android:singleLine="true"
+        android:background="@drawable/btn_white_corner_bg" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rlv_school"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_10_0" />
+</LinearLayout>

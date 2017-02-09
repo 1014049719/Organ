@@ -1,0 +1,141 @@
+package com.talenton.organ.server.bean.user;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/17
+ */
+public class HelperData implements Parcelable {
+    private String typename;
+    private int typenum;
+    private List<HelperArticle> typelist;
+
+
+    public String getTypename() {
+        return typename;
+    }
+
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
+
+    public int getTypenum() {
+        return typenum;
+    }
+
+    public void setTypenum(int typenum) {
+        this.typenum = typenum;
+    }
+
+    public List<HelperArticle> getTypelist() {
+        return typelist;
+    }
+
+    public void setTypelist(List<HelperArticle> typelist) {
+        this.typelist = typelist;
+    }
+
+    public static class HelperArticle implements Parcelable {
+        private long aid; //文章aid
+        private String title; //标题
+        private String url; //具体链接url
+
+        public long getAid() {
+            return aid;
+        }
+
+        public void setAid(long aid) {
+            this.aid = aid;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(this.aid);
+            dest.writeString(this.title);
+            dest.writeString(this.url);
+        }
+
+        public HelperArticle() {
+        }
+
+        protected HelperArticle(Parcel in) {
+            this.aid = in.readLong();
+            this.title = in.readString();
+            this.url = in.readString();
+        }
+
+        public static final Creator<HelperArticle> CREATOR = new Creator<HelperArticle>() {
+            @Override
+            public HelperArticle createFromParcel(Parcel source) {
+                return new HelperArticle(source);
+            }
+
+            @Override
+            public HelperArticle[] newArray(int size) {
+                return new HelperArticle[size];
+            }
+        };
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.typename);
+        dest.writeInt(this.typenum);
+        dest.writeList(this.typelist);
+    }
+
+    public HelperData() {
+    }
+
+    protected HelperData(Parcel in) {
+        this.typename = in.readString();
+        this.typenum = in.readInt();
+        this.typelist = new ArrayList<HelperArticle>();
+        in.readList(this.typelist, HelperArticle.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<HelperData> CREATOR = new Parcelable.Creator<HelperData>() {
+        @Override
+        public HelperData createFromParcel(Parcel source) {
+            return new HelperData(source);
+        }
+
+        @Override
+        public HelperData[] newArray(int size) {
+            return new HelperData[size];
+        }
+    };
+}

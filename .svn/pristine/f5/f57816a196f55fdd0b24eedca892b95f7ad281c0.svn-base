@@ -1,0 +1,81 @@
+package com.talenton.base.server.bean;
+
+import com.talenton.base.XltApplication;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.util.ChannelUtil;
+import com.talenton.base.util.NetWorkUtils;
+import com.talenton.base.util.Preference;
+import com.talenton.base.util.SystemUtil;
+
+/**
+ * @author bliang
+ *
+ */
+public class ReqLogin {
+
+	public final static String URL_LOGIN = "user.php?mod=login&cmdcode=3";// 1.0.0版本 用户登录
+	public final static String URL_LOGIN_OTHER = "user.php?mod=login3&cmdcode=8";// 1.0.0版本 用户登录（第三方登陆）
+	public final static String URL_LOGIN_OTHER_NOT_BIND = "user.php?mod=createuser&cmdcode=9";// 1.0.0版本 自动生成账号（第三方登录并跳过绑定手机接口）
+	public final static String URL_LOGIN_OTHER_BIND = "user.php?mod=bind&cmdcode=10";// 1.0.0版本（第三方登录并绑定手机接口）
+	public String username;
+	public String password;
+	public String appid;
+	public String appname;
+	public String appver;
+	public String appsource;
+	public String ostype;
+	public String osver;
+	public String phonetype;
+	public String token;
+	public String network;
+	public int appbuildcode;
+
+	public int authtype;
+	public String openid;
+	public String nickname;
+	public String avartarurl;
+	public String access_token;
+	public String mobile;
+	public String yzcode;
+	/**
+	 *
+	 * 是否需要加密(从缓存读出来者不需要加密)
+	 */
+	public ReqLogin(String us, String pw) {
+		appver = SystemUtil.getVersionName();
+		appbuildcode = SystemUtil.getVersionCode();
+		ostype = "android";
+		osver = android.os.Build.VERSION.RELEASE;
+		phonetype = android.os.Build.MODEL;
+		appid = UserServer.APP_ID;
+		appname = XltApplication.getAppContext().getApplicationInfo()
+				.loadLabel(XltApplication.getAppContext().getPackageManager()).toString();
+		token = Preference.getInstance().getToken(XltApplication.getAppContext());
+		network = NetWorkUtils.getNetworkTypeName(XltApplication.getAppContext());
+		appsource = ChannelUtil.getChannel();// AppConfig.CHANNEL_NAME;
+		username = us;// "15014221302";
+		password = pw;// "123456";
+	}
+	/**
+	 *
+	 *  是否需要加密(从缓存读出来者不需要加密)
+	 */
+	public ReqLogin(int authtype, String openid, String nickname, String avartarurl, String access_token) {
+		appver = SystemUtil.getVersionName();
+		appbuildcode = SystemUtil.getVersionCode();
+		ostype = "android";
+		osver = android.os.Build.VERSION.RELEASE;
+		phonetype = android.os.Build.MODEL;
+		appid =UserServer.APP_ID;
+		appname = XltApplication.getAppContext().getApplicationInfo()
+				.loadLabel(XltApplication.getAppContext().getPackageManager()).toString();
+		token = Preference.getInstance().getToken(XltApplication.getAppContext());
+		network =  NetWorkUtils.getNetworkTypeName(XltApplication.getAppContext());
+		appsource = ChannelUtil.getChannel();// AppConfig.CHANNEL_NAME;
+		this.authtype = authtype;
+		this.openid = openid;
+		this.nickname = nickname;
+		this.avartarurl = avartarurl;
+		this.access_token = access_token;
+	}
+}

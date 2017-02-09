@@ -1,0 +1,183 @@
+package com.talenton.organ.ui.discovery;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.server.DiscoveryServer;
+import com.talenton.organ.server.bean.discovery.Action;
+import com.talenton.organ.server.bean.discovery.ActionParam;
+import com.talenton.organ.server.bean.discovery.RspAction;
+import com.talenton.organ.ui.discovery.adapter.ActionAdapter;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class ActionActivity extends BaseCompatActivity implements View.OnClickListener {
+
+    //传入参数
+    private String typeStr;
+    //声明对象
+    private ListView listView;
+    //适配器
+    private ActionAdapter adapter;
+    //数据源
+    private List<Action> list;
+
+    //刷新控件
+    private PullToRefreshListView pullToRefreshListView;
+    private LoadingViewHolder loadingViewHolder;
+
+
+    //外部进入接口
+    public static void startActionActivity(Context context, String typeStr) {
+
+        Intent intent = new Intent(context, ActionActivity.class);
+        intent.putExtra("typeStr", typeStr);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_action);
+
+        //传入参数
+        typeStr = getIntent().getStringExtra("typeStr");
+        if (mActionBarTitle != null) {
+            mActionBarTitle.setText(typeStr);
+        }
+
+        //实例化
+        pullToRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        listView = pullToRefreshListView.getRefreshableView();
+        pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+                //下拉刷新
+                loadNewData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+            }
+        });
+        //转圈控件
+        View view = findViewById(R.id.loading_container);
+        loadingViewHolder = new LoadingViewHolder(pullToRefreshListView, view, this, this);
+
+
+        //装载适配器
+        adapter = new ActionAdapter(OrganApplication.getAppContext(), new LinkedList<Action>());
+        listView.setAdapter(adapter);
+        //设置item点击事件
+        setItemClick();
+        //请求数据
+        getActionListData();
+    }
+
+    //设置item点击事件
+    private void setItemClick() {
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                AppLogger.d("dianjile" + position);
+                Intent intent = new Intent(OrganApplication.getAppContext(), com.talenton.organ.ui.WebViewActivity.class);
+                intent.putExtra("load_url", String.format("discover.php?mod=info&blogid=%s&type=%s", list.get(position - 1).blogid, list.get(position - 1).type));
+                startActivity(intent);
+            }
+        });
+    }
+
+    //请求数据
+    protected void getActionListData() {
+
+        loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+
+        ActionParam actionParam = new ActionParam();
+        DiscoveryServer.getActionListData(actionParam, typeStr, new XLTResponseCallback<RspAction>() {
+            @Override
+            public void onResponse(RspAction data, XLTError error) {
+
+                if (error == null && data != null && data.list.size()>0) {
+                    //填充数据
+                    initData(data);
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else {
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+        });
+    }
+
+    //刷新数据
+    protected void loadNewData() {
+
+        ActionParam actionParam = new ActionParam();
+        DiscoveryServer.getActionListData(actionParam, typeStr, new XLTResponseCallback<RspAction>() {
+            @Override
+            public void onResponse(RspAction data, XLTError error) {
+
+                pullToRefreshListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshListView.onRefreshComplete();
+                    }
+                }, 1000);
+
+                if (error == null && data != null && data.list.size()>0) {
+                        //填充数据
+                        initData(data);
+                }
+            }
+        });
+    }
+
+    //填充数据
+    protected void initData(RspAction data) {
+
+        //先清空，再刷新
+        adapter.clear();
+        adapter.setDatas(data.list);
+        list = data.list;
+        adapter.notifyDataSetChanged();
+    }
+
+    //点击事件
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                getActionListData();
+                break;
+        }
+    }
+
+    //头部导航
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.action_title;
+    }
+}

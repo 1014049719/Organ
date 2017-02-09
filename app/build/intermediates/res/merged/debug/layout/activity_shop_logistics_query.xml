@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.DiscountAreaActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:text="承运公司:" />
+        <TextView
+            android:id="@+id/logistics_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:text="运单编号:" />
+        <TextView
+            android:id="@+id/logistics_sn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" />
+
+    </LinearLayout>
+
+    <com.talenton.organ.widget.LeftLineTextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="5dp"
+        android:textSize="@dimen/text_32"
+        android:text="物流跟踪"
+        android:textColor="@color/black_mark" />
+    <ListView
+        android:id="@+id/shop_logistics_query_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fastScrollEnabled="true"
+        android:focusable="true"/>
+
+    <include
+        android:id="@+id/shop_logistics_loading_container"
+        layout="@layout/load_fail_view" />
+
+</LinearLayout>

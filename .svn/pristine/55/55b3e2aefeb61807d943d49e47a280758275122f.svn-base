@@ -1,0 +1,21 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/5/25.
+ */
+public class SendPayByOrderData {
+    public final static String URL = "mobile/updatecharge.php?cmdcode=57";
+    public int  order_id;
+    public String  order_sn;
+    public double total_price;
+    public int paytype;
+    ArrayList<GoodsCartInfo> goods=new ArrayList<GoodsCartInfo>();
+    public SendPayByOrderData(int  order_id,String  order_sn,double total_price,int paytype){
+        this.order_id=order_id;
+        this.order_sn=order_sn;
+        this.total_price=total_price;
+        this.paytype=paytype;
+    }
+}

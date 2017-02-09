@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.feed.ModifyCircleActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/user_logo"
+        android:layout_width="@dimen/mine_avatar_width"
+        android:layout_height="@dimen/mine_avatar_width"
+        android:layout_marginTop="@dimen/space_30_0"
+        android:layout_marginBottom="@dimen/space_15_0"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/user_photo"
+        bbg:civ_border_color="@color/white"
+        bbg:civ_border_width="2dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_15_0"
+        android:textSize="@dimen/text_28"
+        android:textColor="@color/text_sub"
+        android:layout_gravity="center"
+        android:text="点击设置圈子头像" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_5_0"
+            android:text="@string/circle_description"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main" />
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_5_0"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main"
+            android:singleLine="true"
+            android:background="@null" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/save_ok"
+        style="@style/match_btn_style"
+        android:text="@string/main_ok" />
+</LinearLayout>

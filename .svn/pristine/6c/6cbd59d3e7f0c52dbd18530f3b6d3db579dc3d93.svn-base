@@ -1,0 +1,19 @@
+package com.talenton.base.server.bean;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/7/12.
+ */
+public class AppData {
+    public long appboxid;
+    public String appname;
+    public AppType apptype;
+    public LinkedList<AppModule> modelname;
+    public String memo; //应用描述
+    public String modellist; //功能模块ID，多个用逗号分隔
+    public int flag; //应用状态，0-在用、1-停用
+    public String invitecode;// 应用邀请码
+    public int iscreater; //是否为创建者 0-否 1-是
+    public int ismanager; //是否为管理者  0-否 1-是
+}

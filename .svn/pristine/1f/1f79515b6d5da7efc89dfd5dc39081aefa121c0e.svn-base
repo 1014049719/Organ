@@ -1,0 +1,9 @@
+package com.talenton.base.server;
+
+public class DBHelperNull extends  DBHelper {
+	public DBHelperNull(){
+		super(null,0);
+	}
+
+	
+}

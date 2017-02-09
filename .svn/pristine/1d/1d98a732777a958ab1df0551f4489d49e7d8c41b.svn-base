@@ -1,0 +1,90 @@
+package com.talenton.organ.ui.school.adapter;
+
+import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.util.QiNiuUtil;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/4
+ */
+public class BaseMyClassListAdapter extends LSGBaseAdapter<ClassData>{
+    public BaseMyClassListAdapter(Context context, List<ClassData> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
+        if(convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_school_experimental,null);
+            viewHolder = new ViewHolder();
+            viewHolder.iv_left = (ImageView) convertView.findViewById(R.id.iv_left);
+            viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_desc);
+            viewHolder.tv_update_desc = (TextView) convertView.findViewById(R.id.tv_update_desc);
+            viewHolder.tv_start_time = (TextView) convertView.findViewById(R.id.tv_start_time);
+            viewHolder.tv_join_number = (TextView) convertView.findViewById(R.id.tv_join_number);
+            viewHolder.tv_start_time_tips = (TextView) convertView.findViewById(R.id.tv_start_time_tips);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        final ClassData myClassData = getItem(position);
+        ImageLoaderManager.getInstance().displayImage(QiNiuUtil.getThumbailUrl(myClassData.getPic(), viewHolder.iv_left), viewHolder.iv_left, ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER, null, null);
+        viewHolder.tv_desc.setText(myClassData.getTitle());
+        if (isMyUploadClass()){
+            viewHolder.tv_start_time_tips.setText(context.getString(R.string.school_class_text_update_time));
+            viewHolder.tv_start_time.setText(DateUtil.parseTimeToYMD(myClassData.getLastupdate()));
+        }else {
+            viewHolder.tv_start_time.setText(DateUtil.parseTimeToYMD(myClassData.getStartdateline()));
+        }
+        viewHolder.tv_join_number.setText(String.format(context.getString(R.string.school_class_join_member), myClassData.getJoincount()));
+
+        if (myClassData.getIscomplete() == 1){
+            viewHolder.tv_update_desc.setText(context.getString(R.string.school_text_update_finish));
+        }else {
+            if (myClassData.getLastupdate() == 0){
+                viewHolder.tv_update_desc.setText("");
+            }else {
+                String updateSection = String.format(context.getString(R.string.school_text_last_update_section),myClassData.getUpdatesections());
+                String totalSection = String.format(context.getString(R.string.school_text_total_section),String.valueOf(myClassData.getTotalcatalog()));
+                SpannableString spannableString = new SpannableString(updateSection);
+                spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.text_free)), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                viewHolder.tv_update_desc.setText(spannableString);
+                viewHolder.tv_update_desc.append(totalSection);
+            }
+        }
+
+        return convertView;
+    }
+
+    static class ViewHolder{
+        public ImageView iv_left; //左边课程图片
+        public TextView tv_desc; //右边课程描述
+        public TextView tv_update_desc; //课程更新集数说明
+        public TextView tv_start_time; //开始学习日期
+        public TextView tv_join_number; //参加人数
+        public TextView tv_start_time_tips;
+    }
+
+    public boolean isMyUploadClass() {
+        return false;
+    }
+
+}

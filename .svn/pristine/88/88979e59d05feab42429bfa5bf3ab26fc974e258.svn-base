@@ -1,0 +1,96 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.R;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.user.MyOrders;
+import com.talenton.organ.ui.user.myOrders.PingjiaActivity;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * Created by Wang.'''' on 2016/5/11.
+ */
+public class GoodsAdapter extends LSGBaseAdapter<MyOrders.GoodslistBean> {
+
+    //订单状态
+    private String zhuangtai_str;
+    //订单信息
+    private MyOrders myOrders;
+
+    public GoodsAdapter(Context context, List<MyOrders.GoodslistBean> datas ,String zhuangtai_str,MyOrders myOrders) {
+        super(context, datas);
+        this.zhuangtai_str=zhuangtai_str;
+        this.myOrders=myOrders;
+        AppLogger.d("传来订单状态："+zhuangtai_str);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        final MyOrders.GoodslistBean goodslistBean = getItem(position);
+        ViewHolder viewHolder = null;
+        if (viewHolder == null) {
+
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.cell_playing_order, null);
+            viewHolder.name_textView = (TextView) convertView.findViewById(R.id.name_tv);
+            viewHolder.goods_attr_textView = (TextView) convertView.findViewById(R.id.goods_attr_tv);
+            viewHolder.goods_number_textView = (TextView) convertView.findViewById(R.id.goods_number_tv);
+            viewHolder.goods_price_textView = (TextView) convertView.findViewById(R.id.goods_price_tv);
+            viewHolder.goods_thumb_imageView = (ImageView) convertView.findViewById(R.id.goods_thumb_imageView);
+            viewHolder.pingjia_btn= (Button) convertView.findViewById(R.id.pingjia_btn);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.name_textView.setText(goodslistBean.getName());
+        viewHolder.goods_attr_textView.setText("颜色：" + goodslistBean.getGoods_attr());
+        viewHolder.goods_number_textView.setText("数量：" + goodslistBean.getGoods_number());
+        viewHolder.goods_price_textView.setText("¥" + goodslistBean.getGoods_price());
+        //加载网络图片
+        ImageLoader.getInstance().displayImage(goodslistBean.getGoods_thumb(), viewHolder.goods_thumb_imageView, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+
+        //如果是交易成功且未评价就显示
+        if (!zhuangtai_str.equals("4") || goodslistBean.getPj().equals("1")){
+            viewHolder.pingjia_btn.setVisibility(View.GONE);
+        }
+
+        //评价点击
+        viewHolder.pingjia_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(context, PingjiaActivity.class);
+                intent.putExtra("goods_thumb", goodslistBean);
+                intent.putExtra("myOrders",myOrders);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+
+        return convertView;
+    }
+
+    class ViewHolder {
+        ImageView goods_thumb_imageView;
+        TextView name_textView;
+        TextView goods_attr_textView;
+        TextView goods_number_textView;
+        TextView goods_price_textView;
+
+        Button pingjia_btn;
+    }
+}

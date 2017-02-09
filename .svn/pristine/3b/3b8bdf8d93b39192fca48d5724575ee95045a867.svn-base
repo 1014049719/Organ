@@ -1,0 +1,66 @@
+package com.talenton.organ.server.bean.user;
+
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.school.IBaseReq;
+
+/**
+ * @author zjh
+ * @date 2016/7/12
+ */
+public class ReqAppInfo implements IBaseReq{
+    private String appname;
+    private int apptype;
+    private String memo;
+    private String modellist;
+    private static final String CREATE_EXCLUSIVE_APP = "user.php?mod=createapp&cmdcode=146";
+
+    public ReqAppInfo(String appname, int apptype, String memo, String modellist) {
+        this.appname = appname;
+        this.apptype = apptype;
+        this.memo = memo;
+        this.modellist = modellist;
+    }
+
+    @Override
+    public String getReqParams() {
+        return OkHttpClientManager.getInstance().getmGson().toJson(this);
+    }
+
+    @Override
+    public String getReqUrl() {
+        return CREATE_EXCLUSIVE_APP;
+    }
+
+    public String getAppname() {
+        return appname;
+    }
+
+    public void setAppname(String appname) {
+        this.appname = appname;
+    }
+
+    public int getApptype() {
+        return apptype;
+    }
+
+    public void setApptype(int apptype) {
+        this.apptype = apptype;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getModellist() {
+        return modellist;
+    }
+
+    public void setModellist(String modellist) {
+        this.modellist = modellist;
+    }
+}

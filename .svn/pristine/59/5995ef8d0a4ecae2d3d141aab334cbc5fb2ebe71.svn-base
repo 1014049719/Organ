@@ -1,0 +1,23 @@
+package com.talenton.base.server;
+
+import java.lang.reflect.Type;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
+public class LongSerializer implements JsonDeserializer<Long> {
+
+	@Override
+	public Long deserialize(JsonElement arg0, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
+		// TODO Auto-generated method stub
+		try {
+			String tmp = arg0.getAsString();
+			return Long.parseLong(tmp);
+		} catch (NumberFormatException e) {
+			return 0L;
+		}
+	}
+
+}

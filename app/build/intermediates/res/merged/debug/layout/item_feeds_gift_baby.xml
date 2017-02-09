@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/space_5_0"
+    android:paddingRight="@dimen/space_5_0" >
+
+    <ImageView
+        android:id="@+id/gift_logo"
+        android:layout_width="@dimen/height_50"
+        android:layout_height="@dimen/height_50"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/gift_sum"
+        android:layout_width="@dimen/height_40"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:background="@mipmap/feeds_list_gift_sum_bg"
+        android:gravity="center"
+        android:text="+128"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_20" />
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/user_logo"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_marginBottom="@dimen/space_5_0"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        bbg:civ_border_color="@color/transparent"
+        bbg:civ_border_width="0.5dp" />
+
+</LinearLayout>

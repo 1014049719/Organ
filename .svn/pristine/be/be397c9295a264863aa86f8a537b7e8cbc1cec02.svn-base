@@ -1,0 +1,22 @@
+package com.talenton.organ.event;
+
+/**
+ * @author zjh
+ * @date 2016/7/12
+ */
+public class FunctionEvent {
+    public final static int FUNCTION_UPDATE = 1;
+    private int opt;
+
+    public FunctionEvent(int opt) {
+        this.opt = opt;
+    }
+
+    public int getOpt() {
+        return opt;
+    }
+
+    public void setOpt(int opt) {
+        this.opt = opt;
+    }
+}

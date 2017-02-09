@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/space_8_0"
+        android:layout_marginLeft="@dimen/space_8_0"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:background="@drawable/btn_white_corner_bg">
+        <ImageView
+            android:id="@+id/shop_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginBottom="@dimen/space_10"
+            android:src="@mipmap/load_image" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_marginTop="@dimen/space_8_0">
+            <TextView
+                android:id="@+id/shopName_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:lines="1"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_32"/>
+            <TextView
+                android:id="@+id/shop_describe_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="简介"
+                android:textColor="#666666"
+                android:lines="2"
+                android:ellipsize="end"
+                android:layout_alignLeft="@+id/shopName_textView"
+                android:layout_below="@+id/shopName_textView"
+                android:layout_marginTop="@dimen/space_5_0"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/space_8_0">
+                <ImageView
+                    android:id="@+id/locate_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/address" />
+                <TextView
+                    android:id="@+id/locate_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:textColor="#999999"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

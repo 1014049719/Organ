@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="@dimen/space_15_0"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/iv_header"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_width="@dimen/school_avatar_width"
+        android:layout_height="@dimen/school_avatar_width"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_toRightOf="@+id/iv_header"
+        android:layout_toLeftOf="@+id/rating_bar"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/text_26"
+        android:ellipsize="end"
+        android:text="天涯过客"
+        android:textColor="@color/text_sub" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        style="@style/LSGRatingBar"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/space_15_0" />
+
+
+    <TextView
+        android:id="@+id/tv_level"
+        android:layout_below="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_20"
+        android:paddingRight="@dimen/space_4_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:text="好评" />
+
+    <TextView
+        android:id="@+id/tv_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_20"
+        android:text="1分钟前"
+        android:textColor="@color/text_sub"
+        android:layout_toRightOf="@id/iv_header"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_5_0" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_26"
+        android:textColor="@color/text_main"
+        android:text="老师讲的很好.还会在来学习!"
+        android:layout_toRightOf="@id/iv_header"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_below="@+id/tv_level" />
+
+    <View
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_below="@+id/tv_content"
+        android:layout_alignLeft="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line" />
+
+</RelativeLayout>

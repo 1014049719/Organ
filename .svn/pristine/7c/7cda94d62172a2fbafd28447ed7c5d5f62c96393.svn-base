@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.user.MyOrderActivity">
+
+    <!--头部导航-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        layout="@layout/global_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_allOrders"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:background="@drawable/btn_white_bg_selector"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:src="@mipmap/qbd_icon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="全部订单"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_28"
+                    android:layout_marginLeft="@dimen/space_10"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:src="@mipmap/xy_icon" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/layout_paying"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_50"
+                    android:orientation="horizontal"
+                    android:background="@drawable/btn_white_bg_selector"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/dfk_icon"
+                        android:layout_marginLeft="@dimen/space_10"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="待付款"
+                        android:textSize="@dimen/text_28"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/space_10"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/space_10"
+                        android:src="@mipmap/xy_icon"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e5e5e5"
+                    android:layout_marginLeft="@dimen/space_10"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/layout_sending"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_50"
+                    android:orientation="horizontal"
+                    android:background="@drawable/btn_white_bg_selector"
+                    android:gravity="center_vertical"
+                    >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/dfh_icon"
+                        android:layout_marginLeft="@dimen/space_10"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="待发货"
+                        android:textSize="@dimen/text_28"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/space_10"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/space_10"
+                        android:src="@mipmap/xy_icon"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#e5e5e5"
+                    android:layout_marginLeft="@dimen/space_10"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/layout_receiving"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_white_bg_selector"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/dsh_icon"
+                    android:layout_marginLeft="@dimen/space_10"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="待收货"
+                    android:textSize="@dimen/text_28"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_10"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:src="@mipmap/xy_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_express"
+                android:layout_marginTop="@dimen/space_10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:orientation="horizontal"
+                android:background="@drawable/btn_white_bg_selector"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/dpj_icon"
+                    android:layout_marginLeft="@dimen/space_10"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="待评价"
+                    android:textSize="@dimen/text_28"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_10"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:src="@mipmap/xy_icon"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
+

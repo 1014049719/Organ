@@ -1,0 +1,218 @@
+package com.talenton.base.widget;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import com.talenton.base.widget.wheel.OnWheelChangedListener;
+import com.talenton.base.widget.wheel.WheelView;
+import com.talenton.base.widget.wheel.adapters.ArrayWheelAdapter;
+import com.talenton.base.widget.wheel.adapters.NumericWheelAdapter;
+
+import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import com.talenton.base.R;
+
+/**
+ * 时间选择器
+ * 
+ * @author Sai
+ * 
+ */
+public class TimePopupWindowWithHour extends PopupWindow implements OnClickListener {
+	private Context mContext;
+	private View rootView; // 总的布局
+	private OnTimeSelectListener timeSelectListener;
+	private WheelView mMoth, mYear, mDay, mHour;
+	private final static int MIN_YEAR = 2015;
+
+	public TimePopupWindowWithHour(Context context) {
+		super(context);
+		mContext = context;
+		this.setWidth(LayoutParams.MATCH_PARENT);
+		this.setHeight(LayoutParams.WRAP_CONTENT);
+		this.setBackgroundDrawable(new BitmapDrawable());// 这样设置才能点击屏幕外dismiss窗口
+//		this.setOutsideTouchable(true);
+		this.setAnimationStyle(R.style.timepopwindow_anim_style);
+
+		LayoutInflater mLayoutInflater = LayoutInflater.from(context);
+		rootView = mLayoutInflater.inflate(R.layout.dialog_date_and_hour_select_fragment, null);
+		// -----确定和取消按钮
+
+		rootView.findViewById(R.id.btn_confirm).setOnClickListener(this);
+		rootView.findViewById(R.id.btn_cancel).setOnClickListener(this);
+		rootView.findViewById(R.id.space).setOnClickListener(this);
+		// ----时间转轮
+
+		mYear = (WheelView) rootView.findViewById(R.id.year);
+		mMoth = (WheelView) rootView.findViewById(R.id.month);
+		mDay = (WheelView) rootView.findViewById(R.id.day);
+		mHour = (WheelView) rootView.findViewById(R.id.hour);
+		
+		OnWheelChangedListener listener = new OnWheelChangedListener() {
+			public void onChanged(WheelView wheel, int oldValue, int newValue) {
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.YEAR, MIN_YEAR + mYear.getCurrentItem());
+				c.set(Calendar.MONTH, mMoth.getCurrentItem());
+				updateDays(c);
+			}
+		};
+
+		Calendar calendar= Calendar.getInstance();//先按当前时间设置
+
+		// year
+		int curYear = calendar.get(Calendar.YEAR);
+		mYear.setViewAdapter(new DateNumericAdapter(context, MIN_YEAR, curYear+1, curYear));
+		mYear.setCurrentItem(curYear - MIN_YEAR);
+		mYear.addChangingListener(listener);
+
+		// month
+		int curMonth = calendar.get(Calendar.MONTH);//12月得到的是11
+		String months[] = new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
+		mMoth.setViewAdapter(new DateArrayAdapter(context, months, curMonth));
+		mMoth.setCurrentItem(curMonth);
+		mMoth.addChangingListener(listener);
+		
+		// day
+		updateDays(calendar);//日设置，带月份检查
+		
+		// hour
+		int curHour = calendar.get(Calendar.HOUR_OF_DAY);
+		mHour.setViewAdapter(new DateNumericAdapter(context, 0, 23, curHour));
+		mHour.setCurrentItem(curHour);
+		mHour.addChangingListener(listener);
+		
+		setContentView(rootView);
+	}
+
+	public void setDate(Date date) {
+		Calendar c = Calendar.getInstance();//先取当前设置，再按输入内容修改
+		mYear.setCurrentItem(date.getYear() - MIN_YEAR);//0（序号）=2015（年）,1（序号）=2016（年）
+		mMoth.setCurrentItem(date.getMonth());//0（序号）=01（月）,1（序号）=02（月）...11（序号）=12（月）
+		mDay.setCurrentItem(date.getDate()-1);//0（序号）=1（日）,1（序号）=2（日）...30（序号）=31（日）如果存在的话。
+		mHour.setCurrentItem(date.getHours());//0（序号）=0（时）,1（序号）=1（时）...23（序号）=23（时）如果存在的话。
+		c.set(Calendar.YEAR, MIN_YEAR + mYear.getCurrentItem());
+		c.set(Calendar.MONTH, mMoth.getCurrentItem());
+		c.set(Calendar.DAY_OF_MONTH, mDay.getCurrentItem());
+		c.set(Calendar.HOUR_OF_DAY, mHour.getCurrentItem());
+		updateDays(c);//检查日设置。
+	}
+
+	/**
+	 * Updates day wheel. Sets max days according to selected month and year
+	 */
+	void updateDays(Calendar calendar) {
+		//Calendar calendar= Calendar.getInstance();
+		calendar.set(Calendar.YEAR, MIN_YEAR + mYear.getCurrentItem());
+		calendar.set(Calendar.MONTH, mMoth.getCurrentItem());
+
+		int maxDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		mDay.setViewAdapter(new DateNumericAdapter(mContext, 1, maxDays, calendar.get(Calendar.DAY_OF_MONTH)));
+		int curDay = Math.min(maxDays, mDay.getCurrentItem());
+		mDay.setCurrentItem(curDay, true);
+	}
+
+	/**
+	 * Adapter for numeric wheels. Highlights the current value.
+	 */
+	private class DateNumericAdapter extends NumericWheelAdapter {
+		// Index of current item
+		int currentItem;
+		// Index of item to be highlighted
+		int currentValue;
+
+		/**
+		 * Constructor
+		 */
+		public DateNumericAdapter(Context context, int minValue, int maxValue, int current) {
+			super(context, minValue, maxValue);
+			this.currentValue = current;
+			setTextSize(24);
+		}
+
+		@Override
+		protected void configureTextView(TextView view) {
+			super.configureTextView(view);
+			// if (currentItem == currentValue) {
+			// view.setTextColor(0xFF0000F0);
+			// }
+			view.setTypeface(Typeface.SANS_SERIF);
+		}
+
+		@Override
+		public View getItem(int index, View cachedView, ViewGroup parent) {
+			currentItem = index;
+			return super.getItem(index, cachedView, parent);
+		}
+	}
+
+	/**
+	 * Adapter for string based wheel. Highlights the current value.
+	 */
+	private class DateArrayAdapter extends ArrayWheelAdapter<String> {
+		// Index of current item
+		int currentItem;
+		// Index of item to be highlighted
+		int currentValue;
+
+		/**
+		 * Constructor
+		 */
+		public DateArrayAdapter(Context context, String[] items, int current) {
+			super(context, items);
+			this.currentValue = current;
+			setTextSize(24);
+		}
+
+		@Override
+		protected void configureTextView(TextView view) {
+			super.configureTextView(view);
+			// if (currentItem == currentValue) {
+			// view.setTextColor(0xFF0000F0);
+			// }
+			view.setTypeface(Typeface.SANS_SERIF);
+		}
+
+		@Override
+		public View getItem(int index, View cachedView, ViewGroup parent) {
+			currentItem = index;
+			return super.getItem(index, cachedView, parent);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		if (id == R.id.btn_cancel || id == R.id.space) {
+			dismiss();
+			return;
+		} else if (id == R.id.btn_confirm) {
+			if (timeSelectListener != null) {
+				Calendar calendar= Calendar.getInstance();
+				calendar.set(Calendar.YEAR, MIN_YEAR + mYear.getCurrentItem());
+				calendar.set(Calendar.MONTH, mMoth.getCurrentItem());
+				calendar.set(Calendar.DAY_OF_MONTH, mDay.getCurrentItem()+1);
+				calendar.set(Calendar.HOUR_OF_DAY, mHour.getCurrentItem());
+				timeSelectListener.onTimeSelect(calendar.getTime());
+			}
+			dismiss();
+			return;
+		}
+	}
+
+	public interface OnTimeSelectListener {
+		public void onTimeSelect(Date date);
+	}
+
+	public void setOnTimeSelectListener(OnTimeSelectListener timeSelectListener) {
+		this.timeSelectListener = timeSelectListener;
+	}
+
+}

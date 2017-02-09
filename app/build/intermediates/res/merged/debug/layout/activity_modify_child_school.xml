@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.user.ModifyChildSchoolActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_area"
+        android:background="@drawable/btn_mine_click_selector"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+
+        <TextView
+            android:id="@+id/tv_area_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_area"
+            android:textSize="@dimen/text_32"
+            android:layout_centerVertical="true" />
+
+
+        <TextView
+            android:id="@+id/tv_area"
+            android:layout_toRightOf="@+id/tv_area_tips"
+            android:layout_marginLeft="@dimen/space_5_0"
+            android:gravity="right"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_32"
+            android:drawableRight="@mipmap/xy_icon"
+            android:drawablePadding="@dimen/space_5_0"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_0_5"
+            android:background="@color/divider_line" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_school"
+        android:background="@drawable/btn_mine_click_selector"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+
+        <TextView
+            android:id="@+id/tv_school_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_school"
+            android:textSize="@dimen/text_32"
+            android:layout_centerVertical="true" />
+
+
+        <TextView
+            android:id="@+id/tv_school"
+            android:layout_toRightOf="@+id/tv_school_tips"
+            android:layout_marginLeft="@dimen/space_5_0"
+            android:gravity="right"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_32"
+            android:drawableRight="@mipmap/xy_icon"
+            android:drawablePadding="@dimen/space_5_0"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+
+
+    <!--<EditText-->
+        <!--android:id="@+id/et_school_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/height_53"-->
+        <!--android:background="@color/white"-->
+        <!--android:paddingLeft="@dimen/space_10_0"-->
+        <!--android:textSize="@dimen/text_32"-->
+        <!--android:textColor="@color/text_main"-->
+        <!--android:textColorHint="@color/text_sub" />-->
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/space_1_0"-->
+        <!--android:background="@color/main_blue" />-->
+
+
+    <RelativeLayout
+        android:id="@+id/rl_validate"
+        android:layout_marginTop="@dimen/space_10"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingBottom="@dimen/space_25_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.talenton.organ.widget.LeftLineTextView
+            android:id="@+id/tv_validate_msg"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_validate_msg"
+            android:paddingLeft="@dimen/space_10"
+            app:leftLineSize="@dimen/space_2_0" />
+
+        <TextView
+            android:id="@+id/tv_must_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_blue"
+            android:layout_alignTop="@+id/tv_validate_msg"
+            android:layout_alignBottom="@+id/tv_validate_msg"
+            android:gravity="center_vertical"
+            android:text="*"
+            android:textSize="@dimen/text_24"
+            android:layout_toRightOf="@+id/tv_validate_msg"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginRight="@dimen/space_10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_blue"
+            android:textSize="@dimen/text_24"
+            android:layout_alignTop="@+id/tv_must_tips"
+            android:layout_alignBottom="@+id/tv_must_tips"
+            android:gravity="center_vertical"
+            android:text="@string/mine_text_validate_other_tips"
+            android:layout_toRightOf="@+id/tv_must_tips" />
+
+
+
+        <EditText
+            android:id="@+id/et_validate_msg"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10_0"
+            android:paddingLeft="@dimen/space_10_0"
+            android:paddingRight="@dimen/space_10_0"
+            android:paddingBottom="@dimen/space_10_0"
+            android:maxLength="20"
+            android:hint="@string/mine_text_please_input"
+            android:gravity="top"
+            android:textSize="@dimen/text_32"
+            android:minHeight="@dimen/height_150"
+            android:layout_below="@+id/tv_validate_msg"
+            android:background="@drawable/btn_bg_gray1_stroke" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_sub"
+            android:text="@string/mine_text_20_limit"
+            android:textSize="@dimen/text_24"
+            android:layout_alignBottom="@+id/et_validate_msg"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/space_10_0"
+            android:layout_marginRight="@dimen/space_10_0" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

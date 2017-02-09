@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.ClassifyAreaActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <GridView
+        android:id="@+id/shop_classify_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="7.5dp"
+        android:layout_weight="1"
+        android:cacheColorHint="@color/transparent"
+        android:fadingEdgeLength="0dp"
+        android:gravity="center_horizontal"
+        android:horizontalSpacing="15dp"
+        android:listSelector="@null"
+        android:numColumns="2"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="15dp">
+    </GridView>
+
+    <include
+        android:id="@+id/shop_classify_loading_container"
+        layout="@layout/load_fail_view" />
+
+</LinearLayout>

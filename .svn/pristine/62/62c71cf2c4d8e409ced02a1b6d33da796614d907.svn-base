@@ -1,0 +1,207 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.BabyData;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.event.AttentionAgeEvent;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.feed.AttentionRecordData;
+import com.talenton.organ.server.bean.user.RspSchoolBaby;
+import com.talenton.organ.server.bean.user.SchoolBabyData;
+import com.talenton.organ.ui.feed.adapter.SchoolBabyAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.LinkedList;
+
+public class AttentionSchoolBabyActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    public static final int  TYPE_SCHOOL = 1;
+    public static final int  TYPE_PHONE = 2;
+
+    BabyData mBabyData;
+    private PullToRefreshListView mPullRefreshListView;
+    private ListView mListView;
+    private LoadingViewHolder mLoading;
+    private SchoolBabyAdapter mAdapter;
+    //private LinkedList<SchoolBabyData> mDatas = new LinkedList<SchoolBabyData>();
+    //private boolean mIsAttention = false;
+    int type;
+    String mValue;
+    LinearLayout mSearchView;
+    EditText mInput;
+
+    public static void startAttentionSchoolBabyActivity(Context context, int type){
+        Intent intent = new Intent(context, AttentionSchoolBabyActivity.class);
+        intent.putExtra("type",type);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        type = getIntent().getIntExtra("type", TYPE_SCHOOL);
+
+        setContentView(R.layout.activity_attention_school_baby);
+
+        mBabyData = UserServer.getCurrentUser().getBaobaodata();
+        mSearchView = (LinearLayout)findViewById(R.id.search_view);
+        mInput = (EditText)findViewById(R.id.et_input);
+        findViewById(R.id.tv_verify).setOnClickListener(this);
+
+        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+                RefreshData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+            }
+
+        });
+        mListView = mPullRefreshListView.getRefreshableView();
+
+        mAdapter = new SchoolBabyAdapter(this, type);
+        mListView.setAdapter(mAdapter);
+
+        View loading = findViewById(R.id.loading_container);
+        mLoading = new LoadingViewHolder(mPullRefreshListView, loading, this, this);
+
+        if(type == TYPE_SCHOOL) {
+            mSearchView.setVisibility(View.GONE);
+        }else if(type == TYPE_PHONE){
+            if (mActionBarTitle != null){
+                mActionBarTitle.setText("输入手机号码");
+            }
+            mSearchView.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        // Trigger the initial hide() shortly after the activity has been
+        // created, to briefly hint to the user that UI controls
+        // are available.
+        if(type == TYPE_SCHOOL)
+            loadData();
+    }
+
+    private void loadData(){
+        mValue = type == TYPE_SCHOOL ? String.valueOf(mBabyData.baobaouid)  : mValue;
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+        MineServer.getSchoolBaby(mValue, type, new XLTResponseCallback<RspSchoolBaby>() {
+            @Override
+            public void onResponse(RspSchoolBaby data, XLTError error) {
+                if (error == null && data != null && data.list != null && data.list.size() > 0) {
+                    if (type == TYPE_SCHOOL) {
+                        String name = data.list.get(0).schoolname;
+                        if (mActionBarTitle != null && !TextUtils.isEmpty(name))
+                            mActionBarTitle.setText(name);
+                    }
+                    mAdapter.setDatas(data.list);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+        });
+    }
+
+    private void RefreshData(){
+        mValue = type == TYPE_SCHOOL ? String.valueOf(mBabyData.baobaouid)  : mValue;
+        MineServer.getSchoolBaby(mValue, type, new XLTResponseCallback<RspSchoolBaby>() {
+            @Override
+            public void onResponse(RspSchoolBaby data, XLTError error) {
+                mPullRefreshListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullRefreshListView.onRefreshComplete();
+                    }
+                }, 1000);
+                if (error == null && data != null && data.list != null && data.list.size() > 0) {
+                    mAdapter.setDatas(data.list);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void finish() {
+        //if (mIsAttention)
+        //    EventBus.getDefault().post(new AttentionAgeEvent(mIsAttention));
+        super.finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_verify:
+                mValue = mInput.getText().toString().trim();
+                if (!TextUtils.isEmpty(mValue)){
+                    loadData();
+                }
+                break;
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                loadData();
+                break;
+        }
+    }
+
+    @Override
+    public int getTitleResourceId() {
+        return R.string.circle_title_attention_by_baby;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        if (type != TYPE_SCHOOL){
+            return 0;
+        }
+        return R.menu.school_class_search;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        SearchSchoolBabyActivity.startSearchSchoolBabyActivity(this);
+    }
+}
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="@dimen/space_15_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_left"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_width="@dimen/school_item_left_img_width"
+        android:layout_height="@dimen/school_item_left_img_height">
+        <ImageView
+            android:id="@+id/iv_left"
+            android:scaleType="centerCrop"
+            android:background="@color/gray"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/school_item_left_img_width"
+            android:layout_height="@dimen/school_item_left_img_height" />
+
+        <TextView
+            android:background="@color/transparent_6"
+            android:gravity="center"
+            android:id="@+id/tv_join_number"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_left"
+            android:text="@string/school_class_join_member" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_right_desc"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_toRightOf="@+id/rl_left"
+        android:textColor="@color/text_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="2"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textSize="@dimen/text_32"
+        android:text="2016乐高童话故事篇" />
+
+    <TextView
+        android:id="@+id/tv_update_class"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_8_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_24"
+        android:text="更新了1节(共3节)"
+        android:layout_below="@+id/tv_right_desc"
+        android:layout_toRightOf="@+id/rl_left" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_marginTop="@dimen/space_10"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:text="@string/school_text_free"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_free"
+        android:layout_toRightOf="@+id/rl_left"
+        android:layout_alignBottom="@+id/rl_left" />
+
+    <View
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_below="@+id/tv_price"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line" />
+
+</RelativeLayout>

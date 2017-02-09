@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.DiscountAreaActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10"
+        android:layout_marginBottom="@dimen/space_10"
+        android:orientation="horizontal">
+
+        <Button
+       android:id="@+id/classify_detail_button_sale"
+        android:layout_marginLeft="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="销量"
+         android:layout_weight="1"/>
+        <Button
+            android:id="@+id/classify_detail_button_price"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="38dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="价格"/>
+        <ImageView
+            android:id="@+id/classify_ImageView_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_shop_price"
+            android:layout_gravity="center"/>
+        <Button
+            android:id="@+id/classify_detail_button_new"
+            android:layout_marginLeft="38dp"
+            android:layout_marginRight="38dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="最新"/>
+        </LinearLayout>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_marginTop="@dimen/space_10"
+        android:id="@+id/classify_detail_pull_refresh_list"
+        android:divider="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -1,0 +1,776 @@
+package com.talenton.organ.ui.feed.image;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.task.TaskManager;
+import com.talenton.base.util.BitmapUtil;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.Preference;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.MediaBean;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.FeedsPostActivity;
+import com.talenton.organ.util.CameraLauncher;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+public class AllPicBrowserActivity extends BaseCompatActivity
+		implements AllPicFragment.OnGetPicDataListener, AllPicFragment.OnAllPicFragmentListener,
+		AllPicFragment.OnSendBtnClickListener, CameraLauncher.CameraLauncherListener {
+	private static final String TAG = "pic";
+	public static final int FROM_PHOTO = 0;
+	public static final int FROM_GALLERY = 1;
+	public static final int FROM_PREVIEW = 2;
+	public static final int FROM_GUIDE_GALLERY = 4;
+	public static final String KEY_FROM = "com.talenton.organ.ui.feed.image.from";
+	public static final String KEY_MAX_NUM = "com.talenton.organ.ui.feed.image.max";
+	public static final String KEY_IS_USE_ORIGINAL = "com.talenton.organ.ui.feed.image_original";
+	public static final String KEY_FROM_PHOTO_PREVIEW_POS = "com.talenton.organ.ui.feed.image.preview_pos";
+	public static final String KEY_POST_TO = "com.talenton.organ.ui.feed.image.postto";
+
+	public static final String KEY_SELECTED_LIST_PATH = "key_selected_path";
+	private static final int REQ_TAKE_PICTURE = 1001;
+	private static final int REQ_PREVIEW_PICTURE = 1003;
+	private String mSaveImagePath;
+	private AllPicFragment mAllPicFragment;
+	private ArrayList<MediaBean> mPicDatas = new ArrayList<MediaBean>();
+	private ArrayList<AlbumBean> mAlbumsDatas = new ArrayList<AlbumBean>();
+	public int mFrom;
+	public int mMaxNum;
+	public ArrayList<MediaBean> mSelectedDatas;
+	public boolean isUseOriginal = false, isXLTCamera = false;
+	public PostToParam mPostToParam;
+	private CameraLauncher mCameraLauncher;
+	private CommonAlertDialog mNoWifiDlg;
+
+	public static void startImportGallery(Context context, PostToParam postParam) {
+		Intent intent = new Intent(context, AllPicBrowserActivity.class);
+		intent.putExtra(AllPicBrowserActivity.KEY_FROM, AllPicBrowserActivity.FROM_GALLERY);
+		intent.putExtra(AllPicBrowserActivity.KEY_MAX_NUM, 50);
+		intent.putExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, false);
+		intent.putExtra(KEY_POST_TO, postParam);
+		context.startActivity(intent);
+	}
+
+	/**
+	 * 新手引导用户批量导入相册
+	 * @param context
+	 * @param postParam
+	 * 
+	 */
+	public static void startGuideImportGallery(Context context, PostToParam postParam) {
+		Intent intent = new Intent(context, AllPicBrowserActivity.class);
+		intent.putExtra(AllPicBrowserActivity.KEY_FROM, AllPicBrowserActivity.FROM_GUIDE_GALLERY);
+		intent.putExtra(AllPicBrowserActivity.KEY_MAX_NUM, 50);
+		intent.putExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, false);
+		intent.putExtra(KEY_POST_TO, postParam);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		context.startActivity(intent);
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_pic_browser);
+		isUseOriginal = false;
+		Intent intent = getIntent();
+		if (intent != null) {
+			mFrom = intent.getIntExtra(KEY_FROM, FROM_PHOTO);
+			mMaxNum = intent.getIntExtra(KEY_MAX_NUM, FeedsPostActivity.MAX_IMAGES);
+			if (mFrom == FROM_PHOTO) {
+				isUseOriginal = intent.getBooleanExtra(KEY_IS_USE_ORIGINAL, false);
+				if (savedInstanceState != null) {
+					mSaveImagePath = savedInstanceState.getString(PicturePreviewActivity.EXTRA_IMAGE);
+				}
+			} else if (mFrom == FROM_PREVIEW) {
+				// 预览图片过来
+				mMaxNum = FeedsPostActivity.MAX_IMAGES;
+				mSelectedDatas = intent.getParcelableArrayListExtra(KEY_SELECTED_LIST_PATH);
+				if (mSelectedDatas == null) {
+					mSelectedDatas = new ArrayList<MediaBean>();
+				}
+				int pos = intent.getIntExtra(KEY_FROM_PHOTO_PREVIEW_POS, 0);
+				isUseOriginal = intent.getBooleanExtra(KEY_IS_USE_ORIGINAL, false);
+				PreviewFragment previewFragment = PreviewFragment.getInstance(null);
+				previewFragment.setOnSendBtnClickListener(this);
+				previewFragment.setPosition(pos);
+				previewFragment.setPreview(true);
+				getSupportFragmentManager().beginTransaction().add(R.id.fl_pic_browser_content, previewFragment)
+						.commit();
+
+				return;
+			}
+			mPostToParam = (PostToParam) intent.getParcelableExtra(KEY_POST_TO);
+			if (FROM_GALLERY == mFrom && (mPostToParam == null || !mPostToParam.isValid())) {
+				XLTToast.makeText(AllPicBrowserActivity.this, R.string.post_to_select).show();
+				finish();
+			}
+			if (FROM_GUIDE_GALLERY == mFrom && (mPostToParam == null || !mPostToParam.isValid())) {
+				finish();
+			}
+		}
+		mSelectedDatas = new ArrayList<MediaBean>();
+		mAllPicFragment = AllPicFragment.getInstance();
+		mAllPicFragment.setOnClickAlbumBtnListener(this);
+		mAllPicFragment.setOnSendBtnClickListener(this);
+		getSupportFragmentManager().beginTransaction().add(R.id.fl_pic_browser_content, mAllPicFragment).commit();
+		loadPics();
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK) {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (REQ_TAKE_PICTURE == requestCode) {
+				if (null != mCameraLauncher)
+					mCameraLauncher.onCameraCancel();
+			}
+			return;
+		}
+		if (requestCode == REQ_TAKE_PICTURE) {
+			if (null != mCameraLauncher) {
+				sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+						Uri.fromFile(mCameraLauncher.onCameraReturn())));
+			} else {
+				String path = data.getStringExtra("savepath");
+				if (TextUtils.isEmpty(path)) {
+					return;
+				}
+				sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
+				Intent intent = new Intent();
+				ArrayList<MediaBean> res = new ArrayList<MediaBean>();
+				res.addAll(mSelectedDatas);
+				MediaBean camera = new MediaBean();
+				camera.setPath(path);
+				camera.setSelected(true);
+				camera.setModified(System.currentTimeMillis() / 1000);
+				res.add(camera);
+				intent.putParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH, res);
+				intent.putExtra(KEY_IS_USE_ORIGINAL, isUseOriginal);
+				setResult(Activity.RESULT_OK, intent);
+				release();
+				finish();
+			}
+			return;
+		}
+		if (requestCode == REQ_PREVIEW_PICTURE && data != null) {
+			int action = data.getIntExtra(PicturePreviewActivity.EXTRA_ACTION, -1);
+			if (action == PicturePreviewActivity.ACTION_USE) {
+				String path = data.getStringExtra(PicturePreviewActivity.EXTRA_IMAGE);
+
+				Intent intent = new Intent();
+				ArrayList<MediaBean> res = new ArrayList<MediaBean>();
+				res.addAll(mSelectedDatas);
+				MediaBean camera = new MediaBean();
+				camera.setPath(path);
+				camera.setSelected(true);
+				camera.setModified(System.currentTimeMillis() / 1000);
+				res.add(camera);
+				intent.putParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH, res);
+				intent.putExtra(KEY_IS_USE_ORIGINAL, isUseOriginal);
+				setResult(Activity.RESULT_OK, intent);
+				release();
+				finish();
+			}
+			return;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+
+	}
+
+	@Override
+	public void onTakePicture() {
+		takePicture();
+	}
+
+	@Override
+	public void onClickAlbumBtn() {
+		gotoImageAlbumFragment();
+	}
+
+	@Override
+	public void onPicItemClick(View view, int albumPosition, int position) {
+
+		PreviewFragment previewFragment = PreviewFragment.getInstance(null);
+		previewFragment.setOnSendBtnClickListener(this);
+		if (FROM_PHOTO == mFrom) {
+			previewFragment.setPosition(position - 1);
+		} else {
+			previewFragment.setPosition(position);
+		}
+		previewFragment.setAlbumBean(mAlbumsDatas.get(albumPosition));
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out, R.anim.push_right_in, R.anim.push_right_out);
+		ft.replace(R.id.fl_pic_browser_content, previewFragment);
+		ft.addToBackStack(null);
+		ft.commit();
+
+	}
+
+	@Override
+	public void onClickPreviewBtn() {
+		if (mSelectedDatas == null || mSelectedDatas.size() == 0) {
+			Toast.makeText(AllPicBrowserActivity.this, R.string.image_select_nothing, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		PreviewFragment previewFragment = PreviewFragment.getInstance(null);
+		previewFragment.setOnSendBtnClickListener(this);
+		previewFragment.setPosition(0);
+		previewFragment.setPreview(true);
+		// AlbumBean ab = new AlbumBean();
+		// ArrayList<ImageBean> temp = (ArrayList<ImageBean>)
+		// imageBeans.clone();
+		// ab.setImageBeans(temp);
+		// ab.setAlbumName("1/" + mSelectedDatas.size());
+		// previewFragment.setAlbumBean(ab);
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out, R.anim.push_right_in, R.anim.push_right_out);
+		ft.replace(R.id.fl_pic_browser_content, previewFragment);
+		ft.addToBackStack(null);
+		ft.commit();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (mSaveImagePath != null) {
+			outState.putString(PicturePreviewActivity.EXTRA_IMAGE, mSaveImagePath);
+		}
+		if (null != mCameraLauncher)
+			mCameraLauncher.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (mFrom == FROM_PHOTO) {
+			if(!checkPermission(Manifest.permission.CAMERA
+					,Manifest.permission.READ_EXTERNAL_STORAGE
+					,Manifest.permission.WRITE_EXTERNAL_STORAGE
+			)){
+				return;
+			}
+			mCameraLauncher = new CameraLauncher(this, REQ_TAKE_PICTURE, this);
+			mCameraLauncher.onRestoreInstanceState(savedInstanceState);
+		}
+	}
+
+	private void loadPics() {
+		QueryPicsTask task = new QueryPicsTask();
+		task.execute();
+	}
+
+	private void release() {
+		mSelectedDatas.clear();
+		mSelectedDatas = null;
+	}
+
+	private void switchOtherAlbum(AlbumBean ab, int position) {
+		getSupportFragmentManager().popBackStack();
+		mAllPicFragment.setAlbumBean(ab, position);
+	}
+
+	private void gotoImageAlbumFragment() {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		AlbumFragment albumFragment = AlbumFragment.getInstance(null);
+		albumFragment.setOnAlbumItemClickListener(new AlbumFragment.OnAlbumItemClickListener() {
+			@Override
+			public void onAlbumItemClick(int position) {
+				Log.d(TAG, "onAlbumItemClick position = " + position + "  total size = " + mAlbumsDatas.size());
+				if (mAlbumsDatas != null && position < mAlbumsDatas.size()) {
+					AlbumBean ab = mAlbumsDatas.get(position);
+					switchOtherAlbum(ab, position);
+				}
+			}
+		});
+		albumFragment.setAlbumDatas(mAlbumsDatas);
+		ft.setCustomAnimations(R.anim.push_left_in, R.anim.push_left_out, R.anim.push_right_in, R.anim.push_right_out);
+		ft.replace(R.id.fl_pic_browser_content, albumFragment);
+		ft.addToBackStack(null);
+		ft.commit();
+	}
+
+	@Override
+	public void onClickSendBtn(boolean isUseOriginal) {
+		handleClickSendBtn(isUseOriginal);
+	}
+
+	private void handleClickSendBtn(boolean isUseOriginal) {
+		if (mSelectedDatas == null || mSelectedDatas.size() == 0) {
+			Toast.makeText(AllPicBrowserActivity.this, R.string.image_select_nothing, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Intent intent = new Intent();
+		if (FROM_PHOTO == mFrom || FROM_PREVIEW == mFrom) {
+			ArrayList<MediaBean> res = new ArrayList<MediaBean>();
+			res.addAll(mSelectedDatas);
+			intent.putParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH, res);
+			intent.putExtra(KEY_IS_USE_ORIGINAL, isUseOriginal);
+		} else if (FROM_GALLERY == mFrom || FROM_GUIDE_GALLERY == mFrom) {// 批量导入相册
+			if (mSelectedDatas != null && mSelectedDatas.size() > 0 && Preference.getInstance().needWarnNoWifi()
+					&& !TaskManager.mWifiConnected && TaskManager.mNetworkConnected) {
+				alterNoWifi();
+			} else {
+				postGalleryFeeds();
+			}
+			return;
+		} else {
+			ArrayList<String> paths = new ArrayList<String>();
+			for (MediaBean ib : mSelectedDatas) {
+				paths.add(ib.getPath());
+			}
+			intent.putStringArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH, paths);
+		}
+		setResult(Activity.RESULT_OK, intent);
+		release();
+		finish();
+	}
+	
+	private void alterNoWifi() {
+		if (mNoWifiDlg == null) {
+			mNoWifiDlg = new CommonAlertDialog(this);
+			mNoWifiDlg.setTitle(R.string.main_prompt);
+			mNoWifiDlg.setCancelable(true);
+			mNoWifiDlg.setNegativeButton(getString(R.string.post_nofiwi_continue), new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mNoWifiDlg.dismiss();
+					postGalleryFeeds();
+				}
+			});
+
+			mNoWifiDlg.setMessage(R.string.post_nofiwi_hint);
+			mNoWifiDlg.setPositiveButton(getString(R.string.post_nofiwi_break), new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mNoWifiDlg.dismiss();
+					//SetActivity.startSetActivity(AllPicBrowserActivity.this);
+				}
+			});
+		}
+		mNoWifiDlg.show();
+		Preference.getInstance().incWarnNoWifi();
+	}
+	
+	private void postGalleryFeeds() {
+		long graphtime = 0;
+		if (mSelectedDatas == null || mSelectedDatas.size() == 0) {
+			return;
+		}
+		for (MediaBean ib : mSelectedDatas) {
+			graphtime = Math.max(graphtime, ib.getModified());
+		}
+		Feeds feeds = new Feeds();
+		feeds.ispl = 1;
+		feeds.graphtime = graphtime;
+		feeds.attachinfo = new ArrayList<MediaBean>();
+		feeds.attachinfo.addAll(mSelectedDatas);
+		feeds.isUseOriginal = isUseOriginal;
+		feeds.circle_type = mPostToParam.circleType;
+		feeds.circle_id = mPostToParam.circleId;
+		FeedServer.postFeeds(feeds);
+		release();
+		finish();
+	}
+
+	class QueryPicsTask extends AsyncTask<Void, Void, List<MediaBean>> {
+
+		// @Override
+		// protected String getTaskFlag() {
+		// return "AllPicBrowserActivity##QueryPicsTask";
+		// }
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<MediaBean> doInBackground(Void... voids) {
+
+			ArrayList<MediaBean> datas = new ArrayList<MediaBean>();
+
+			Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+			ContentResolver mContentResolver = getContentResolver();
+			HashMap<Integer, MediaBean> helper = new HashMap<Integer, MediaBean>();
+			Map<String, AlbumBean> mAlbums = new HashMap<String, AlbumBean>();
+			// 只查询jpeg和png的图片
+			Cursor mCursor = null;
+			try {
+				mCursor = mContentResolver
+						.query(mImageUri, null,
+								MediaStore.Images.Media.MIME_TYPE + " in ( ?,?,?,?,? ) ", new String[] { "image/jpeg",
+										"image/png", "image/jpg", "image/x-ms-bmp", "image/vnd.wap.wbmp" },
+						MediaStore.Images.Media.DATE_MODIFIED + " DESC");
+
+				if (mCursor == null) {
+					return null;
+				}
+
+				while (mCursor.moveToNext()) {
+
+					if (isCancelled()) {
+						return null;
+					}
+
+					String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+					String title = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.TITLE));
+
+					long addedTime = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+					long modified = mCursor.getLong(mCursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
+
+					// int width =
+					// mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
+					// int height =
+					// mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
+					int id = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media._ID));
+					int size = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media.SIZE));
+					if (TextUtils.isEmpty(path) || size <= 0) {
+						continue;
+					}
+
+					MediaBean ib = new MediaBean();
+					ib.setImageId(id);
+					// ib.setTitle(title);
+					// ib.setHeight(height);
+					// ib.setWidth(width);
+					ib.setSize(size);
+					ib.setModified(modified);
+					ib.setPath(path);
+					ib.setParentPath(new File(path).getParent());
+
+					if (!mAlbums.containsKey(ib.getParentPath())) {
+						AlbumBean ab = new AlbumBean();
+						ArrayList al = new ArrayList<MediaBean>();
+						al.add(ib);
+						ab.setFirstImagePath(
+								TextUtils.isEmpty(ib.getThumbnailPath()) ? ib.getPath() : ib.getThumbnailPath());
+						String dir = ib.getParentPath().substring(ib.getParentPath().lastIndexOf("/") + 1,
+								ib.getParentPath().length());
+						ab.setAlbumName(dir);
+						ab.setImageBeans(al);
+						ab.setModified(ib.getModified());
+						mAlbums.put(ib.getParentPath(), ab);
+					} else {
+						AlbumBean ab = mAlbums.get(ib.getParentPath());
+						ab.setModified(Math.max(ab.getModified(), ib.getModified()));
+						ab.getImageBeans().add(ib);
+					}
+
+					// Log.d(TAG, "before search thumb IB info = " +
+					// ib.toString());
+					datas.add(ib);
+					helper.put(Integer.valueOf(id), ib);
+
+				}
+			} finally {
+				if (mCursor != null) {
+					mCursor.close();
+				}
+			}
+
+//			Uri mThumbImageUri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI;
+//			ContentResolver mThumbContentResolver = getContentResolver();
+//
+//			Cursor mThumbCursor = null;
+//			try {
+//				// 查询缩略图
+//				mThumbCursor = mThumbContentResolver.query(mThumbImageUri,
+//						new String[] { MediaStore.Images.Thumbnails.IMAGE_ID, MediaStore.Images.Thumbnails.DATA }, null,
+//						null, MediaStore.Images.Thumbnails.DEFAULT_SORT_ORDER);
+//
+//				if (mThumbCursor == null) {
+//					return datas;
+//				}
+//
+//				while (mThumbCursor.moveToNext()) {
+//					String thumbPath = mThumbCursor
+//							.getString(mThumbCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+//					int imageId = mThumbCursor
+//							.getInt(mThumbCursor.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID));
+//					if (imageId <= 0 || TextUtils.isEmpty(thumbPath)) {
+//						continue;
+//					}
+//
+//					MediaBean ib = helper.get(imageId);
+//					if (ib != null) {
+//						ib.setThumbnailPath(thumbPath);
+//						// Log.d(TAG, "IB info = " + ib.toString());
+//					}
+//
+//				}
+//			} finally {
+//
+//				if (mThumbCursor != null) {
+//					mThumbCursor.close();
+//				}
+//			}
+
+			mAlbumsDatas = mapToList(mAlbums);
+			sortModifiedTime(mAlbumsDatas);
+			return datas;
+		}
+
+		private ArrayList mapToList(Map<String, AlbumBean> maps) {
+
+			if (maps == null) {
+				return null;
+			}
+
+			ArrayList<AlbumBean> ret = new ArrayList<AlbumBean>();
+			Iterator<String> it = maps.keySet().iterator();
+			while (it.hasNext()) {
+				String key = it.next();
+				ret.add(maps.get(key));
+			}
+			return ret;
+		}
+
+		private void sortModifiedTime(ArrayList<AlbumBean> albumBeans) {
+
+			if (albumBeans == null) {
+				return;
+			}
+
+			Collections.sort(albumBeans, new Comparator<AlbumBean>() {
+				@Override
+				public int compare(AlbumBean lhs, AlbumBean rhs) {
+					return lhs.getModified() <= rhs.getModified() ? 1 : -1;
+				}
+			});
+
+		}
+
+		@Override
+		protected void onPostExecute(List<MediaBean> imageBeans) {
+			super.onPostExecute(imageBeans);
+
+			if (imageBeans == null) {
+				imageBeans = new ArrayList<MediaBean>();
+			}
+			mPicDatas.clear();
+			mPicDatas.addAll(imageBeans);
+			// 手动生成所有图片相册
+
+			String firstPath = "";
+			if (mPicDatas.size() > 0) {
+				firstPath = TextUtils.isEmpty(mPicDatas.get(0).getThumbnailPath()) ? mPicDatas.get(0).getPath()
+						: mPicDatas.get(0).getThumbnailPath();
+			}
+			AlbumBean ab = new AlbumBean();
+			ab.setImageBeans(mPicDatas);
+			ab.setAlbumName(getString(R.string.images_all));
+			ab.setFirstImagePath(firstPath);
+			mAlbumsDatas.add(0, ab);
+			mAllPicFragment.setAlbumBean(ab, 0);
+		}
+	}
+
+	/**
+	 * 压缩图片
+	 */
+	static class CompressImageTask extends AsyncTask<ArrayList<MediaBean>, Long, ArrayList<String>> {
+
+		private OnCompressStateListener mOnCompressStateListener = null;
+		private Context mContext;
+
+		CompressImageTask(Context mContext) {
+			this.mContext = mContext;
+		}
+
+		public void setOnCompressStateListener(OnCompressStateListener mOnCompressStateListener) {
+			this.mOnCompressStateListener = mOnCompressStateListener;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			if (mOnCompressStateListener != null) {
+				mOnCompressStateListener.onCompressBegin();
+			}
+		}
+
+		// @Override
+		// protected String getTaskFlag() {
+		// return "AllPicBrowserActivity##CompressImageTask";
+		// }
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<MediaBean>... arrayLists) {
+
+			ArrayList<MediaBean> params = arrayLists.length > 0 ? arrayLists[0] : null;
+			if (params == null || params.isEmpty()) {
+				return null;
+			}
+
+			ArrayList<String> ret = new ArrayList<String>();
+			for (MediaBean ib : params) {
+				ret.add(compressImage(ib.getPath()));
+			}
+
+			return ret;
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			if (mOnCompressStateListener != null) {
+				mOnCompressStateListener.onCompressCancel();
+			}
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<String> ret) {
+			super.onPostExecute(ret);
+			Log.d(TAG, "CompressTask onPostExecurte  ");
+			if (mOnCompressStateListener != null) {
+				mOnCompressStateListener.onCompressFinish(ret);
+			}
+
+		}
+
+		private String compressImage(String imagePath) {
+			File dir = FileUtil.getExternalPath(mContext, FileUtil.PICTURE_DIR);
+			File destFile = new File(dir, FileUtil.genUploadFileName(FileUtil.PICTURE_SUFFIX));
+			if (BitmapUtil.compressImage(imagePath, destFile)) {
+				return destFile.getAbsolutePath();
+			} else {
+				return imagePath;
+			}
+		}
+
+		public interface OnCompressStateListener {
+			public void onCompressBegin();
+
+			public void onCompressFinish(ArrayList<String> imageBeans);
+
+			public void onCompressCancel();
+		}
+
+	}
+
+	private void takePicture() {
+		// if (isXLTCamera) {
+		// Camera.startCaptureActivity(this, REQ_TAKE_PICTURE,
+		// IntentUtil.getOutputImageFile());
+		// } else {
+		if(!checkPermission(Manifest.permission.CAMERA
+				,Manifest.permission.READ_EXTERNAL_STORAGE
+				,Manifest.permission.WRITE_EXTERNAL_STORAGE
+		)){
+			return;
+		}
+		mCameraLauncher = new CameraLauncher(this, REQ_TAKE_PICTURE, this);
+		mCameraLauncher.setWidthLimit(720);
+		mCameraLauncher.setHeightLimit(1280);
+		mCameraLauncher.launchCamera();
+		// }
+	}
+
+	@Override
+	public void onPermissionsResult(Map<String, Boolean> permissions){
+		if (permissions == null || permissions.size() == 0){
+			return;
+		}
+		Boolean object = permissions.get(Manifest.permission.CAMERA);
+		if(object != null && !object) {
+			XLTToast.makeText(this, R.string.permission_camera_info, Toast.LENGTH_LONG).show();
+			return;
+		}
+		int i = 0;
+		for (Boolean b : permissions.values()){
+			if(b== null || !b) break;
+			i++;
+		}
+		if (i != permissions.size()){
+			XLTToast.makeText(this, R.string.permission_storage_info, Toast.LENGTH_LONG).show();
+			return;
+		}
+		mCameraLauncher = new CameraLauncher(this, REQ_TAKE_PICTURE, this);
+		mCameraLauncher.setWidthLimit(720);
+		mCameraLauncher.setHeightLimit(1280);
+		mCameraLauncher.launchCamera();
+	}
+
+	@Override
+	public int getFrom() {
+		return mFrom;
+	}
+
+	@Override
+	public int getMaxNum() {
+		return mMaxNum;
+	}
+
+	@Override
+	public ArrayList<MediaBean> getSelected() {
+		if (mSelectedDatas == null) {
+			mSelectedDatas = new ArrayList<MediaBean>();
+		}
+		return mSelectedDatas;
+	}
+
+	@Override
+	public boolean isUseOriginal() {
+		return isUseOriginal;
+	}
+
+	@Override
+	public void setUseOriginal(boolean orginal) {
+		isUseOriginal = orginal;
+
+	}
+
+	@Override
+	public void onImageReady(File imageFile) {
+		Intent intent = new Intent(AllPicBrowserActivity.this, PicturePreviewActivity.class);
+		intent.putExtra(PicturePreviewActivity.EXTRA_FROM, PicturePreviewActivity.FROM_TAKE_PICTURE);
+		intent.putExtra(PicturePreviewActivity.EXTRA_IMAGE, imageFile.getAbsolutePath());
+		startActivityForResult(intent, REQ_PREVIEW_PICTURE);
+	}
+
+}

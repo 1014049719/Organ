@@ -1,0 +1,153 @@
+package com.talenton.base;
+
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
+import android.content.Context;
+import android.content.res.Configuration;
+
+import com.talenton.base.server.UserServer;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.Preference;
+import com.tencent.bugly.crashreport.CrashReport;
+
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * Created by ttt on 2016/3/24.
+ */
+public class XltApplication extends Application {
+
+    public static long UID = 0;// 用户id
+    protected static XltApplication mInstance;
+    protected static Context appContext;
+    protected String userAgent;
+    public static long XgServiceStartTimer = 0;
+
+    protected Stack<Activity> activityStack = new Stack<Activity>();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        XgServiceStartTimer = System.currentTimeMillis();
+        if (!isXLTProcess()) {
+            return;
+        }
+        mInstance = this;
+        appContext = getApplicationContext();
+
+        Preference.getInstance().init(this);
+
+        FileUtil.initStoragePath(this);
+        ImageLoaderManager.getInstance().initImageLoader(this);
+        //
+
+
+        // String appkey = "APDARJX4187D";
+
+        //StatService.startStatService(this, null, com.tencent.stat.common.StatConstants.VERSION);
+        UserServer.init();
+        //Preference.getInstance().initCookies();
+        CrashReport.initCrashReport(getApplicationContext(), "900040370", false);
+    }
+
+    public boolean isXLTProcess() {
+        String processName = getProcessName(android.os.Process.myPid());
+
+        if (processName != null) {
+            if (processName.equals(this.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static XltApplication getInstance() {
+        return mInstance;
+    }
+
+    public static Context getAppContext() {
+        return appContext;
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
+
+    @Override
+    public void onTerminate() {
+        // DatabaseManager.getInstance().releaseHelper();
+        clearActivity();
+        super.onTerminate();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * 添加到activity堆栈中
+     */
+    public void addActivity(Activity activity) {
+        activityStack.push(activity);
+    }
+
+    /**
+     * 把Activity从堆栈中删除
+     */
+    public void removeActivity(Activity activity) {
+        activityStack.remove(activity);
+    }
+
+    /**
+     * 遍历堆栈中所有Activity并finish
+     */
+    public void exit() {
+        for (int i = 0; i < activityStack.size(); i++) {
+            Activity activity = activityStack.get(i);
+            if (activity != null) {
+                activity.finish();
+            }
+        }
+    }
+
+    /**
+     * 程序退出后台缓存
+     */
+    public void absolutelyExit() {
+        clearActivity();
+        System.exit(0);
+    }
+
+    /**
+     * 清除堆栈中的activity
+     */
+    public void clearActivity() {
+        exit();
+        activityStack.clear();
+    }
+
+    public Activity pop() {
+        Activity activity = activityStack.pop();
+        return activity;
+    }
+
+    public String getProcessName(int pid) {
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (ActivityManager.RunningAppProcessInfo procInfo : runningApps) {
+            if (procInfo.pid == pid) {
+                return procInfo.processName;
+            }
+        }
+        return null;
+    }
+
+}

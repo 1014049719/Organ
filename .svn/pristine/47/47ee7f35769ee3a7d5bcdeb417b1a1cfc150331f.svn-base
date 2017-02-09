@@ -1,0 +1,294 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.talenton.base.util.JsonObjUtil;
+
+/**
+ * @author zjh
+ * @date 2016/4/20
+ */
+public class ReqClassList implements IBaseReq, Parcelable {
+    public final static int BASIS_HOT = 1;
+    public final static int BASIS_LAST = 0;
+
+    /**
+     * 课程类型枚举
+     */
+    public enum ClassListType{
+        ALL, //全部课程
+        LSG, //乐思购课程
+        EXPERIMENTAL,//实验校课程
+        RECOMMEND, //推荐课程
+        HOT, // 热门课程
+        MY_COURSE, //我收藏的课程
+        MY_UPLOAD, //我上传的课程
+        MY_JOIN //我参加的课程
+    }
+
+    private final static String CLASS_LIST_URL = "classroom.php?mod=courselist&cmdcode=32";
+    private long catid = -1; //课程分类
+    private int recommend; //推荐标志
+    private int hot = 1; //热门标志
+    private int mycourse; //我的收藏课程
+    private int myupload; //我上传的课程
+    private int age = -1; //搜索条件,按年龄
+    private int getcount; //每页获取条数,不填为获取20条记录
+    private int mystudy; //我参加的课程
+    private ClassListType classListType;
+    private int page; //页数
+    private String title; //搜索标题
+    private int cattype; //0-全部课程、1-只获取乐思购
+    private int ordertype = 1; //1=按热门,0=按最新
+
+
+    private boolean isAllClassType;
+
+
+    public ReqClassList(ClassListType classListType) {
+        this.classListType = classListType;
+    }
+
+    public ReqClassList(ClassListType classListType,boolean isAllClassType) {
+        this.classListType = classListType;
+        this.isAllClassType = isAllClassType;
+    }
+
+    public ReqClassList(ClassListType classListType,int ordertype) {
+        this.classListType = classListType;
+        this.ordertype = ordertype;
+    }
+
+    /**
+     * 清楚筛选域
+     */
+    public void cleanFilterField(){
+        ordertype = 1;
+    }
+
+    public long getCatid() {
+        return catid;
+    }
+
+    public void setCatid(long catid) {
+        this.catid = catid;
+    }
+
+    public int getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(int recommend) {
+        this.recommend = recommend;
+    }
+
+    public int getHot() {
+        return hot;
+    }
+
+    public void setHot(int hot) {
+        this.hot = hot;
+    }
+
+    public int getMycourse() {
+        return mycourse;
+    }
+
+    public void setMycourse(int mycourse) {
+        this.mycourse = mycourse;
+    }
+
+    public int getMyupload() {
+        return myupload;
+    }
+
+    public void setMyupload(int myupload) {
+        this.myupload = myupload;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getGetcount() {
+        return getcount;
+    }
+
+    public void setGetcount(int getcount) {
+        this.getcount = getcount;
+    }
+
+    public int getMystudy() {
+        return mystudy;
+    }
+
+    public void setMystudy(int mystudy) {
+        this.mystudy = mystudy;
+    }
+
+    public ClassListType getClassListType() {
+        return classListType;
+    }
+
+    public void setClassListType(ClassListType classListType) {
+        this.classListType = classListType;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getCattype() {
+        return cattype;
+    }
+
+    public void setCattype(int cattype) {
+        this.cattype = cattype;
+    }
+
+    public int getOrdertype() {
+        return ordertype;
+    }
+
+    public void setOrdertype(int ordertype) {
+        this.ordertype = ordertype;
+    }
+
+    public boolean isAllClassType() {
+        return isAllClassType;
+    }
+
+    public void setIsAllClassType(boolean isAllClassType) {
+        this.isAllClassType = isAllClassType;
+    }
+
+    /**
+     * 获取请求参数
+     * @return
+     */
+    public String getReqParams(){
+        JsonObjUtil jsonObjUtil = JsonObjUtil.getInstance();
+        switch (classListType){
+            case ALL:
+                cattype = 0;
+                break;
+            case LSG:
+                cattype = 1;
+                break;
+            case EXPERIMENTAL:
+                cattype = 2;
+                break;
+            case RECOMMEND:
+                recommend = 1;
+                jsonObjUtil.addParam("recommend",recommend);
+                break;
+            case HOT:
+                hot = 1;
+                jsonObjUtil.addParam("hot",hot);
+                break;
+            case MY_COURSE:
+                mycourse = 1;
+                jsonObjUtil.addParam("mycourse",mycourse);
+                break;
+            case MY_UPLOAD:
+                myupload = 1;
+                jsonObjUtil.addParam("myupload",myupload);
+                break;
+            case MY_JOIN:
+                mystudy = 1;
+                jsonObjUtil.addParam("mystudy",mystudy);
+                break;
+        }
+        if (catid != -1){
+            jsonObjUtil.addParam("catid",catid);
+        }
+        if (age != -1){
+            jsonObjUtil.addParam("age", age);
+        }
+        jsonObjUtil.addParam("ordertype", ordertype);
+        jsonObjUtil.addParam("getcount", getcount);
+        jsonObjUtil.addParam("page", page);
+        if (title != null && !title.isEmpty()){
+            jsonObjUtil.addParam("title",title);
+        }
+        jsonObjUtil.addParam("cattype", cattype);
+        return jsonObjUtil.toJsonString();
+    }
+
+
+    @Override
+    public String getReqUrl() {
+        return CLASS_LIST_URL;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.catid);
+        dest.writeInt(this.recommend);
+        dest.writeInt(this.hot);
+        dest.writeInt(this.mycourse);
+        dest.writeInt(this.myupload);
+        dest.writeInt(this.age);
+        dest.writeInt(this.getcount);
+        dest.writeInt(this.mystudy);
+        dest.writeInt(this.classListType == null ? -1 : this.classListType.ordinal());
+        dest.writeInt(this.page);
+        dest.writeString(this.title);
+        dest.writeInt(this.cattype);
+        dest.writeInt(this.ordertype);
+        dest.writeByte(isAllClassType ? (byte) 1 : (byte) 0);
+    }
+
+    protected ReqClassList(Parcel in) {
+        this.catid = in.readLong();
+        this.recommend = in.readInt();
+        this.hot = in.readInt();
+        this.mycourse = in.readInt();
+        this.myupload = in.readInt();
+        this.age = in.readInt();
+        this.getcount = in.readInt();
+        this.mystudy = in.readInt();
+        int tmpClassListType = in.readInt();
+        this.classListType = tmpClassListType == -1 ? null : ClassListType.values()[tmpClassListType];
+        this.page = in.readInt();
+        this.title = in.readString();
+        this.cattype = in.readInt();
+        this.ordertype = in.readInt();
+        this.isAllClassType = in.readByte() != 0;
+    }
+
+    public static final Creator<ReqClassList> CREATOR = new Creator<ReqClassList>() {
+        @Override
+        public ReqClassList createFromParcel(Parcel source) {
+            return new ReqClassList(source);
+        }
+
+        @Override
+        public ReqClassList[] newArray(int size) {
+            return new ReqClassList[size];
+        }
+    };
+}

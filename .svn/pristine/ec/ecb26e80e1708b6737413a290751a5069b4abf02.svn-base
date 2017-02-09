@@ -1,0 +1,21 @@
+package com.talenton.organ.server.bean.school.event;
+
+/**
+ * @author zjh
+ * @date 2016/5/5
+ */
+public class FavoriteEvent {
+    private int isCollection;
+
+    public FavoriteEvent(int isCollection) {
+        this.isCollection = isCollection;
+    }
+
+    public int getIsCollection() {
+        return isCollection;
+    }
+
+    public void setIsCollection(int isCollection) {
+        this.isCollection = isCollection;
+    }
+}

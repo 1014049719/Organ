@@ -1,0 +1,84 @@
+package com.talenton.organ.ui.discovery.adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.organ.server.bean.discovery.Discovery;
+import com.talenton.organ.server.bean.discovery.RspDiscoverNumType;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * Created by Administrator on 2016/4/7.
+ */
+public class MyAdapter extends LSGBaseAdapter<Discovery> {
+
+    public MyAdapter(Context context, List<Discovery> datas) {
+        super(context, datas);
+    }
+
+    //更新数据
+    public void updateNum(RspDiscoverNumType numType) {
+        if (numType.actionnum > 0) {
+            this.getDatas().get(1).number = numType.actionnum;
+        }
+        if (numType.messagenum > 0) {
+
+            this.getDatas().get(2).number = numType.messagenum;
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void clearRedActionnum(int actionnum) {
+
+        this.getDatas().get(1).number = actionnum;
+        notifyDataSetChanged();
+    }
+    public void clearRedMessagenum(int messagenum) {
+
+        this.getDatas().get(2).number = messagenum;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Discovery discovery = (Discovery) getItem(position);
+        ViewHolder viewHolder = null;
+        if (convertView == null) {
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.discovery_cell, parent,false);
+            viewHolder.TitleTv = (TextView) convertView.findViewById(R.id.TitleTv);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image);
+            viewHolder.noReadTv = (TextView) convertView.findViewById(R.id.noReadNum_tv);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.imageView.setImageResource(discovery.imageSrc);
+        viewHolder.TitleTv.setText(discovery.name);
+        if (discovery.number > 0) {
+            viewHolder.noReadTv.setVisibility(View.VISIBLE);
+            viewHolder.noReadTv.setText("" + discovery.number);
+        } else {
+            viewHolder.noReadTv.setVisibility(View.GONE);
+        }
+        return convertView;
+    }
+
+
+    class ViewHolder {
+        public TextView TitleTv;
+        public ImageView imageView;
+        public TextView noReadTv;
+    }
+
+
+}

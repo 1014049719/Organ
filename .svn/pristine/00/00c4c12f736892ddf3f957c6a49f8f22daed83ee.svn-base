@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/space_10_0"
+    android:paddingLeft="@dimen/space_15_0"
+    android:paddingRight="@dimen/space_15_0"
+    android:background="@color/gray"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/iv_avatar"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:layout_below="@+id/iv_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_32"
+        android:text="教育机构" />
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_marginTop="@dimen/space_20_0"
+        android:layout_below="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="希望掌握用户消费习惯,挖掘需求;宣传品牌理念"
+        android:gravity="center"
+        android:textSize="@dimen/text_32"/>
+
+
+    <ImageView
+        android:id="@+id/iv_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/space_30_0"
+        android:src="@mipmap/checkbox_album_img_unselected"/>
+
+
+</RelativeLayout>

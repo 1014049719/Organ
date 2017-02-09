@@ -1,0 +1,22 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/4/20.
+ */
+public class SendShopHomeGoodsData {
+    public final static String URL = "mobile/goods_list.php?cmdcode=42";
+    public SendShopHomeGoodsData(){};
+    /*
+    public int type;
+    public int orderprice;
+    public int orderdateline;
+    public int page;
+
+    public SendShopHomeGoodsData(int type ,int orderprice,int orderdateline,int page){
+        this.type=type;
+        this.orderprice=orderprice;
+        this.orderdateline=orderdateline;
+        this.page=page;
+    }
+    */
+}

@@ -1,0 +1,30 @@
+package com.talenton.organ.ui.school.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.util.QiNiuUtil;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/8
+ */
+public class ClassAdapter extends BaseClassListAdapter{
+    public ClassAdapter(Context context, List<ClassData> datas) {
+        super(context, datas);
+    }
+}

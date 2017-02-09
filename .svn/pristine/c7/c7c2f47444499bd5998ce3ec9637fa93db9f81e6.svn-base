@@ -1,0 +1,18 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/4/21.
+ */
+public class SendPayGetOrderData {
+    public final static String URL = "mobile/order_lsg.php?cmdcode=56";
+    public AdressInfo address=new AdressInfo();
+    public int paytype;
+    ArrayList<GoodsCartInfo> goods=new ArrayList<GoodsCartInfo>();
+    public SendPayGetOrderData(AdressInfo address,int paytype,ArrayList<GoodsCartInfo> goods){
+        this.address=address;
+        this.paytype=paytype;
+        this.goods=goods;
+    }
+}

@@ -1,0 +1,8 @@
+package com.talenton.organ.server.bean.feed;
+
+/**
+ * Created by ttt on 2016/4/28.
+ */
+public class InviteData {
+    public String  invitecode;// 邀请码
+}

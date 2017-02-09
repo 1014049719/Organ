@@ -1,0 +1,118 @@
+package com.talenton.organ.ui.message.adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.message.MsgData;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/11
+ */
+public class MsgAdapter extends LSGBaseAdapter<MsgData>{
+    private final int VIEW_TYPE_COUNT = 3;
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return getItem(position).getMsgType();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return VIEW_TYPE_COUNT;
+    }
+
+    public MsgAdapter(Context context, List<MsgData> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
+        if (convertView == null){
+            viewHolder = new ViewHolder();
+            convertView = getViewByType(position,viewHolder,parent);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        fillData(viewHolder, position);
+
+        return convertView;
+    }
+
+    /**
+     * 填充数据
+     * @param viewHolder
+     * @param position
+     */
+    private void fillData(ViewHolder viewHolder, int position) {
+        MsgData msgData = getItem(position);
+        switch (getItemViewType(position)){
+            case MsgData.TYPE_OPEN:
+                break;
+            case MsgData.TYPE_OPEN_AND_IMG:
+                ImageLoaderManager.getInstance().displayImage(msgData.getImgurl(),viewHolder.iv_desc,ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER,null,null);
+                break;
+            case MsgData.TYPE_OPEN_NO:
+
+                break;
+        }
+
+        if (msgData.isTips()){
+            viewHolder.iv_left.setImageResource(R.mipmap.about_logo);
+        }else {
+            ImageLoaderManager.getInstance().displayImage(msgData.getAvatar(),viewHolder.iv_left,ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER,null,null);
+        }
+        viewHolder.tv_title.setText(msgData.getNickname());
+        viewHolder.tv_time.setText(DateUtil.parseTime(context,msgData.getDateline()));
+        viewHolder.tv_introduce.setText(msgData.getContent());
+
+    }
+
+
+    private View getViewByType(int position,ViewHolder viewHolder,ViewGroup parent){
+        View view = null;
+        switch (getItemViewType(position)){
+            case MsgData.TYPE_OPEN:
+                view = LayoutInflater.from(context).inflate(R.layout.item_msg_type_0,parent,false);
+                break;
+            case MsgData.TYPE_OPEN_AND_IMG:
+                view = LayoutInflater.from(context).inflate(R.layout.item_msg_type_1,parent,false);
+                break;
+            case MsgData.TYPE_OPEN_NO:
+                view = LayoutInflater.from(context).inflate(R.layout.item_msg_type_2,parent,false);
+                break;
+        }
+        viewHolder.iv_left = (ImageView) view.findViewById(R.id.iv_left);
+        viewHolder.tv_title = (TextView) view.findViewById(R.id.tv_title);
+        viewHolder.tv_introduce = (TextView) view.findViewById(R.id.tv_introduce);
+        viewHolder.tv_time = (TextView) view.findViewById(R.id.tv_time);
+        viewHolder.iv_desc = (ImageView) view.findViewById(R.id.iv_desc);
+//        viewHolder.tv_way = (TextView) view.findViewById(R.id.tv_way);
+//        viewHolder.tv_residue_integral = (TextView) view.findViewById(R.id.tv_residue_integral);
+        return view;
+    }
+
+    static class ViewHolder{
+        public ImageView iv_left; //左边图片
+        public TextView tv_title;
+        public TextView tv_introduce;
+        public TextView tv_time; //时间
+        public ImageView iv_desc; //描述图片
+//        public TextView tv_way; //动态
+//        public TextView tv_residue_integral; //积分
+    }
+}

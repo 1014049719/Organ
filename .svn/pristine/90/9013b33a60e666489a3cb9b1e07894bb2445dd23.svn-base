@@ -1,0 +1,216 @@
+package com.talenton.organ.ui.user;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.server.bean.SchoolData;
+import com.talenton.organ.event.SelectSchoolEvent;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqBabayData;
+import com.talenton.organ.util.UIHelper;
+import com.talenton.organ.widget.RegionSelectFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+public class ModifyChildSchoolActivity extends BaseCompatActivity implements  View.OnClickListener {
+    public static final int TYPE_ADD = 1;
+    public static final int TYPE_MODIFY = 2;
+    public static final String TYPE = "type";
+    public static final String SCHOOL_NAME = "shcool_name";
+    public static final String BABY_ID = "baby_id";
+    private EditText et_validate_msg; //验证信息
+    private RelativeLayout rl_validate;
+    private String mProvince = "";
+    private String mCity = "";
+    private String mArea = "";
+    private int type;
+    private long babyId;
+    private TextView tv_school;
+    private TextView tv_area;
+    private SchoolData selectSchoolData;
+
+
+    public static void srartModifyChildSchoolActivity(Activity context,long babyId,int type,int requestCode){
+        Intent intent = new Intent(context,ModifyChildSchoolActivity.class);
+        intent.putExtra(TYPE,type);
+        intent.putExtra(BABY_ID,babyId);
+        context.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        type = getIntent().getIntExtra(TYPE, 0); //需先知道类型去填充title信息
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_modify_child_school);
+        EventBus.getDefault().register(this);
+
+        tv_school = (TextView) findViewById(R.id.tv_school);
+        findViewById(R.id.rl_school).setOnClickListener(this);
+        findViewById(R.id.rl_area).setOnClickListener(this);
+        tv_area = (TextView) findViewById(R.id.tv_area);
+        et_validate_msg = (EditText) findViewById(R.id.et_validate_msg);
+        rl_validate = (RelativeLayout) findViewById(R.id.rl_validate);
+        if (type == TYPE_ADD){
+            rl_validate.setVisibility(View.GONE);
+        }
+
+        babyId = getIntent().getLongExtra(BABY_ID,0);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(SelectSchoolEvent selectSchoolEvent) {
+        selectSchoolData = selectSchoolEvent.getSchoolData();
+        if (selectSchoolData != null){
+            tv_school.setText(selectSchoolData.name);
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        if (type == TYPE_ADD){
+            return R.string.mine_add_school_title;
+        }else if (type == TYPE_MODIFY){
+            return R.string.mine_apply_modify_school_title;
+        }
+        return 0;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        if (item.getItemId() == R.id.menu_main_send){
+            postModifySchool();
+        }else if (item.getItemId() == R.id.menu_main_ok){
+           postAddSchool();
+        }
+    }
+
+    private void postAddSchool() {
+        final String schoolName = tv_school.getText().toString();
+        if (TextUtils.isEmpty(schoolName)){
+            showShortToast("学校名不能为空");
+            return;
+        }
+        long schoolId = 0;
+        if (selectSchoolData != null){
+            schoolId = selectSchoolData.schoolid;
+        }
+        showProgress("正在提交数据");
+        MineServer.modifyBabyInfo(new ReqBabayData(babyId,schoolId, schoolName, mProvince, mCity, mArea, null), new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(SCHOOL_NAME, schoolName);
+                    setResult(RESULT_OK, intent);
+                    showShortToast("数据提交成功");
+                    finish();
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    /**
+     * 提交修改学校请求
+     */
+    private void postModifySchool() {
+        final String schoolName = tv_school.getText().toString();
+        String message = et_validate_msg.getText().toString();
+        if (TextUtils.isEmpty(schoolName)){
+            showShortToast("学校名不能为空");
+            return;
+        }
+
+        if (TextUtils.isEmpty(message)){
+            showShortToast("验证信息不能为空");
+            return;
+        }
+
+        long schoolId = 0;
+        if (selectSchoolData != null){
+            schoolId = selectSchoolData.schoolid;
+        }
+        showProgress("正在提交数据");
+        MineServer.modifyBabyInfo(new ReqBabayData(babyId,schoolId, schoolName, mProvince, mCity, mArea, message), new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null) {
+                    Intent intent = new Intent();
+                    intent.putExtra(SCHOOL_NAME, schoolName);
+                    setResult(RESULT_OK, intent);
+                    showShortToast("数据提交成功");
+                    finish();
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        if (type == TYPE_ADD){
+            return R.menu.menu_main_ok;
+        }else if (type == TYPE_MODIFY){
+            return R.menu.menu_main_send;
+        }
+        return 0;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rl_school:
+                //选择学校
+                if (TextUtils.isEmpty(tv_area.getText())){
+                    showShortToast("请先选择地区");
+                    return;
+                }
+                ModifySchoolNameActivity.startModifySchoolNameActivity(this,mProvince,mCity,mArea);
+                break;
+            case R.id.rl_area:
+                //选择地区
+                chooseArea();
+                break;
+        }
+    }
+
+
+    private void chooseArea() {
+        RegionSelectFragment fragment = RegionSelectFragment.newInstance(
+                new RegionSelectFragment.OnClickReginSelectListener() {
+                    @Override
+                    public void onData(String province, String city, String area) {
+                        mProvince = province;
+                        mCity = city;
+                        mArea = area;
+                        tv_area.setText(province + city + area);
+                    }
+                });
+        UIHelper.showDialog(this, fragment, "RegionSelectFragment");
+    }
+}

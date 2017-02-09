@@ -1,0 +1,18 @@
+package com.talenton.organ.server.bean.discovery;
+
+/**
+ * Created by Wang.'''' on 2016/4/26.
+ */
+public class LocatoinParam {
+
+    //网络接口
+    public final static String shopListURL="discover.php?mod=shop_list&cmdcode=13";
+    public final static String testSchoolURL="discover.php?mod=testschool&cmdcode=19";
+
+
+    //要传入的位置参数
+    public String resideprovince;
+    public String residecity;
+    public String residedist;
+
+}

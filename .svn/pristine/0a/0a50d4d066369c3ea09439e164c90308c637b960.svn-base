@@ -1,0 +1,51 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_bg" >
+
+    <com.talenton.organ.widget.HackyViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:background="@color/black_mark" >
+
+        <ImageView
+            android:id="@+id/iv_picture_preview_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_15_0"
+            android:src="@drawable/image_top_back_selector" />
+
+        <TextView
+            android:id="@+id/tv_picture_preview_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:layout_height="match_parent"
+            android:textColor="@color/text_light"
+            android:textSize="@dimen/text_34" />
+
+        <ImageView
+            android:id="@+id/download"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_40"
+            android:padding="@dimen/space_7_5"
+            android:src="@mipmap/download" />
+    </LinearLayout>
+    
+    <ProgressBar
+        android:id="@+id/pb"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleSmallTitle"
+        android:layout_width="@dimen/width_60"
+        android:layout_height="@dimen/height_60"
+        android:layout_gravity="center" />
+    
+
+</FrameLayout>

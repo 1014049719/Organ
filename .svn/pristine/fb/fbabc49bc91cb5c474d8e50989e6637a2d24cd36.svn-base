@@ -1,0 +1,92 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.View;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.BaseEmptyActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.widget.IndicationViewPager;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.HelperData;
+import com.talenton.organ.server.bean.user.RspHelperList;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HelperListActivity extends BaseEmptyActivity {
+    private IndicationViewPager indication_view_pager;
+
+
+    public static void startHelperListActivity(Context context){
+        context.startActivity(new Intent(context,HelperListActivity.class));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_helper_list);
+
+        indication_view_pager = (IndicationViewPager) findViewById(R.id.indication_view_pager);
+        indication_view_pager.getTabs().setBackgroundColor(Color.WHITE);
+        addEmptyViewToContain(indication_view_pager);
+        loadData();
+    }
+
+
+    private void loadData(){
+        showLoadingView();
+        MineServer.getHelperList(new XLTResponseListener<RspHelperList>() {
+            @Override
+            public void onResponse(RspHelperList responseData, XLTError errorData) {
+                if (errorData == null && responseData != null) {
+                    showData();
+                    setIndicationViewPagerData(responseData);
+                } else {
+                    showLoadErrorView();
+                }
+            }
+        });
+    }
+
+    private void setIndicationViewPagerData(RspHelperList responseData) {
+        Object[] objects = parseHelperData(responseData.getList());
+        if (objects[0] != null && objects[1] != null){
+            String[] titles = (String[]) objects[0];
+            Fragment[] fragments = (Fragment[]) objects[1];
+            indication_view_pager.setData(getSupportFragmentManager(),titles,fragments);
+        }
+    }
+
+    private Object[] parseHelperData(List<HelperData> helperDatas){
+        String[] titles = new String[helperDatas.size()];
+        Fragment[] fragments = new Fragment[helperDatas.size()];
+        Object[] objects = new Object[2];
+        for (int i=0; i<helperDatas.size(); i++){
+            HelperData helperData = helperDatas.get(i);
+
+            titles[i] = helperData.getTypename();
+            Fragment fragment = HelperArticleFragment.newInstance((ArrayList<HelperData.HelperArticle>) helperData.getTypelist());
+            fragments[i] = fragment;
+        }
+        objects[0] = titles;
+        objects[1] = fragments;
+        return objects;
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.mine_helper_title;
+    }
+
+    @Override
+    public void onReload(View v) {
+        loadData();
+    }
+}

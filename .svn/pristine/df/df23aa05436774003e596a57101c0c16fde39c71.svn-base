@@ -1,0 +1,11 @@
+package com.talenton.organ.event;
+
+import com.talenton.organ.server.bean.feed.CommentInfo;
+
+public class AddCommentEvent {
+	public CommentInfo comment;
+
+	public AddCommentEvent(CommentInfo data) {
+		comment = data;
+	}
+}

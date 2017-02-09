@@ -1,0 +1,12 @@
+package com.talenton.organ.server.bean.feed;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/5/5.
+ */
+public class RspFeedsList {
+    public int count;
+    public LinkedList<Feeds> list;
+    public LinkedList<Feeds> cache;
+}

@@ -1,0 +1,362 @@
+package com.talenton.organ.server;
+
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.talenton.base.dao.model.HttpCacheBean;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.util.NetWorkUtils;
+import com.talenton.organ.server.bean.school.ClassEvaluateData;
+import com.talenton.organ.server.bean.school.ClassFilterData;
+import com.talenton.organ.server.bean.school.ClassificationData;
+import com.talenton.organ.server.bean.school.IBaseReq;
+import com.talenton.organ.server.bean.school.ReqAdvertisement;
+import com.talenton.organ.server.bean.school.ReqAgeList;
+import com.talenton.organ.server.bean.school.ReqClassJoin;
+import com.talenton.organ.server.bean.school.ReqClassList;
+import com.talenton.organ.server.bean.school.ReqEvalute;
+import com.talenton.organ.server.bean.school.ReqFavorite;
+import com.talenton.organ.server.bean.school.ReqPraise;
+import com.talenton.organ.server.bean.school.RspAdList;
+import com.talenton.organ.server.bean.school.RspClassDetail;
+import com.talenton.organ.server.bean.school.RspClassJoin;
+import com.talenton.organ.server.bean.school.RspFilterAgeList;
+import com.talenton.organ.server.bean.school.RspListClass;
+import com.talenton.organ.server.bean.school.RspListClassType;
+import com.talenton.organ.server.bean.school.RspListEvaluate;
+import com.talenton.organ.server.bean.school.RspListSearchHot;
+import com.talenton.organ.server.bean.school.event.CreateEvaluteEvent;
+import com.talenton.organ.server.bean.school.event.JoinClassEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/7
+ */
+public class SchoolServer {
+
+    /**
+     * 获取课程分类
+     * @param req
+     * @param listener
+     */
+    public void getClassTypeData(final Context context,IBaseReq req, final XLTResponseCallback<RspListClassType> listener) {
+        final String reqUrl = req.getReqUrl();
+        final String params = req.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(reqUrl, RspListClassType.class, new XLTResponseListener<RspListClassType>() {
+
+            @Override
+            public void onResponse(RspListClassType responseData, XLTError errorData) {
+                if (errorData == null && responseData != null) {
+                    //数据请求成功
+                    if (responseData.getList() != null && !responseData.getList().isEmpty()){
+                        SchoolCacheServer.getInstance().saveOrReplaceHttpCacheData(reqUrl,params,OkHttpClientManager.getInstance().getmGson().toJson(responseData));
+                    }
+                }else {
+                    if (!NetWorkUtils.isNetworkAvailable(context)){ //请求失败,若为无网络造成,从数据库取数据返回
+                        RspListClassType cacheData = SchoolCacheServer.getInstance().getRspCacheData(reqUrl,params,RspListClassType.class);
+                        if (cacheData != null && cacheData.getList()!= null && !cacheData.getList().isEmpty()){
+                            errorData = null;
+                            responseData = cacheData;
+                        }
+                    }
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, params);
+    }
+
+    public ArrayList<ClassFilterData> parseToClassFilterDatas(List<ClassificationData> titleData) {
+        ArrayList<ClassFilterData> filterDatas = null;
+        if (titleData == null){
+            filterDatas = new ArrayList<>();
+            return filterDatas;
+        }
+        if (titleData != null) {
+            filterDatas = new ArrayList<>();
+            for (ClassificationData typeData : titleData) {
+                String title = typeData.getName();
+                filterDatas.add(new ClassFilterData(title, (ArrayList)typeData.getChilddata()));
+            }
+        }
+        return filterDatas;
+    }
+
+    /**
+     * 获取课程详情
+     * @param req
+     * @param listener
+     */
+    public void getClassDetail(IBaseReq req,final XLTResponseListener<RspClassDetail> listener){
+        String reqUrl = req.getReqUrl();
+        String params = req.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(reqUrl, RspClassDetail.class, new XLTResponseListener<RspClassDetail>(){
+
+            @Override
+            public void onResponse(RspClassDetail responseData, XLTError errorData) {
+                if (errorData != null && responseData != null) {
+                    //TODO 数据请求成功
+
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, params);
+    }
+
+    /**
+     * 课程列表
+     */
+    public static class SchoolClassListServer implements IListServer<RspListClass> {
+        private ReqClassList reqClassList;
+        public SchoolClassListServer(ReqClassList reqClassList){
+            this.reqClassList = reqClassList;
+        }
+
+        @Override
+        public void getData(int page, int limit, final XLTResponseCallback<RspListClass> listener) {
+            if (reqClassList != null){
+                reqClassList.setGetcount(limit);
+                reqClassList.setPage(page);
+                final String reqUrl = reqClassList.getReqUrl();
+                final String params = reqClassList.getReqParams();
+                OkHttpClientManager.getInstance().addGsonRequest(reqUrl, RspListClass.class, new XLTResponseListener<RspListClass>() {
+                    @Override
+                    public void onResponse(RspListClass responseData, XLTError errorData) {
+                        if (errorData == null && responseData != null){
+                            //数据获取成功
+                            if (responseData.getList() != null && !responseData.getList().isEmpty()){
+                                SchoolCacheServer.getInstance().saveOrReplaceHttpCacheData(reqUrl,params,OkHttpClientManager.getInstance().getmGson().toJson(responseData));
+                            }
+                        }
+                        if (listener != null){
+                            listener.onResponse(responseData,errorData);
+                        }
+                    }
+                },params);
+            }
+        }
+
+        @Override
+        public RspListClass getCacheData() {
+            return SchoolCacheServer.getInstance().getRspCacheData(reqClassList.getReqUrl(), reqClassList.getReqParams(), RspListClass.class);
+        }
+    }
+
+
+    /**
+     * 课程详情 评价
+     */
+    public static class SchoolClassEvaluateServer implements IListServer<RspListEvaluate> {
+        private ReqEvalute reqEvalute;
+        public SchoolClassEvaluateServer(ReqEvalute reqEvalute){
+            this.reqEvalute = reqEvalute;
+        }
+
+        @Override
+        public void getData(int page, int limit, final XLTResponseCallback<RspListEvaluate> listener) {
+            String url = reqEvalute.getReqUrl();
+            reqEvalute.setPage(page);
+            reqEvalute.setGetcount(limit);
+            String params = reqEvalute.getReqParams();
+            OkHttpClientManager.getInstance().addGsonRequest(url, RspListEvaluate.class, new XLTResponseListener<RspListEvaluate>() {
+                @Override
+                public void onResponse(RspListEvaluate responseData, XLTError errorData) {
+                    if (errorData == null){
+                        //TODO 请求成功
+                    }
+                    if (listener != null){
+                        listener.onResponse(responseData,errorData);
+                    }
+                }
+            },params);
+        }
+
+        @Override
+        public RspListEvaluate getCacheData() {
+            return null;
+        }
+
+        /**
+         * 创建评价
+         * @param listener
+         */
+        public void createEvalute(final XLTResponseListener<ClassEvaluateData> listener){
+            String url = reqEvalute.getReqUrl();
+            String params = reqEvalute.getReqParams();
+            OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject responseData, XLTError errorData) {
+                    if (errorData == null){
+                        try {
+                            ClassEvaluateData classEvaluateData = OkHttpClientManager.getInstance().getmGson().fromJson(responseData.getString("comment"),ClassEvaluateData.class);
+                            EventBus.getDefault().post(new CreateEvaluteEvent(classEvaluateData));
+                            if (listener != null){
+                                listener.onResponse(classEvaluateData,errorData);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (listener != null){
+                                listener.onResponse(null,errorData);
+                            }
+                        }
+                    }else {
+                        if (listener != null){
+                            listener.onResponse(null,errorData);
+                        }
+                    }
+                }
+            },params);
+        }
+
+    }
+
+    /**
+     * 参加课程
+     */
+    public void joinClass(ReqClassJoin reqClassJoin,final XLTResponseListener<RspClassJoin> listener){
+        String url = reqClassJoin.getReqUrl();
+        String params = reqClassJoin.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspClassJoin.class, new XLTResponseListener<RspClassJoin>() {
+            @Override
+            public void onResponse(RspClassJoin responseData, XLTError errorData) {
+                if (errorData == null){
+                    //请求成功
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },params);
+    }
+
+    /**
+     * 点赞
+     * @param reqPraise
+     * @param listener
+     */
+    public void praiseClass(ReqPraise reqPraise,final XLTResponseListener<JSONObject> listener){
+        String url = reqPraise.getReqUrl();
+        String params = reqPraise.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+                if (errorData == null){
+                    //TODO 请求成功
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },params);
+    }
+
+
+    /**
+     * 收藏课程
+     * @param reqFavorite
+     * @param listener
+     */
+    public void favoriteClass(ReqFavorite reqFavorite,final XLTResponseListener<JSONObject> listener){
+        String url = reqFavorite.getReqUrl();
+        String params = reqFavorite.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+                if (errorData == null){
+                    //TODO 请求成功
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },params);
+    }
+
+    /**
+     *  获取搜热门列表
+     */
+    public void getSearchHotList(final XLTResponseListener<RspListSearchHot> listener){
+        String url = "classroom.php?mod=hotsearch&cmdcode=107";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspListSearchHot.class, new XLTResponseListener<RspListSearchHot>() {
+            @Override
+            public void onResponse(RspListSearchHot responseData, XLTError errorData) {
+                if (errorData == null) {
+                    //TODO 请求成功
+                }
+                if (listener != null) {
+                    listener.onResponse(responseData, errorData);
+                }
+            }
+        }, "");
+    }
+
+    /**
+     * 获取年龄段
+     */
+    public void getAgeList(final Context context,final XLTResponseListener<RspFilterAgeList> listener){
+        final String url = ReqAgeList.URL_AGE_LIST;
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspFilterAgeList.class, new XLTResponseListener<RspFilterAgeList>() {
+
+            @Override
+            public void onResponse(RspFilterAgeList responseData, XLTError errorData) {
+                if (errorData == null && responseData != null) {
+                    //请求成功 保存数据
+                    if (responseData.getList() != null && !responseData.getList().isEmpty()){
+                        SchoolCacheServer.getInstance().saveOrReplaceHttpCacheData(url, null, OkHttpClientManager.getInstance().getmGson().toJson(responseData));
+                    }
+                }else {
+                    if (SchoolCacheServer.getInstance().hasRspCacheData(context, url, null, RspFilterAgeList.class, listener)){
+                        return;
+                    }
+                }
+                if (listener != null) {
+                    listener.onResponse(responseData, errorData);
+                }
+            }
+        }, "");
+    }
+
+
+    /**
+     * 获取广告列表
+     */
+    public void getAdList(ReqAdvertisement reqData,final XLTResponseListener<RspAdList> listener){
+        final String reqUrl = reqData.getReqUrl();
+        final String param = reqData.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(reqUrl, RspAdList.class, new XLTResponseListener<RspAdList>() {
+            @Override
+            public void onResponse(RspAdList responseData, XLTError errorData) {
+                if (errorData == null){
+                    //请求成功
+                    SchoolCacheServer.getInstance().saveOrReplaceHttpCacheData(reqUrl,param,OkHttpClientManager.getInstance().getmGson().toJson(responseData)); //缓存数据
+                }else {
+                    //请求失败 从缓存中获取数据
+                    HttpCacheBean cacheData = SchoolCacheServer.getInstance().getCacheData(reqUrl,param);
+                    if (cacheData != null){
+                        String jsonData = cacheData.getData();
+                        if (jsonData != null && !TextUtils.isEmpty(jsonData)){
+                            responseData = OkHttpClientManager.getInstance().getmGson().fromJson(jsonData,RspAdList.class);
+                            errorData = null;
+                        }
+                    }
+                }
+                if (listener != null) {
+                    listener.onResponse(responseData, errorData);
+                }
+            }
+        },param);
+    }
+
+}

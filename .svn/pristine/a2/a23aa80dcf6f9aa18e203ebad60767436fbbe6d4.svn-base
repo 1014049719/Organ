@@ -1,0 +1,352 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.event.AttentionAgeEvent;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CircleList;
+import com.talenton.organ.server.bean.feed.CircleListData;
+import com.talenton.organ.server.bean.feed.RspCircleList;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.LinkedList;
+
+public class AttentionAgeActivity extends BaseCompatActivity implements View.OnClickListener {
+
+    private PullToRefreshListView mPullRefreshListView;
+    private ListView mListView;
+    private LoadingViewHolder mLoading;
+    private PagerAdapter mAdapter;
+    private LinkedList<CircleListData> mDatas = new LinkedList<CircleListData>();
+    private int mCurPage, mSumCount;
+    private static final int PAGE_SIZE = 20;
+    private boolean mIsAttention = false;
+    private int mCircleType;
+
+    public static void startAttentionAgeActivity(Context context, int circleType){
+        Intent intent = new Intent(context, AttentionAgeActivity.class);
+        intent.putExtra("circleType", circleType);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attention_age);
+
+        mCircleType = getIntent().getIntExtra("circleType", CircleListData.CIRCLE_TYPE_AGE);
+        if (mActionBarTitle != null){
+            int resId = R.string.circle_title_mine_attention_age;
+            switch (mCircleType){
+                case CircleListData.CIRCLE_TYPE_THEME:
+                    resId = R.string.circle_title_mine_attention_theme;
+                    break;
+                case CircleListData.CIRCLE_TYPE_SCHOOL:
+                    resId = R.string.circle_title_mine_attention_school;
+                    break;
+            }
+            mActionBarTitle.setText(resId);
+        }
+
+        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+                RefreshData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+                loadMoreData();
+            }
+
+        });
+        mListView = mPullRefreshListView.getRefreshableView();
+
+        mAdapter = new PagerAdapter(this, this);
+        mListView.setAdapter(mAdapter);
+
+        View loading = findViewById(R.id.loading_container);
+        mLoading = new LoadingViewHolder(mPullRefreshListView, loading, this, this);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        // Trigger the initial hide() shortly after the activity has been
+        // created, to briefly hint to the user that UI controls
+        // are available.
+        loadData();
+    }
+
+    private void loadData(){
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+        CircleList circleList = new CircleList();
+        circleList.circle_type = mCircleType;
+
+        FeedServer.getCircleList(circleList, new XLTResponseCallback<RspCircleList>() {
+            @Override
+            public void onResponse(RspCircleList data, XLTError error) {
+                if (error == null && data != null && data.list != null) {
+                    initData(data);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+        });
+    }
+
+    private void RefreshData(){
+        CircleList circleList = new CircleList();
+        circleList.circle_type = mCircleType;
+        FeedServer.getCircleList(circleList, new XLTResponseCallback<RspCircleList>() {
+            @Override
+            public void onResponse(RspCircleList data, XLTError error) {
+                mPullRefreshListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullRefreshListView.onRefreshComplete();
+                    }
+                }, 1000);
+                if (error == null && data != null && data.list != null) {
+                    initData(data);
+                }
+            }
+        });
+    }
+
+    private void loadMoreData(){
+        if(mSumCount <= 0 || (mCurPage * 20) >= mSumCount){
+            showShortToast(getString(R.string.toast_text_no_data));
+            mPullRefreshListView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPullRefreshListView.onRefreshComplete();
+                }
+            }, 1000);
+            //mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+            //mPullRefreshListView.getFooterLoadingView().setVisibility(View.GONE);
+            return;
+        }
+
+        CircleList circleList = new CircleList();
+        circleList.circle_type = mCircleType;
+        circleList.query_pager = String.valueOf(mCurPage+1);
+        FeedServer.getCircleList(circleList, new XLTResponseCallback<RspCircleList>() {
+            @Override
+            public void onResponse(RspCircleList data, XLTError error) {
+                mPullRefreshListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPullRefreshListView.onRefreshComplete();
+                    }
+                }, 1000);
+                if (error == null && data != null && data.list != null && data.list.size() > 0) {
+                    mCurPage++;
+                    mDatas.addAll(data.list);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void initData(RspCircleList data){
+        /*
+        if(data.count < PAGE_SIZE){
+            mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+            mPullRefreshListView.getFooterLoadingView().setVisibility(View.GONE);
+        }else {
+            mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        }
+        */
+        mCurPage = 1;
+        mSumCount = data.count;
+        mDatas.clear();
+        if (data.list.size() > 0)
+            mDatas.addAll(data.list);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.circle_title_mine_attention_age;
+    }
+
+
+    @Override
+    public void finish() {
+        if (mIsAttention)
+            EventBus.getDefault().post(new AttentionAgeEvent(mIsAttention));
+        super.finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_attention:
+                attentionCircle((int)v.getTag());
+                break;
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                loadData();
+                break;
+        }
+    }
+
+    private void attentionCircle(final int pos){
+        if (pos > mDatas.size()) return;
+        CircleListData d = mDatas.get(pos);
+        final long circleId = d.circle_id;
+        final boolean isAttention = !d.ext_is_attented;
+        if(d.ext_is_attented){
+            final CommonAlertDialog mAlertDlg = new CommonAlertDialog(this);
+            mAlertDlg.setTitle(R.string.main_prompt);
+            mAlertDlg.setCancelable(false);
+            mAlertDlg.setNegativeButton(getString(R.string.main_cancel), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                }
+            });
+            mAlertDlg.setPositiveButton(getString(R.string.main_confirm), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                    handleAttentionCirlce(circleId, isAttention);
+                }
+            });
+            mAlertDlg.setMessage(R.string.circle_prompt_attention);
+            mAlertDlg.show();
+        }else {
+            handleAttentionCirlce(circleId, !d.ext_is_attented);
+        }
+    }
+
+    private void handleAttentionCirlce(final long circleId, final boolean isAttention){
+        showProgress(R.string.main_processing, true);
+        mIsAttention = true;
+        FeedServer.attentionOrCancelCircle(circleId, 0, -1, isAttention, new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                hideProgress();
+                if (error == null){
+                    if (mDatas != null){
+                        for (CircleListData c : mDatas){
+                            if (c.circle_id == circleId){
+                                c.ext_is_attented = isAttention;
+                                c.members_count += isAttention ? 1 : -1;
+                                c.members_count = c.members_count < 0 ? 0 : c.members_count;
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                    }
+                    String msg = isAttention ? getString(R.string.circle_prompt_attention_success): "取消成功";
+                    XLTToast.makeText(AttentionAgeActivity.this, msg).show();
+                }else {
+                    if (TextUtils.isEmpty(error.getMesssage())){
+                        XLTToast.makeText(AttentionAgeActivity.this, R.string.main_request_fail).show();
+                    }else{
+                        XLTToast.makeText(AttentionAgeActivity.this, error.getMesssage()).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private class PagerAdapter extends BaseAdapter{
+
+        LayoutInflater mInflater;
+        View.OnClickListener mListener;
+
+        public PagerAdapter(Context context, View.OnClickListener listener){
+            mInflater = LayoutInflater.from(context);
+            mListener = listener;
+        }
+
+        @Override
+        public int getCount() {
+            return mDatas.size();
+        }
+
+        @Override
+        public CircleListData getItem(int position) {
+            return mDatas.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            HolderView holder;
+            if (convertView == null){
+                convertView = mInflater.inflate(R.layout.item_feed_attention_age, parent, false);
+                holder = new HolderView();
+                holder.mCirclePhoto = (ImageView)convertView.findViewById(R.id.circle_photo);
+                holder.mCircleName = (TextView)convertView.findViewById(R.id.tv_circle_name);
+                holder.mCircleDescription = (TextView)convertView.findViewById(R.id.tv_circle_description);
+                holder.mAttention = (TextView)convertView.findViewById(R.id.tv_attention);
+                convertView.setTag(holder);
+            }else {
+                holder = (HolderView)convertView.getTag();
+            }
+            CircleListData data = getItem(position);
+            ImageLoader.getInstance().displayImage(data.circle_photo, holder.mCirclePhoto, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+            holder.mCircleName.setText(data.circle_name);
+            holder.mCircleDescription.setText(data.description);
+            if (data.ext_is_attented){
+                holder.mAttention.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                holder.mAttention.setTextColor(Color.parseColor("#FFFFFF"));
+            }else {
+                holder.mAttention.setBackgroundResource(R.drawable.btn_blue_conner_stroke_selector);
+                holder.mAttention.setTextColor(Color.parseColor("#0082C8"));
+            }
+            if(data.members_count > 0){
+                holder.mAttention.setText(String.format("%d关注", data.members_count));
+            }else {
+                holder.mAttention.setText(R.string.circle_attention);
+            }
+            holder.mAttention.setTag(position);
+            holder.mAttention.setOnClickListener(mListener);
+            return convertView;
+        }
+    }
+
+    private class HolderView{
+        public ImageView mCirclePhoto;
+        public TextView mCircleName, mCircleDescription, mAttention;
+    }
+}

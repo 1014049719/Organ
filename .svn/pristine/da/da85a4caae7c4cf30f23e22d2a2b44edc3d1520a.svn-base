@@ -1,0 +1,163 @@
+package com.talenton.organ.util;
+
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.bean.AppData;
+import com.talenton.base.server.bean.AppModule;
+import com.talenton.base.server.bean.RspLogin;
+import com.talenton.organ.event.FunctionEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+/**
+ * @author zjh
+ * @date 2016/7/11
+ */
+public class AppManager {
+    /**
+     * 功能列表id
+     */
+    private static Set<Integer> functionIdList;
+    /**
+     * 模块列表id
+     */
+    private static Set<Integer> modelList;
+    public enum Function{
+        SCHOOL(1), //学堂
+        SHOP(2), //商城
+        FEED_CLASS(3), //班级圈
+        FEED_BABY(4), //宝宝圈
+        FEED_BRAND(5),//品牌圈
+        SHOW_TIME(6), //秀场
+        INFORMATION_CHILD(7), //育儿资讯
+        INFORMATION_ESSENCE(8),//精华资讯
+        ACTIVITY(9);//活动
+
+        private int functionId;
+        Function(int functionId){
+            this.functionId = functionId;
+        }
+
+        public int getFunctionId() {
+            return functionId;
+        }
+    }
+
+    public enum Model{
+        FEED(1),
+        SCHOOL(2),
+        SHOP(4);
+
+        private int modelId;
+        Model(int modelId){
+            this.modelId = modelId;
+        }
+
+        public int getModelId() {
+            return modelId;
+        }
+    }
+
+    private static AppManager instance;
+    private AppManager(){
+
+    }
+
+    public static AppManager getInstance(){
+        if (instance == null){
+            instance = new AppManager();
+        }
+        return instance;
+    }
+
+    public void init(){
+        functionIdList = new HashSet<>();
+        modelList = new HashSet<>();
+        RspLogin rspLogin = UserServer.getRspLogin();
+        if (rspLogin != null){
+            AppData myAppDataInfo = rspLogin.app_cur;
+            parseAppInfo(myAppDataInfo);
+        }
+    }
+
+    /**
+     * 从登录信息中添加功能
+     */
+    public void addAppInfo(RspLogin rspLogin) {
+        if (rspLogin != null){
+            AppData myAppInfo = rspLogin.app_cur;
+            if (myAppInfo != null){
+                parseAppInfo(myAppInfo);
+            }
+        }
+    }
+
+    public void updateAppInfo(AppData appData){
+        if (appData == null){
+            return;
+        }
+        cleanAppModelAndFunctionData();
+        parseAppInfo(appData);
+        UserServer.getRspLogin().app_cur = appData;
+        saveAppData(UserServer.getRspLogin());
+        EventBus.getDefault().post(new FunctionEvent(FunctionEvent.FUNCTION_UPDATE));
+    }
+
+    /**
+     * 是否拥有该功能
+     * @param function
+     * @return
+     */
+    public boolean hasFunction(Function function){
+        int functionId = function.getFunctionId();
+        if (functionIdList.contains(functionId)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否拥有该模块功能
+     * @param model
+     * @return
+     */
+    public boolean hasModel(Model model){
+        int modelId = model.getModelId();
+        if (modelList.contains(modelId)){
+            return true;
+        }
+        return false;
+    }
+
+    private void parseAppInfo(AppData myAppDataInfo){
+        if (myAppDataInfo != null && myAppDataInfo.modelname != null && !myAppDataInfo.modelname.isEmpty()){
+            for (AppModule appModelInfo : myAppDataInfo.modelname){
+                modelList.add(appModelInfo.f_type);
+                functionIdList.add(appModelInfo.f_id);
+            }
+        }
+    }
+
+
+    /**
+     * 清空所有功能
+     */
+    public void cleanAppModelAndFunctionData(){
+        functionIdList.clear();
+        modelList.clear();
+        EventBus.getDefault().post(new FunctionEvent(FunctionEvent.FUNCTION_UPDATE));
+    }
+
+    /**
+     * 保存功能列表
+     */
+    public void saveAppData(RspLogin rspLogin){
+        if (rspLogin != null){
+            UserServer.setRspLogin(rspLogin);
+            EventBus.getDefault().post(new FunctionEvent(FunctionEvent.FUNCTION_UPDATE));
+        }
+    }
+
+}

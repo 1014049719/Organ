@@ -1,0 +1,330 @@
+package com.talenton.organ.server.bean.feed;
+
+import com.google.gson.annotations.Expose;
+import com.talenton.base.server.UserServer;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
+
+import java.io.File;
+
+public class MediaBean implements Parcelable {
+	public final static int ADDR_LOCAL_ORG = -1, ADDR_LOCAL = 0, ADDR_XLT = 1, ADDR_QINIU = 2;
+	public final static int TYPE_PIC = 0;// 图片类型
+	public final static int TYPE_VIDEO = 1;// 视频类型
+	public int itype;
+	public int remote;// 0:本地 1:服务器 2:七牛
+	@Expose
+	public String orgpath;// 图片（视频）源路径
+	public String filepath;// 处理过（压缩上传）的路径
+	public long graphtime;
+	public int videotime;// 秒为单位的视频时长
+	// TODO Parcel CoverInfo
+	public CoverInfo videoCover;// 视频封面
+	public int height;
+	public int width;
+	public int mImageId;
+	public int size;
+	@Expose
+	private String mThumbnailPath;// 图片缩略图，视频封面图
+	@Expose
+	private boolean isSelected;
+	@Expose
+	private String mParentPath;
+
+	// @Expose private String mTitle;
+	public MediaBean() {
+		itype = TYPE_PIC;
+		remote = ADDR_LOCAL_ORG;
+	}
+
+	public MediaBean(int mediaType) {
+		itype = mediaType;
+		remote = ADDR_LOCAL_ORG;
+	}
+
+	public int getMediaType() {
+		return itype;
+	}
+
+	public void setMediaType(int mMediaType) {
+		this.itype = mMediaType;
+	}
+
+	public int getmSize() {
+		return size;
+	}
+
+	public void setSize(int mSize) {
+		this.size = mSize;
+	}
+
+	public int getVideoTime() {
+		return videotime;
+	}
+
+	public void setVideoTime(int mVideoTime) {
+		this.videotime = mVideoTime;
+	}
+
+	public int getImageId() {
+		return mImageId;
+	}
+
+	public void setImageId(int mImageId) {
+		this.mImageId = mImageId;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	public String getPath() {
+		return orgpath;
+	}
+
+	public void setPath(String mPath) {
+		this.orgpath = mPath;
+	}
+
+	public void setCover(String filePath) {
+		videoCover = new CoverInfo();
+		videoCover.remote = MediaBean.ADDR_LOCAL;
+		videoCover.filepath = filePath;
+		videoCover.orgpath =filePath;
+		videoCover.size = size;
+	}
+
+	public void setCover(String filePath, int width, int height){
+		if (videoCover == null) return;
+		videoCover.remote = MediaBean.ADDR_QINIU;
+		videoCover.filepath = filePath;
+		videoCover.height = height;
+		videoCover.width = width;
+	}
+
+	public MediaBean getCover(){
+		if (videoCover == null) return null;
+		MediaBean mb = new MediaBean();
+		mb.remote = videoCover.remote;
+		mb.filepath = videoCover.filepath;
+		mb.orgpath = videoCover.orgpath;
+		return mb;
+	}
+
+	public String getThumbnailPath() {
+		return mThumbnailPath;
+	}
+
+	public void setThumbnailPath(String mThumbnailPath) {
+		this.mThumbnailPath = mThumbnailPath;
+	}
+
+	public String getParentPath() {
+		return mParentPath;
+	}
+
+	public void setParentPath(String mParentPath) {
+		this.mParentPath = mParentPath;
+	}
+
+	// public String getTitle() {
+	// return mTitle;
+	// }
+	//
+	// public void setTitle(String mTitle) {
+	// this.mTitle = mTitle;
+	// }
+
+	public long getModified() {
+		return graphtime;
+	}
+
+	public void setModified(long mModified) {
+		this.graphtime = mModified;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int mHeight) {
+		this.height = mHeight;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int mWidth) {
+		this.width = mWidth;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[path = ");
+		sb.append(orgpath);
+		sb.append("],[thumbPath = ");
+		sb.append(mThumbnailPath);
+		sb.append("],[addedTime = ");
+		sb.append("],[height = ");
+		sb.append(height);
+		sb.append("],[width = ");
+		sb.append(width);
+		sb.append("],[size = ");
+		sb.append(size);
+		sb.append("]");
+		return sb.toString();
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeInt(itype);
+		parcel.writeInt(remote);
+		parcel.writeString(orgpath);
+		parcel.writeString(filepath);
+		parcel.writeString(mThumbnailPath);
+		parcel.writeString(mParentPath);
+		// parcel.writeString(mTitle);
+
+		parcel.writeLong(graphtime);
+
+		parcel.writeInt(videotime);
+		parcel.writeInt(height);
+		parcel.writeInt(width);
+		parcel.writeInt(mImageId);
+		parcel.writeInt(size);
+
+		parcel.writeInt(isSelected ? 1 : 0);
+
+		parcel.writeParcelable(videoCover, i);
+	}
+
+	public MediaBean(Parcel parcel) {
+		itype = parcel.readInt();
+		remote = parcel.readInt();
+		orgpath = parcel.readString();
+		filepath = parcel.readString();
+		mThumbnailPath = parcel.readString();
+		mParentPath = parcel.readString();
+		// mTitle = parcel.readString();
+
+		graphtime = parcel.readLong();
+
+		videotime = parcel.readInt();
+		height = parcel.readInt();
+		width = parcel.readInt();
+		mImageId = parcel.readInt();
+		size = parcel.readInt();
+
+		isSelected = parcel.readInt() == 1;
+
+		videoCover = parcel.readParcelable(CoverInfo.class.getClassLoader());
+	}
+
+	public static final Creator<MediaBean> CREATOR = new Parcelable.Creator<MediaBean>() {
+
+		@Override
+		public MediaBean createFromParcel(Parcel parcel) {
+			return new MediaBean(parcel);
+		}
+
+		@Override
+		public MediaBean[] newArray(int i) {
+			return new MediaBean[i];
+		}
+	};
+
+	public boolean isLocal() {
+		return remote == ADDR_LOCAL || remote == ADDR_LOCAL_ORG;
+	}
+	
+	/**
+	 * 视频地址
+	 * 
+	 * @return
+	 */
+	public String getVideoUrl() {
+
+		if (remote == ADDR_LOCAL){
+			return orgpath;
+		}else if(remote == ADDR_QINIU){
+			
+			if(!TextUtils.isEmpty(orgpath)){
+				File file = new File(orgpath);
+				if(file.exists()){
+					return orgpath;
+				}
+			}
+		}
+		return filepath;
+	}
+
+	/**
+	 * 图片动态的图片，或者视频动态的视频文件
+	 * 
+	 * @return
+	 */
+	public String genUrl() {
+		if (remote == ADDR_LOCAL) {
+			return "file://" + filepath;
+		} else if (remote == ADDR_QINIU) {
+			return filepath;
+		} else if (remote == ADDR_LOCAL_ORG) {
+			return "file://" + orgpath;
+		}
+		return filepath;
+	}
+
+	/**
+	 * 视频动态的封面图片
+	 *
+	 * @return
+	 */
+	public String genVideoCover() {
+		if (videoCover == null) return "";
+		if (videoCover.remote == ADDR_LOCAL) {
+			return "file://" + videoCover.orgpath;
+		} else if (videoCover.remote == ADDR_QINIU) {
+			return videoCover.filepath;
+		} else if (videoCover.remote == ADDR_LOCAL_ORG) {
+			return "file://" + videoCover.orgpath;
+		}
+		return videoCover.filepath;
+	}
+
+	/**
+	 * 图片动态的图片，或者视频动态的封面图
+	 * 
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public String genUrl(int width, int height) {
+		if (itype == TYPE_PIC) {
+			if (remote == ADDR_QINIU && itype == TYPE_PIC) {
+				return String.format("%s?imageView2/1/w/%d/h/%d", filepath, width, height);
+			} else {
+				return genUrl();
+			}
+		} else if (videoCover != null) {
+			return genVideoCover();
+		} else {
+			return "";
+		}
+	}
+
+	public static String genQNFullUrl(String key) {
+		return String.format("http://%s/%s", UserServer.getQndns(), key);
+	}
+}

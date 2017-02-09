@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/btn_white_corner_bg"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingBottom="@dimen/space_10_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/height_100"
+        android:textColor="@color/text_main"
+        android:gravity="center"
+        android:textSize="@dimen/text_32" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50">
+
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_sub"
+            android:text="@string/dialog_text_cancel"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+
+        <View
+            android:layout_width="@dimen/space_0_5"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_marginBottom="@dimen/space_10"
+            android:background="@color/divider_line" />
+
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/main_blue"
+            android:text="@string/dialog_text_confirm"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+    
+</LinearLayout>

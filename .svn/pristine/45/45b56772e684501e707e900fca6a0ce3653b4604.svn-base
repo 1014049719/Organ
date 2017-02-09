@@ -1,0 +1,31 @@
+package com.talenton.organ;
+
+import com.talenton.base.XltApplication;
+import com.talenton.base.server.UserServer;
+import com.talenton.organ.ui.WelcomeActivity;
+import com.talenton.organ.util.AppManager;
+import com.talenton.organ.util.CacheManager;
+
+/**
+ * Created by ttt on 2016/3/28.
+ */
+public class OrganApplication extends XltApplication {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        UserServer.setReLoginListener(new UserServer.OnReLoginListener() {
+            @Override
+            public void OnSwitchUser() {
+                CacheManager.getInstance().reset();
+            }
+
+            @Override
+            public void OnReLoginUi() {
+                WelcomeActivity.startForReLogin();
+            }
+        });
+
+        AppManager.getInstance().init();
+    }
+}

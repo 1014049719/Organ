@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/space_10_0">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="话题名称"
+            android:textColor="#333333"
+            android:textSize="@dimen/text_38"
+            android:layout_marginLeft="@dimen/space_15_0"/>
+        <ImageView
+            android:id="@+id/attachinfo_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/photo_icon"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/title_tv"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/space_25_0"
+        android:layout_marginBottom="@dimen/space_15_0">
+        <TextView
+            android:id="@+id/cname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="来自某个话题圈"
+            android:textColor="#999999"
+            android:background="@drawable/textview_oval_background"
+            android:padding="@dimen/space_5_0"
+            android:layout_marginLeft="@dimen/space_15_0"/>
+        <TextView
+            android:id="@+id/ctime_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5分钟"
+            android:textColor="#999999"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/space_10_0"/>
+        <TextView
+            android:id="@+id/commentcount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="#999999"
+            android:layout_toLeftOf="@+id/ctime_tv"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/space_15_0"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/hf_icon"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/commentcount_tv"
+            android:layout_marginRight="@dimen/space_4_0"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

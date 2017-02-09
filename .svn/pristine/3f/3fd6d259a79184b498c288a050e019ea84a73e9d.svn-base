@@ -1,0 +1,107 @@
+package com.talenton.organ.ui.shop.adapter;
+
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.shop.GoodsCartInfo;
+
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/4/25.
+ */
+public class GoodsCartAdapter extends BaseAdapter {
+    private LayoutInflater mInflater;
+    private ArrayList<GoodsCartInfo> mGoodsCart;
+    private ArrayList<GoodsCartInfo> mGoodsCartPick;
+    public double price;//总价格
+    public int num;
+
+    public View.OnClickListener mListener;
+
+
+    public GoodsCartAdapter(Context context) {
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mListener = (View.OnClickListener)context;
+        mGoodsCart = new ArrayList<GoodsCartInfo>();
+        mGoodsCartPick=new ArrayList<GoodsCartInfo>();
+
+    }
+
+    public int getCount() {
+        return mGoodsCart.size();
+    }
+
+    public ArrayList<GoodsCartInfo> getPikGoodsCartInfo() {
+        return mGoodsCartPick;
+    }
+    public void setData(ArrayList<GoodsCartInfo> paths) {
+        mGoodsCart.clear();
+        mGoodsCart.addAll(paths);
+        notifyDataSetChanged();
+    }
+
+
+    public GoodsCartInfo getItem(int position) {
+        return mGoodsCart.get(position);
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        // TODO Auto-generated method stub
+        ViewHolder holder = null;
+        if (convertView == null) {
+            holder = new ViewHolder();
+            convertView = mInflater.inflate(R.layout.item_shop_cart, parent, false);
+
+            holder.name = (TextView) convertView.findViewById(R.id.shop_cart_goods_name);
+            holder.imageButton = (ImageButton)convertView.findViewById(R.id.shop_cart_goods_pik);
+            holder.linearLayout=(LinearLayout)convertView.findViewById(R.id.LinearLayout_shop_cart_goods_pik);
+            holder.price = (TextView) convertView.findViewById(R.id.shop_cart_price);
+            holder.num = (TextView) convertView.findViewById(R.id.shop_cart_sale_number);
+            holder.img=(ImageView)convertView.findViewById(R.id.shop_cart_goods_picture);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.position = position;
+        final GoodsCartInfo item = getItem(position);
+
+        holder.name.setText(item.name);
+        holder.linearLayout.setVisibility(View.GONE);
+        holder.price.setText("¥"+String.valueOf(item.goods_price));
+        holder.num.setText(String.valueOf(item.goods_number));
+        ImageLoaderManager.getInstance().displayImage(item.goods_img, holder.img, ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER, null, null);
+
+        return convertView;
+    }
+
+    public class ViewHolder {
+        ImageButton imageButton;
+        LinearLayout linearLayout;
+        TextView name;
+        TextView price;
+        TextView num;
+        ImageView img;
+
+        public int position;
+    }
+
+
+
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.DiscountAreaActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <RelativeLayout
+        android:background="@color/main_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ViewStub
+            android:id="@+id/vs_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/global_app_bar" />
+
+        <ImageView
+            android:id="@+id/iv_shop_cart"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/icon_shop_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+
+    </RelativeLayout>
+
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_marginTop="@dimen/space_10"
+        android:id="@+id/pull_refresh_list"
+        android:divider="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

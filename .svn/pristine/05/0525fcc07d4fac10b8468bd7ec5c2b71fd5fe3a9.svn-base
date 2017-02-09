@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top|left"
+    android:paddingTop="@dimen/space_5_0"
+    android:paddingBottom="@dimen/space_5_0"
+    android:orientation="horizontal" >
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/user_logo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/user_photo"
+        bbg:civ_border_color="@color/transparent"
+        bbg:civ_border_width="0.5dp" />
+
+    <com.talenton.base.widget.CommentTextView
+        android:id="@+id/comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_7_5"
+        android:layout_weight="1"
+        android:background="@drawable/btn_white_bg_selector"
+        android:gravity="center_vertical"
+        android:lineSpacingMultiplier="1.3"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/text_28"
+        emojicon:emojiconSize="@dimen/text_32" />
+
+</LinearLayout>

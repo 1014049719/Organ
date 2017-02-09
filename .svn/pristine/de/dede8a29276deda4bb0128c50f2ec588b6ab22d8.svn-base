@@ -1,0 +1,113 @@
+package com.talenton.organ.server;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.talenton.base.dao.model.HttpCacheBean;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.DBHelper;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.NetWorkUtils;
+
+/**
+ * @author zjh
+ * @date 2016/5/30
+ */
+public class BaseCacheServer {
+    private static BaseCacheServer baseCacheServer;
+
+    public static BaseCacheServer getInstance(){
+        if (baseCacheServer == null){
+            baseCacheServer = new BaseCacheServer();
+        }
+        return baseCacheServer;
+    }
+    /**
+     * 数据库是否有http请求响应数据
+     * @param context
+     * @param url
+     * @param param
+     * @param clazz
+     * @param listener
+     * @param <T>
+     * @return
+     */
+    public <T> boolean hasRspCacheData(Context context,String url,String param,Class<? extends T> clazz, XLTResponseListener<T> listener){
+        if (!NetWorkUtils.isNetworkAvailable(context)){
+            T t = getRspCacheData(url, param, clazz);
+            if (t != null){
+                if (listener != null){
+                    listener.onResponse(t,null);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public <T> T getRspCacheData(String url,String param,Class<? extends T> clazz){
+        HttpCacheBean httpCacheBean = getCacheData(url,param);
+        if (httpCacheBean != null){
+            String rspData = httpCacheBean.getData();
+            return OkHttpClientManager.getInstance().getmGson().fromJson(rspData,clazz);
+        }
+        return null;
+    }
+
+    /**
+     * 获取数据库缓存数据
+     * @param url
+     * @param param
+     * @return
+     */
+    public HttpCacheBean getCacheData(String url,String param){
+        String key = getCacheKey(url, param);
+        HttpCacheBean  httpCacheBean = (HttpCacheBean) DBHelper.getInstance().load(DBHelper.DAO_HTTP_CACHE,((Integer)key.hashCode()).longValue());
+        return httpCacheBean;
+    }
+
+//    public Object load(String key){
+//        Object o = null;
+//        try {
+//            QueryBuilder queryBuilder = DBHelper.getInstance().getQueryBuilder(DBHelper.DAO_HTTP_CACHE);
+//            queryBuilder.where(HttpCacheDao.Properties.Key.eq(key));
+//            o = queryBuilder.build().unique();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return o;
+//    }
+
+    /**
+     * 缓存网络请求数据
+     * @param url
+     * @param param
+     * @param data
+     */
+    public void saveOrReplaceHttpCacheData(String url, String param, String data){
+        String key = getCacheKey(url, param);
+        long currentMillis = System.currentTimeMillis();
+        HttpCacheBean  httpCacheBean = getCacheData(url, param);
+        if (httpCacheBean == null){
+            //insert
+            AppLogger.d("database==>insert");
+            httpCacheBean = new HttpCacheBean(((Integer)key.hashCode()).longValue(),url,param,key,currentMillis,currentMillis,data);
+        }else {
+            //replace
+            AppLogger.d("database==>replace");
+            httpCacheBean.setUpdateTime(currentMillis);
+            httpCacheBean.setData(data);
+        }
+        DBHelper.getInstance().insertOrReplace(DBHelper.DAO_HTTP_CACHE,httpCacheBean,false);
+    }
+
+    @NonNull
+    private String getCacheKey(String url, String param) {
+        if (param == null){
+            param = "";
+        }
+        return url + "&" + param;
+    }
+
+}

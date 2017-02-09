@@ -1,0 +1,195 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.rockerhieu.emojicon.EmojiconEditText;
+import com.talenton.organ.R;
+import com.talenton.base.widget.ResizeRelativeLayout;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class EmojiInputViewHolder implements View.OnClickListener, ResizeRelativeLayout.OnResizeRelativeListener {
+	public EmojiconEditText mInputEditText;
+	private boolean mNeedEmojiPanel = false;
+	private OnBackPressListener mOnBackPressListener;
+	private ResizeRelativeLayout mInPutContainer;
+	private View mEmojiPanel, mInputPanel, mEmojiContainer;
+	private Button mEmojiBtn;
+	public int mMenuOpenedHeight = 0;
+	boolean mIsKeyboardOpened = false;
+	private View mEmojiTop;
+	private int mMaxEmojiTopHeight;
+	private InputMethodManager im;
+	private Handler mUIHandler = new Handler();
+	private Runnable mHideEmojiRunnable = new Runnable() {
+		@Override
+		public void run() {
+			mEmojiContainer.setVisibility(View.VISIBLE);
+			mEmojiContainer.requestLayout();
+			mEmojiPanel.setVisibility(View.INVISIBLE);
+		}
+	};
+	private Runnable mShowEmojiRunnable = new Runnable() {
+		@Override
+		public void run() {
+			mNeedEmojiPanel = false;
+			mEmojiPanel.setVisibility(View.VISIBLE);
+			mEmojiContainer.requestLayout();
+		}
+	};
+	private Runnable mShowMenu = new Runnable() {
+		@Override
+		public void run() {
+			mEmojiPanel.setVisibility(View.GONE);
+			mEmojiContainer.setVisibility(View.VISIBLE);
+		}
+	};
+	private Runnable mShowMenuAndSoftInput = new Runnable() {
+		@Override
+		public void run() {
+			mEmojiPanel.setVisibility(View.GONE);
+			mEmojiContainer.setVisibility(View.VISIBLE);
+			mInputEditText.requestFocus();
+			showSoftInput(mInputEditText);
+		}
+	};
+
+	public interface OnBackPressListener {
+		void OnBackPress();
+	}
+
+	/**
+	 * initiate the bottom input panel
+	 */
+	public EmojiInputViewHolder(View parent) {
+		mInputEditText = (EmojiconEditText) parent.findViewById(R.id.et_content);
+		im = (InputMethodManager) mInputEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		mEmojiBtn = (Button) parent.findViewById(R.id.ib_emoji);
+		mEmojiBtn.setOnClickListener(this);
+		mEmojiPanel = parent.findViewById(R.id.chat_emoji_panel);
+		mEmojiPanel.setOnClickListener(this);
+		mInputPanel = parent.findViewById(R.id.chat_input_panel);
+		mInputPanel.setOnClickListener(this);
+		mInPutContainer = (ResizeRelativeLayout) parent.findViewById(R.id.input_container);
+		mEmojiContainer = parent.findViewById(R.id.emoji_container);
+		mInPutContainer.setOnResizeRelativeListener(this);
+		mEmojiTop = parent.findViewById(R.id.emoji_top_container);
+	}
+
+	public void showMenu() {
+		mUIHandler.post(mShowMenu);
+	}
+
+	public void hideMenu() {
+		mEmojiContainer.setVisibility(View.GONE);
+		hideSoftInput(mInputEditText);
+	}
+
+	public void showMenuAndSoftInput() {
+		mUIHandler.post(mShowMenuAndSoftInput);
+	}
+
+	public boolean isEmojiVisible() {
+		return mEmojiPanel.getVisibility() == View.VISIBLE;
+	}
+
+	public void setOnBackPressListener(OnBackPressListener listener) {
+		mOnBackPressListener = listener;
+	}
+
+	@Override
+	public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+		mIsKeyboardOpened = false;
+
+		// 记录第一次打开输入法时的布局高度
+		if (h < oldh && oldh > 0 && mMenuOpenedHeight == 0) {
+			mMenuOpenedHeight = h;
+		}
+
+		// 布局的高度小于之前的高度
+		if (h < oldh) {
+			mIsKeyboardOpened = true;
+		} else if (oldh == 0) {
+			return;
+		}
+		// 或者输入法打开情况下,
+		// 输入字符后再清除(三星输入法软键盘在输入后，软键盘高度增加一行，清除输入后，高度变小，但是软键盘仍是打开状态)
+		else if ((h <= mMenuOpenedHeight) && (mMenuOpenedHeight != 0)) {
+			mIsKeyboardOpened = true;
+		}
+
+		if (mIsKeyboardOpened) {
+			ViewGroup.LayoutParams p = mEmojiTop.getLayoutParams();
+			if (p.height != h || mEmojiContainer.getVisibility() != View.VISIBLE) {
+				p.height = h;
+				mEmojiTop.setLayoutParams(p);
+				mUIHandler.post(mHideEmojiRunnable);
+			}
+			mEmojiBtn.setBackgroundResource(R.drawable.post_type_emoji);
+		} else {
+			if (mMaxEmojiTopHeight == 0) {
+				mMaxEmojiTopHeight = h
+						- mEmojiContainer.getResources().getDimensionPixelSize(R.dimen.height_250);
+			}
+			if (!mNeedEmojiPanel) {
+				if (mOnBackPressListener != null) {
+					mOnBackPressListener.OnBackPress();
+				}
+			} else {
+				mEmojiBtn.setBackgroundResource(R.drawable.post_type_keyboard);
+				ViewGroup.LayoutParams p = mEmojiTop.getLayoutParams();
+				if (p.height > mMaxEmojiTopHeight) {
+					p.height = mMaxEmojiTopHeight;
+					mEmojiTop.setLayoutParams(p);
+				}
+				mUIHandler.post(mShowEmojiRunnable);
+				mNeedEmojiPanel = false;
+			}
+
+		}
+
+	}
+
+	protected void showSoftInput(final EditText editText) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			public void run() {
+				InputMethodManager inputManager = (InputMethodManager) editText.getContext()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputManager.showSoftInput(editText, 0);
+			}
+
+		}, 100);
+	}
+
+	protected void hideSoftInput(View view) {
+		im.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		if (id == R.id.ib_emoji) {
+			if (mIsKeyboardOpened) {
+				mNeedEmojiPanel = true;
+				hideSoftInput(mInputEditText);
+			} else {
+				showSoftInput(mInputEditText);
+			}
+			if (!mInputEditText.hasFocus()) {
+				mInputEditText.requestFocus();
+			}
+		}
+		if (id == R.id.chat_emoji_panel) {
+		}
+	}
+
+}

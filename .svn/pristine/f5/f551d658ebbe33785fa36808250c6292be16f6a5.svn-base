@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_weight="0"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_50">
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--收藏-->
+        <LinearLayout
+            android:id="@+id/ll_favorite"
+            android:orientation="vertical"
+            android:layout_weight="2.2"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_default_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_bg_favorite_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2_0"
+                android:text="@string/school_text_tavorite"
+                android:textSize="@dimen/text_20"
+                android:textColor="@color/text_sub"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+        <!--参加课程-->
+        <LinearLayout
+            android:id="@+id/ll_join_class"
+            android:layout_weight="7.8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/school_text_join_this_class"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_34"
+                android:gravity="center"
+                android:background="@color/main_blue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share"
+            android:orientation="vertical"
+            android:layout_weight="2.2"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/share"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2_0"
+                android:text="@string/school_text_forward"
+                android:textSize="@dimen/text_20"
+                android:textColor="@color/text_sub"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_my_bottom_container"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/space_15_0"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/ll_create_evaluate"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="@dimen/space_5_0"
+                android:layout_marginBottom="@dimen/space_5_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/school_class_text_evaluate_button"
+                android:textSize="@dimen/text_26"
+                android:textColor="@color/text_sub"
+                android:paddingLeft="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:background="@drawable/btn_et_gray_big_corner" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_my_favorite"
+            android:orientation="vertical"
+            android:layout_weight="2.5"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_bg_favorite_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2_0"
+                android:text="@string/school_text_tavorite"
+                android:textSize="@dimen/text_20"
+                android:textColor="@color/text_sub"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_my_share"
+            android:orientation="vertical"
+            android:layout_weight="2.5"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/share"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2_0"
+                android:text="@string/school_text_forward"
+                android:textSize="@dimen/text_20"
+                android:textColor="@color/text_sub"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

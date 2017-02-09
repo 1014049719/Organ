@@ -1,0 +1,844 @@
+package com.talenton.organ.ui.feed;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rockerhieu.emojicon.EmojiconEditText;
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.emoji.Emojicon;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.task.TaskManager;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.Preference;
+import com.talenton.base.util.SystemUtil;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.base.widget.ResizeRelativeLayout;
+import com.talenton.base.widget.TimePopupWindow;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CircleListData;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.MediaBean;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.image.AllPicBrowserActivity;
+import com.talenton.organ.ui.feed.video.AllVideoBrowserActivity;
+import com.talenton.organ.ui.school.PlayerActivity;
+import com.talenton.organ.ui.user.SettingActivity;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class FeedsPostActivity extends BaseCompatActivity implements View.OnClickListener,
+        EmojiconGridFragment.OnEmojiconClickedListener, FeedsEmojiFragment.OnEmojiconBackspaceClickedListener,
+        ResizeRelativeLayout.OnResizeRelativeListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
+    public static final String KEY_SELECTED_LIST_PATH = "key_selected_path";
+    public static final String KEY_POST_TO = "key_post_to";
+    public static final String KEY_EDIT_GUID = "key_edit_guid";
+    private static final int REQ_PICK_MEDIA_START = 1003;// 第一次进入选择多媒体页面
+    private static final int REQ_PICK_MEDIA = 1004;// 非第一次进入选择多媒体页面
+    private static final int REQ_PREVIEW_MEDIA = 1005;// 预览图片
+
+    public static final int MAX_IMAGES = 9, MAX_VIDEOS = 1;
+    private static int TAG_NEW = 1;
+    private int mMaxImageNum = MAX_IMAGES;
+    private Feeds mFeeds;
+    private PostToParam mPostToParam;
+    private ImageView mCheck;
+    private EditText mTitle;
+    private TextView mPostWhen, mPostTo;
+    private TextView mInputEmojiT;
+    private TextView mInputEmojiB, mInputKeyBoardB;
+    private EmojiconEditText mInputEditText;
+    private CommonAlertDialog mAlertDlg, mNoWifiDlg;
+    private TimePopupWindow mPwTime = null;
+    private boolean mPickingTime = false;
+    private LinearLayout mlayoutPost;
+    private LoadingViewHolder mLoading;
+    private int sendtopublic = 0;
+
+    private View.OnClickListener mBackComfirm = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if (mAlertDlg != null) {
+                mAlertDlg.dismiss();
+            }
+            hideSoftInput(mInputEditText);
+            finish();
+        }
+    };
+    private int toDelete = 0;
+    private View.OnClickListener mDelPicComfirm = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mAlertDlg != null) {
+                if (mImageAdapter != null) {
+                    mImageAdapter.delItem(toDelete);
+                }
+                mAlertDlg.dismiss();
+            }
+        }
+    };
+
+    private int mColumnWidth, mScreenHeight;
+    private ImageAdapter mImageAdapter;
+    private GridView mImageSelected;
+    private boolean mSeletingImage = false;
+    private boolean isUseOriginal = false;
+
+    private ResizeRelativeLayout mInPutContainer;
+    private int mMinEmojiHeight, mMenuOpenedHeight = 0;
+    private boolean mIsKeyboardOpened = false, mNeedEmojiPanel = false;
+    private View mEmojiPanel, mEmojiContainer, mPostType;
+    private Fragment mFragmentEmoji, mFragmentTag;
+    private long mGraphtime = 0;// 单位：秒
+    protected Handler mUIHandler = new Handler(Looper.getMainLooper());
+    private Runnable mHideEmojiRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mEmojiPanel.setVisibility(View.GONE);
+            mEmojiContainer.setVisibility(View.VISIBLE);
+            mInputEmojiB.setVisibility(View.VISIBLE);
+            mInputKeyBoardB.setVisibility(View.GONE);
+        }
+    };
+    private Runnable mShowEmojiRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mNeedEmojiPanel = false;
+            mEmojiPanel.setVisibility(View.VISIBLE);
+            mEmojiContainer.setVisibility(View.VISIBLE);
+            mInputEmojiB.setVisibility(View.GONE);
+            mInputKeyBoardB.setVisibility(View.VISIBLE);
+            mEmojiContainer.requestLayout();
+        }
+    };
+
+    public static void startPostFeedsActivity(Context context, PostToParam postTo) {
+        Intent intent = new Intent(context, FeedsPostActivity.class);
+        intent.putExtra(KEY_POST_TO, postTo);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_feeds_post);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            mPostToParam = (PostToParam) intent.getParcelableExtra(KEY_POST_TO);
+        }
+        if (mPostToParam == null) {
+            finish();
+            return;
+        }
+        setInputView();
+        if(!TextUtils.isEmpty(mPostToParam.name) && mActionBarTitle != null){
+            mActionBarTitle.setText(mPostToParam.name);
+        }
+        if(mPostToParam.circleType == CircleListData.CIRCLE_TYPE_BABY){
+            mTitle.setVisibility(View.GONE);
+            //findViewById(R.id.post_to_container).setVisibility(View.GONE);//同步到学校广场
+        }else{
+            findViewById(R.id.post_when_container).setVisibility(View.GONE);//时间选择
+            findViewById(R.id.view_holder).setVisibility(View.GONE);
+        }
+        
+
+        if (mPostToParam.tid > 0) {
+            View loading = findViewById(R.id.loading_container);
+            mLoading = new LoadingViewHolder(mlayoutPost, loading, this, this);
+            initViewEdit();
+            // 不允许编辑发送到
+            //findViewById(R.id.post_to_container).setVisibility(View.GONE);
+
+        } else {
+            initViewNew(savedInstanceState);
+        }
+    }
+
+    private void initViewEdit(){
+        mFeeds = null;
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+        FeedServer.getFeeds(mPostToParam.tid, mPostToParam.guid, new XLTResponseCallback<Feeds>() {
+            @Override
+            public void onResponse(Feeds data, XLTError error) {
+                if(error != null){
+                    mToolbar.getMenu().getItem(0).setEnabled(false);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                    return;
+                }
+                mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                mToolbar.getMenu().getItem(0).setEnabled(true);
+                if (data != null && mFeeds == null){
+                    mFeeds = data;
+                    setImageView();
+                    mPostToParam.setPostToParam(data);
+                    if (mPostToParam.mediaType == PostToParam.POST_VIDEO) {
+                        mMaxImageNum = MAX_VIDEOS;
+                    } else {
+                        mMaxImageNum = MAX_IMAGES;
+                    }
+                    String title = TextUtils.isEmpty(data.title) ? "" : data.title;
+                    mTitle.setText(title);
+                    mInputEditText.setText(mFeeds.content);
+                    mImageAdapter.setData(mFeeds.attachinfo);
+                    mGraphtime = mFeeds.graphtime;
+                    long time = mPostToParam.circleType == CircleListData.CIRCLE_TYPE_BABY ? mGraphtime : data.dateline;
+                    mPostWhen.setText(DateUtil.parseTimeToYMD(time));
+                }
+            }
+        });
+    }
+
+    private void setInputView() {
+        mFragmentEmoji = getSupportFragmentManager().findFragmentById(R.id.emojicons);
+
+        mInputEditText = (EmojiconEditText) findViewById(R.id.editEmojicon);
+        mInputEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
+
+        mInPutContainer = (ResizeRelativeLayout) findViewById(R.id.input_container);
+        mInPutContainer.setOnResizeRelativeListener(FeedsPostActivity.this);
+        mMinEmojiHeight = getResources().getDimensionPixelSize(R.dimen.height_250);
+        mEmojiContainer = findViewById(R.id.emoji_container);
+        mEmojiPanel = findViewById(R.id.chat_emoji_panel);
+        mEmojiPanel.setOnClickListener(this);
+
+        mPostWhen = (TextView) findViewById(R.id.post_when);
+        mPostWhen.setText(DateUtil.parseTimeToYMD(System.currentTimeMillis() / 1000));
+        mPostTo = (TextView) findViewById(R.id.post_to);
+
+        //findViewById(R.id.post_to_container).setOnClickListener(this);
+        findViewById(R.id.post_when_container).setOnClickListener(this);
+        // BOTTOM INPUTTYPE
+        View postTypeBottom = findViewById(R.id.post_type_bottom);
+        mInputEmojiB = (TextView) postTypeBottom.findViewById(R.id.ib_emoji);
+        mInputEmojiB.setTag(0);
+        mInputEmojiB.setOnClickListener(this);
+
+        mInputKeyBoardB = (TextView) postTypeBottom.findViewById(R.id.ib_keyboard);
+        mInputKeyBoardB.setOnClickListener(this);
+
+        // TOP INPUTTYPE
+        mPostType = findViewById(R.id.post_type);
+        mInputEmojiT = (TextView) mPostType.findViewById(R.id.ib_emoji);
+        mInputEmojiT.setTag(1);
+        mInputEmojiT.setOnClickListener(this);
+
+        mPostType.findViewById(R.id.ib_keyboard).setVisibility(View.GONE);
+        mlayoutPost = (LinearLayout)findViewById(R.id.layout_post);
+        mTitle = (EditText)findViewById(R.id.et_title);
+
+        mCheck = (ImageView)findViewById(R.id.iv_check);
+        mCheck.setOnClickListener(this);
+    }
+
+    private void setImageView() {
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        mColumnWidth = (int) ((wm.getDefaultDisplay().getWidth() - 80 * getResources().getDisplayMetrics().density)
+                / 3);
+        mScreenHeight = wm.getDefaultDisplay().getHeight();
+        mImageSelected = (GridView) findViewById(R.id.image_selected);
+        mImageSelected.setColumnWidth(mColumnWidth);
+        mImageAdapter = new ImageAdapter(this);
+        mImageSelected.setAdapter(mImageAdapter);
+        mImageSelected.setOnItemClickListener(this);
+        mImageSelected.setOnItemLongClickListener(this);
+    }
+
+    private void initViewNew(Bundle savedInstanceState) {
+        if (mPostToParam.mediaType == PostToParam.POST_VIDEO) {
+            mMaxImageNum = MAX_VIDEOS;
+        } else {
+            mMaxImageNum = MAX_IMAGES;
+        }
+        setImageView();
+        if (savedInstanceState != null) {
+            ArrayList<MediaBean> paths = savedInstanceState.getParcelableArrayList(KEY_SELECTED_LIST_PATH);
+            if (paths != null) {
+                mImageAdapter.setData(paths);
+            }
+        } else if (mPostToParam.mediaType != PostToParam.POST_TEXT) {
+            newMedia(REQ_PICK_MEDIA_START);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        mPwTime = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mPickingTime && mPwTime != null) {
+            mPwTime.dismiss();
+            return;
+        }
+        if (mEmojiContainer.getVisibility() == View.VISIBLE) {
+            mEmojiContainer.setVisibility(View.GONE);
+            mPostType.setVisibility(View.VISIBLE);
+        } else {
+            if (!checkAllowPost()) {
+                hideSoftInput(mInputEditText);
+                finish();
+            } else {
+                alterDialog(R.string.alter_post_cancel, mBackComfirm);
+            }
+        }
+
+    }
+
+    private void preViewMedia(int position) {
+        if (mPostToParam == null) {
+            return;
+        }
+        mSeletingImage = true;
+        if (mPostToParam.mediaType == PostToParam.POST_IMAGE || mPostToParam.mediaType == PostToParam.POST_TEXT) {
+            Intent intent = new Intent(FeedsPostActivity.this, AllPicBrowserActivity.class);
+            intent.putExtra(AllPicBrowserActivity.KEY_FROM, AllPicBrowserActivity.FROM_PREVIEW);
+            intent.putExtra(AllPicBrowserActivity.KEY_FROM_PHOTO_PREVIEW_POS, position);
+            intent.putExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, isUseOriginal);
+            ArrayList<MediaBean> selected = new ArrayList<MediaBean>();
+            selected.addAll(mImageAdapter.getData());
+            intent.putParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH, selected);
+            startActivityForResult(intent, REQ_PREVIEW_MEDIA);
+        } else {
+            mSeletingImage = false;
+            MediaBean media = mImageAdapter.getItem(position);
+            PlayerActivity.startPlayerActivity(this, media.getVideoUrl());
+            //VideoPlayerActivity.startVideoPlayerActivity(this, media);
+        }
+
+    }
+
+    private void newMedia(int reqId) {
+        if (mPostToParam == null) {
+            return;
+        }
+        int limit = mMaxImageNum - (mImageAdapter.getCount() - 1);
+        if (limit <= 0) {
+            Toast.makeText(FeedsPostActivity.this, getResources().getString(R.string.image_beyong_limit, mMaxImageNum),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mSeletingImage = true;
+        if (mPostToParam.mediaType == PostToParam.POST_IMAGE || mPostToParam.mediaType == PostToParam.POST_TEXT) {
+            Intent intent = new Intent(FeedsPostActivity.this, AllPicBrowserActivity.class);
+            intent.putExtra(AllPicBrowserActivity.KEY_FROM, AllPicBrowserActivity.FROM_PHOTO);
+            intent.putExtra(AllPicBrowserActivity.KEY_MAX_NUM, limit);
+            intent.putExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, isUseOriginal);
+            startActivityForResult(intent, reqId);
+        } else if (mPostToParam.mediaType == PostToParam.POST_VIDEO) {
+            Intent intent = new Intent(FeedsPostActivity.this, AllVideoBrowserActivity.class);
+            startActivityForResult(intent, reqId);
+        } else {
+            mSeletingImage = false;
+        }
+    }
+
+    @Override
+    protected void onLeftClick() {
+        if (!checkAllowPost()) {
+            hideSoftInput(mInputEditText);
+            finish();
+        } else {
+            alterDialog(R.string.alter_post_cancel, mBackComfirm);
+        }
+    }
+
+    private boolean checkAllowPost() {
+        boolean res = !TextUtils.isEmpty(mInputEditText.getText().toString().trim())
+                || (mImageAdapter!= null && !mImageAdapter.isEmpty());
+
+        return res;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        mSeletingImage = false;
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            if (requestCode == REQ_PICK_MEDIA_START) {
+                finish();
+            }
+            return;
+        }
+        switch (requestCode) {
+            case REQ_PICK_MEDIA_START:
+            case REQ_PICK_MEDIA: {
+                isUseOriginal = data.getBooleanExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, false);
+                ArrayList<MediaBean> paths = data.getParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH);
+                mImageAdapter.addData(paths);
+            }
+            break;
+            case REQ_PREVIEW_MEDIA: {
+                isUseOriginal = data.getBooleanExtra(AllPicBrowserActivity.KEY_IS_USE_ORIGINAL, false);
+                ArrayList<MediaBean> paths = data.getParcelableArrayListExtra(AllPicBrowserActivity.KEY_SELECTED_LIST_PATH);
+                mImageAdapter = new ImageAdapter(this);
+                mImageAdapter.setData(paths);
+                mImageSelected.setAdapter(mImageAdapter);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    /**
+     * @return 最新的拍照时间，精确到秒
+     */
+    private long getPostTime() {
+        if (mGraphtime > 0) {
+            return mGraphtime;
+        }
+        long graphtime = 0;
+        if (mImageAdapter.getCount() > 1) {
+            ArrayList<MediaBean> images = mImageAdapter.getData();
+            for (MediaBean ib : images) {
+                graphtime = Math.max(graphtime, ib.getModified());
+            }
+        }
+        if (graphtime <= 0) {
+            graphtime = System.currentTimeMillis() / 1000;
+        } else if (graphtime >= 1000000000000L) {
+            graphtime = graphtime / 1000;
+        } else if (graphtime >= 2051197261L) {
+            // 2035-01-01 01:01:01
+            graphtime = System.currentTimeMillis() / 1000;
+        }
+        return graphtime;
+    }
+
+    private void postFeeds(ArrayList<MediaBean> picInfos) {
+        Feeds feeds = null;
+        if (mPostToParam.tid <= 0) {
+            feeds = new Feeds();
+            feeds.ispl = 0;
+            feeds.circle_type = mPostToParam.circleType;
+            feeds.graphtime = getPostTime();
+            feeds.content = mInputEditText.getText().toString();
+            feeds.attachinfo = picInfos;
+            feeds.isUseOriginal = false;
+            feeds.circle_name = mPostToParam.name;
+        } else {
+            feeds = mFeeds;
+            feeds.circle_type = mPostToParam.circleType;
+            feeds.graphtime = getPostTime();
+            feeds.content = mInputEditText.getText().toString();
+            feeds.attachinfo = picInfos;
+        }
+        feeds.title = mTitle.getText().toString();
+        feeds.circle_id = mPostToParam.circleId;
+        feeds.sendtopublic = sendtopublic;
+        long time = System.currentTimeMillis() / 1000;
+        feeds.modify_time = time;
+
+
+        FeedServer.postFeeds(feeds);
+        hideSoftInput(mInputEditText);
+        finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mImageAdapter.getData() != null) {
+            outState.putParcelableArrayList(KEY_SELECTED_LIST_PATH, mImageAdapter.getData());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ib_emoji:
+                if (mIsKeyboardOpened && mInputEditText.hasFocus()) {
+                    getSupportFragmentManager().beginTransaction().show(mFragmentEmoji)
+                            .commitAllowingStateLoss();
+                    mNeedEmojiPanel = true;
+                    hideSoftInput(mInputEditText);
+                } else if ((Integer) v.getTag() == 1) {
+                    getSupportFragmentManager().beginTransaction().show(mFragmentEmoji)
+                            .commitAllowingStateLoss();
+                    mNeedEmojiPanel = true;
+                    mPostType.setVisibility(View.INVISIBLE);
+                    mUIHandler.post(mShowEmojiRunnable);
+                }
+                break;
+            case R.id.ib_keyboard:
+                if (!mIsKeyboardOpened && mInputEditText.hasFocus()) {
+                    showSoftInput(mInputEditText);
+                }
+                break;
+            case R.id.delete_media:
+                int tag = (Integer) v.getTag();
+                if (tag >= 0) {
+                    toDelete = tag;
+                    int msgId = R.string.alter_cancel_pic;
+                    if (mPostToParam.mediaType == PostToParam.POST_VIDEO) {
+                        msgId = R.string.alter_cancel_video;
+                    }
+                    alterDialog(msgId, mDelPicComfirm);
+                }
+                break;
+            case R.id.post_when_container:
+                if (mPwTime == null) {
+                    mPwTime = new TimePopupWindow(this);
+                    // 时间选择后回调
+                    mPwTime.setOnTimeSelectListener(new TimePopupWindow.OnTimeSelectListener() {
+
+                        @Override
+                        public void onTimeSelect(Date date) {
+                            mGraphtime = date.getTime() / 1000;
+                            long now = System.currentTimeMillis() / 1000;
+                            if (mGraphtime > now) {
+                                mGraphtime = now;
+                            }
+                            mPostWhen.setText(DateUtil.parseTimeToYMD(getPostTime()));
+                        }
+                    });
+                    mPwTime.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss() {
+                            mPickingTime = false;
+                        }
+
+                    });
+                }
+                mPwTime.setDate(new Date(getPostTime() * 1000));
+                mPickingTime = true;
+                mPwTime.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.iv_check:
+                sendtopublic = sendtopublic == 0 ? 1 : 0;
+                int resId = sendtopublic == 1 ? R.mipmap.select : R.mipmap.select_gray;
+                mCheck.setImageResource(resId);
+                break;
+        }
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_feeds_post_text;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        if(mToolbar == null || mToolbar.getMenu() == null) return;
+        if(mTitle.getVisibility() == View.VISIBLE && TextUtils.isEmpty(mTitle.getText().toString().trim())){
+            XLTToast.makeText(FeedsPostActivity.this, R.string.alter_post_title_nothing, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!checkAllowPost()) {
+            XLTToast.makeText(FeedsPostActivity.this, R.string.alter_post_nothing, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mPostToParam == null || !mPostToParam.isValid()) {
+            XLTToast.makeText(FeedsPostActivity.this, R.string.post_to_select).show();
+            //findViewById(R.id.post_to_container).performClick();
+            return;
+        }
+        mToolbar.getMenu().getItem(0).setEnabled(false);
+        ArrayList<MediaBean> images = mImageAdapter.getData();
+        TaskManager.mWifiConnected = SystemUtil.isWifiConnected();
+        TaskManager.mNetworkConnected = SystemUtil.isNetworkConnected();
+        if (images != null && images.size() > 0 && Preference.getInstance().needWarnNoWifi()
+                && !TaskManager.mWifiConnected && TaskManager.mNetworkConnected) {
+            alterNoWifi();
+            mToolbar.getMenu().getItem(0).setEnabled(true);
+            return;
+        } else {
+            postFeeds(images);
+        }
+    }
+
+    private void alterDialog(int msgResId, View.OnClickListener comfirm) {
+        if (mAlertDlg == null) {
+            mAlertDlg = new CommonAlertDialog(this);
+            mAlertDlg.setTitle(R.string.main_prompt);
+            mAlertDlg.setCancelable(true);
+            mAlertDlg.setNegativeButton(getString(android.R.string.no), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                }
+            });
+        }
+        mAlertDlg.setMessage(msgResId);
+        mAlertDlg.setPositiveButton(getString(android.R.string.yes), comfirm);
+        mAlertDlg.show();
+    }
+
+    private void alterNoWifi() {
+        if (mNoWifiDlg == null) {
+            mNoWifiDlg = new CommonAlertDialog(this);
+            mNoWifiDlg.setTitle(R.string.main_prompt);
+            mNoWifiDlg.setCancelable(true);
+            mNoWifiDlg.setNegativeButton(getString(R.string.post_nofiwi_continue), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mNoWifiDlg.dismiss();
+                    postFeeds(mImageAdapter.getData());
+                }
+            });
+
+            mNoWifiDlg.setMessage(R.string.post_nofiwi_hint);
+            mNoWifiDlg.setPositiveButton(getString(R.string.post_nofiwi_break), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mNoWifiDlg.dismiss();
+                    SettingActivity.startSettingActivity(FeedsPostActivity.this);
+                }
+            });
+        }
+        mNoWifiDlg.show();
+        Preference.getInstance().incWarnNoWifi();
+    }
+
+
+    @Override
+    public void onEmojiconBackspaceClicked(View v) {
+        FeedsEmojiFragment.backspace(mInputEditText);
+    }
+
+    @Override
+    public void onEmojiconClicked(Emojicon emojicon) {
+        FeedsEmojiFragment.input(mInputEditText, emojicon);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mSeletingImage) {
+            return;
+        }
+        int tag = (Integer) view.getTag();
+        if (tag == TAG_NEW) {
+            newMedia(REQ_PICK_MEDIA);
+        } else {
+            preViewMedia(position);
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        int tag = (Integer) view.getTag();
+        if (tag != TAG_NEW) {
+            toDelete = position;
+            int msgId = R.string.alter_cancel_pic;
+            if (mPostToParam.mediaType == PostToParam.POST_VIDEO) {
+                msgId = R.string.alter_cancel_video;
+            }
+            alterDialog(msgId, mDelPicComfirm);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+        if (h == mScreenHeight || oldh == mScreenHeight) {
+            return;
+        }
+        mIsKeyboardOpened = false;
+
+        // 记录第一次打开输入法时的布局高度
+        if (h < oldh && oldh > 0 && mMenuOpenedHeight == 0) {
+            mMenuOpenedHeight = h;
+        }
+
+        // 布局的高度小于之前的高度
+        if (h < oldh) {
+            mIsKeyboardOpened = true;
+        }
+        // 或者输入法打开情况下,
+        // 输入字符后再清除(三星输入法软键盘在输入后，软键盘高度增加一行，清除输入后，高度变小，但是软键盘仍是打开状态)
+        else if ((h <= mMenuOpenedHeight) && (mMenuOpenedHeight != 0)) {
+            mIsKeyboardOpened = true;
+        }
+         //AppLogger.i("OnResizeRelative %d,%d,%d,%d:%s,%d", w, h, oldw, oldh,
+         //        Boolean.toString(mIsKeyboardOpened), mMenuOpenedHeight);
+
+        if (mIsKeyboardOpened) {
+            mPostType.setVisibility(View.INVISIBLE);
+            ViewGroup.LayoutParams p = mEmojiPanel.getLayoutParams();
+            p.height = oldh - mMenuOpenedHeight;
+            // mEmojiPanel.setLayoutParams(p);
+            // mEmojiPanel.setVisibility(View.GONE);
+            mUIHandler.post(mHideEmojiRunnable);
+        } else {
+            if (!mNeedEmojiPanel) {
+                mEmojiContainer.setVisibility(View.INVISIBLE);
+                mPostType.setVisibility(View.VISIBLE);
+            } else {
+                mPostType.setVisibility(View.INVISIBLE);
+                ViewGroup.LayoutParams p = mEmojiPanel.getLayoutParams();
+                if (p.height < mMinEmojiHeight) {
+                    p.height = mMinEmojiHeight;
+                    mEmojiPanel.setLayoutParams(p);
+                }
+                mUIHandler.post(mShowEmojiRunnable);
+            }
+        }
+    }
+
+    private class ImageAdapter extends BaseAdapter {
+        private Context mContext;
+        private ArrayList<MediaBean> mPaths;
+        private LayoutInflater inflater;
+
+        public ImageAdapter(Context c) {
+            mPaths = new ArrayList<>();
+            inflater = LayoutInflater.from(c);
+            mContext = c;
+        }
+
+        public int getCount() {
+            if (mPaths.size() >= mMaxImageNum) {
+                return mPaths.size();
+            } else {
+                return mPaths.size() + 1;
+            }
+        }
+
+        public void addData(ArrayList<MediaBean> paths) {
+            if (paths != null) {
+                mPaths.addAll(paths);
+            }
+            notifyDataSetChanged();
+        }
+
+        public void setData(ArrayList<MediaBean> paths) {
+            mPaths.clear();
+            if (paths != null) {
+                mPaths.addAll(paths);
+            }
+            notifyDataSetChanged();
+        }
+
+        public ArrayList<MediaBean> getData() {
+            return mPaths;
+        }
+
+        public boolean isEmpty() {
+            return mPaths == null || mPaths.size() == 0;
+        }
+
+        public void delItem(int position) {
+            if (position >= 0 && position < mPaths.size()) {
+                mPaths.remove(position);
+                notifyDataSetChanged();
+            }
+        }
+
+        public MediaBean getItem(int position) {
+            if (position >= 0 && position < mPaths.size()) {
+                return mPaths.get(position);
+            } else {
+                return null;
+            }
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            int tag = 0;
+            if (convertView != null) {
+                tag = (Integer) convertView.getTag();
+            }
+            ImageView imageView = null;
+            if (convertView == null || (position < mPaths.size() && tag == TAG_NEW)
+                    || (position == mPaths.size() && tag != TAG_NEW)) {
+                if (position < mPaths.size()) {
+                    convertView = inflater.inflate(R.layout.item_feeds_edit_media, parent, false);
+                    imageView = (ImageView) convertView.findViewById(R.id.item_media);
+                    ViewGroup.LayoutParams param = (ViewGroup.LayoutParams) imageView.getLayoutParams();
+                    param.width = mColumnWidth;
+                    param.height = mColumnWidth;
+                    imageView.setLayoutParams(param);
+                    imageView.setMaxWidth(mColumnWidth);
+                    imageView.setMaxHeight(mColumnWidth);
+                } else {
+                    convertView = new ImageView(mContext);
+                    convertView.setLayoutParams(new AbsListView.LayoutParams(mColumnWidth, mColumnWidth));
+                }
+            }
+            if (position == mPaths.size()) {
+                imageView = (ImageView) convertView;
+                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                imageView.setImageResource(R.drawable.post_addpic);
+                convertView.setTag(TAG_NEW);// 增加图片
+            } else {
+                convertView.setTag(0);
+                imageView = (ImageView) convertView.findViewById(R.id.item_media);
+                View delete = convertView.findViewById(R.id.delete_media);
+                View play = convertView.findViewById(R.id.play_media);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                MediaBean media = mPaths.get(position);
+                delete.setVisibility(View.VISIBLE);
+                delete.setTag(position);
+                delete.setOnClickListener(FeedsPostActivity.this);
+                if (media.getMediaType() == MediaBean.TYPE_VIDEO) {
+                    play.setVisibility(View.VISIBLE);
+                    ImageLoader.getInstance().displayImage(media.genVideoCover(), imageView,
+                            ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+                } else {
+                    play.setVisibility(View.GONE);
+                    ImageLoader.getInstance().displayImage(media.genUrl(), imageView,
+                            ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+                }
+            }
+
+            return convertView;
+        }
+
+    }
+}

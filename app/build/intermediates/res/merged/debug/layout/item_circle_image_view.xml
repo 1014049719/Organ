@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/member_logo"
+        android:layout_width="@dimen/height_30"
+        android:layout_height="@dimen/height_30"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/user_photo"
+        android:layout_marginRight="@dimen/space_5_0"
+        bbg:civ_border_color="@color/white"
+        bbg:civ_border_width="2dp" />
+</LinearLayout>

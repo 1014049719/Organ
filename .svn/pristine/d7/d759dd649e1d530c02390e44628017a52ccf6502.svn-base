@@ -1,0 +1,103 @@
+package com.talenton.organ.server;
+
+import android.text.TextUtils;
+
+import com.talenton.base.dao.SearchCacheDao;
+import com.talenton.base.dao.model.HttpCacheBean;
+import com.talenton.base.dao.model.SearchCacheBean;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.DBHelper;
+import com.talenton.base.util.AppLogger;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.server.bean.school.ClassFilterAge;
+import com.talenton.organ.server.bean.school.ReqAgeList;
+import com.talenton.organ.server.bean.school.ReqClassList;
+import com.talenton.organ.server.bean.school.RspFilterAgeList;
+import com.talenton.organ.server.bean.school.RspListClass;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
+/**
+ * @author zjh
+ * @date 2016/5/9
+ */
+public class SchoolCacheServer extends BaseCacheServer{
+    private SchoolCacheServer(){}
+    private static SchoolCacheServer schoolCacheServer;
+
+    public static SchoolCacheServer getInstance(){
+        if (schoolCacheServer == null){
+            schoolCacheServer = new SchoolCacheServer();
+        }
+        return schoolCacheServer;
+    }
+
+    /**
+     * 获取数据库年龄段
+     * @return
+     */
+    public List<ClassFilterAge> getCacheAgeList(){
+        RspFilterAgeList rspFilterAgeList = getRspCacheData(ReqAgeList.URL_AGE_LIST, null, RspFilterAgeList.class);
+        if (rspFilterAgeList != null){
+            return rspFilterAgeList.getList();
+        }
+        return null;
+    }
+
+    public List<SearchCacheBean> getSearchCache(int searchType){
+        QueryBuilder queryBuilder = DBHelper.getInstance().getQueryBuilder(DBHelper.DAO_SEARCH_CACHE);
+        return queryBuilder.where(SearchCacheDao.Properties.Type.eq(searchType)).orderDesc(SearchCacheDao.Properties.CreateTime).build().list();
+    }
+
+    /**
+     * 缓存历史搜索
+     * @param searchCacheBean
+     */
+    public void saveOrReplaceSearchCacheData(SearchCacheBean searchCacheBean){
+        DBHelper.getInstance().insertOrReplace(DBHelper.DAO_SEARCH_CACHE,searchCacheBean,false);
+    }
+
+    public void deleteSearchCacheData(String searchText){
+        String sql = "DELETE FROM %s WHERE %s = '%s'";
+        String tableName = DBHelper.getInstance().getTableName(DBHelper.DAO_SEARCH_CACHE);
+        String excSql =  String.format(sql, tableName, SearchCacheDao.Properties.SearchText.columnName, searchText);
+        AppLogger.d("excSql ==> " + excSql);
+        DBHelper.getInstance().execSql(DBHelper.DAO_SEARCH_CACHE, excSql);
+    }
+
+    public void clearnSearchCacheData(int searchType){
+        String sql = "DELETE FROM %s WHERE %s = %d";
+        String tableName = DBHelper.getInstance().getTableName(DBHelper.DAO_SEARCH_CACHE);
+        String excSql =  String.format(sql, tableName, SearchCacheDao.Properties.Type.columnName,searchType);
+        AppLogger.d("excSql ==> " + excSql);
+        DBHelper.getInstance().execSql(DBHelper.DAO_SEARCH_CACHE, excSql);
+    }
+
+    /**
+     * 获取课程列表缓存数据
+     * @param reqClassList
+     * @return
+     */
+    public List<ClassData> getClassListCacheData(ReqClassList reqClassList){
+        ArrayList<ClassData> classDatas = null;
+        HttpCacheBean httpCacheBean = getCacheData(reqClassList.getReqUrl(),reqClassList.getReqParams());
+        if (httpCacheBean != null && httpCacheBean.getData() != null && !TextUtils.isEmpty(httpCacheBean.getData())){
+            RspListClass rspListClass = OkHttpClientManager.getInstance().getmGson().fromJson(httpCacheBean.getData(),RspListClass.class);
+            classDatas = (ArrayList<ClassData>) rspListClass.getList();
+        }
+        return classDatas;
+    }
+
+    /**
+     * 获取我参加的课程列表缓存数据
+     * @return
+     */
+    public List<ClassData> getMyClassListCacheData(){
+        ReqClassList reqClassList = new ReqClassList(ReqClassList.ClassListType.MY_COURSE);
+        return getClassListCacheData(reqClassList);
+    }
+
+}

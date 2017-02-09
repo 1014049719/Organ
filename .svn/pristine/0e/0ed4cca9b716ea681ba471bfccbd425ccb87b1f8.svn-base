@@ -1,0 +1,281 @@
+package com.talenton.organ.widget;
+
+import android.content.Context;
+import android.support.v7.widget.ListPopupWindow;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.dao.model.SearchCacheBean;
+import com.talenton.base.util.NetWorkUtils;
+import com.talenton.organ.server.SchoolCacheServer;
+import com.talenton.organ.ui.school.adapter.SearchHistoryAdapter;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/3
+ */
+public class SearchView extends LinearLayout implements View.OnClickListener, TextView.OnEditorActionListener, TextWatcher {
+    private  EditText et_input;
+    private TextView tv_search;
+    private OnSearchCallback onSearchCallback;
+    private OnClickHistroyItemListener onClickHistroyItemListener;
+    private boolean isShowHistroy; //是否显示搜索历史
+    private SearchHistoryAdapter historyAdapter;
+    private ListPopupWindow histroyPop;
+    private ArrayList<SearchCacheBean> histroyData;
+    private int searchType;
+    private boolean isClick;
+    private OnTextChanged onTextChanged;
+    private LSGBaseAdapter<SearchCacheBean> mHistroyAdapter;
+
+    public SearchView(Context context) {
+        super(context);
+        init(context);
+    }
+
+    public SearchView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    private void init(Context context) {
+        View view = LayoutInflater.from(context).inflate(R.layout.search_view, this, false);
+        et_input = (EditText) view.findViewById(R.id.et_input);
+        et_input.setOnEditorActionListener(this);
+        tv_search = (TextView) view.findViewById(R.id.tv_search);
+        tv_search.setOnClickListener(this);
+        et_input.addTextChangedListener(this);
+        ImageView iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+        iv_delete.setOnClickListener(this);
+        addView(view);
+        initHistroyPop(context);
+    }
+
+    private void initHistroyPop(Context context) {
+        histroyPop = new ListPopupWindow(context);
+        histroyPop.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        histroyPop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        List<SearchCacheBean> searchCacheData = SchoolCacheServer.getInstance().getSearchCache(searchType);
+        if (searchCacheData != null && !searchCacheData.isEmpty()){
+            histroyData = (ArrayList<SearchCacheBean>) searchCacheData;
+        }
+        if (histroyData == null){
+            histroyData = new ArrayList<>();
+        }
+        historyAdapter = new SearchHistoryAdapter(context,histroyData);
+        historyAdapter.setOnFilterResultListener(new SearchHistoryAdapter.onFilterResultListener() {
+            @Override
+            public void filterResult(List<SearchCacheBean> result) {
+                if (result != null && !result.isEmpty()){
+                    if (!isClick){
+                        showHistroyPop();
+                    }
+                    isClick = false;
+                }
+            }
+        });
+        histroyPop.setAdapter(historyAdapter);
+        histroyPop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                isClick = true;
+                SearchCacheBean searchCacheBean = histroyData.get(position);
+                setSearchText(searchCacheBean.getSearchText());
+                hideHistroyPop();
+                if (onClickHistroyItemListener != null){
+                    onClickHistroyItemListener.ClickHistroyItem(searchCacheBean.getSearchText(),position);
+                }
+            }
+        });
+    }
+
+
+
+    public void showHistroyPop() {
+        if (histroyPop != null){
+            if (!histroyPop.isShowing() && isShowHistroy){
+                histroyPop.setAnchorView(this);
+                histroyPop.show();
+            }
+        }
+
+    }
+
+    public void hideHistroyPop(){
+        if (histroyPop != null){
+            if (histroyPop.isShowing()){
+                histroyPop.dismiss();
+            }
+        }
+    }
+
+    public void setSearchHint(int resId){
+        et_input.setHint(resId);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_delete:
+                et_input.setText("");
+                break;
+            case R.id.tv_search:
+                startSearch();
+                break;
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH || (event!=null&&event.getKeyCode()== KeyEvent.KEYCODE_ENTER)){
+            startSearch();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 开始搜索
+     */
+    private void startSearch() {
+        if (!NetWorkUtils.isNetworkAvailable(getContext())){
+            return;
+        }
+        hideSoftInput();
+        String inputText = et_input.getText().toString();
+        if (onSearchCallback != null){
+            onSearchCallback.searchCallback(inputText);
+        }
+        if (!TextUtils.isEmpty(inputText)){
+            SearchCacheBean searchCacheBean = new SearchCacheBean(inputText,System.currentTimeMillis(),searchType);
+            SchoolCacheServer.getInstance().saveOrReplaceSearchCacheData(searchCacheBean);
+            if (!historyAdapter.getDatas().contains(searchCacheBean)){
+                historyAdapter.add(0,searchCacheBean);
+                historyAdapter.notifyDataSetChanged();
+                if (mHistroyAdapter != null){
+                    mHistroyAdapter.add(0,searchCacheBean);
+                    mHistroyAdapter.notifyDataSetChanged();
+                }
+            }
+
+        }
+        if (histroyPop.isShowing()){
+            histroyPop.dismiss();
+        }
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInput() {
+        InputMethodManager inputMethodManager = ((InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE));
+        inputMethodManager.hideSoftInputFromWindow(getWindowToken(), 0);
+    }
+
+    public interface OnSearchCallback{
+        void searchCallback(String searchText);
+    }
+
+    public OnSearchCallback getOnSearchCallback() {
+        return onSearchCallback;
+    }
+
+    public void setOnSearchCallback(OnSearchCallback onSearchCallback) {
+        this.onSearchCallback = onSearchCallback;
+    }
+
+    public void setSearchText(String searchText){
+        if (et_input != null && searchText != null){
+            et_input.setText(searchText);
+            et_input.setSelection(searchText.length());
+        }else {
+            hideHistroyPop();
+        }
+    }
+
+    public boolean isShowHistroy() {
+        return isShowHistroy;
+    }
+
+    public void setIsShowHistroy(boolean isShowHistroy) {
+        this.isShowHistroy = isShowHistroy;
+    }
+
+    public OnClickHistroyItemListener getOnClickHistroyItemListener() {
+        return onClickHistroyItemListener;
+    }
+
+    public void setOnClickHistroyItemListener(OnClickHistroyItemListener onClickHistroyItemListener) {
+        this.onClickHistroyItemListener = onClickHistroyItemListener;
+    }
+
+    public interface OnClickHistroyItemListener{
+        void ClickHistroyItem(String searchText, int position);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (!TextUtils.isEmpty(s)){
+            historyAdapter.filterHistroyText(s);
+        }
+        if (onTextChanged != null){
+            onTextChanged.textChange(s,start,before,count);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    public int getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(int searchType) {
+        this.searchType = searchType;
+    }
+
+    public interface OnTextChanged{
+        void textChange(CharSequence s, int start, int before, int count);
+    }
+
+    public OnTextChanged getOnTextChanged() {
+        return onTextChanged;
+    }
+
+    public void setOnTextChanged(OnTextChanged onTextChanged) {
+        this.onTextChanged = onTextChanged;
+    }
+
+    public LSGBaseAdapter<SearchCacheBean> getHistroyAdapter() {
+        return mHistroyAdapter;
+    }
+
+    public void setHistroyAdapter(LSGBaseAdapter<SearchCacheBean> mHistroyAdapter) {
+        this.mHistroyAdapter = mHistroyAdapter;
+    }
+}

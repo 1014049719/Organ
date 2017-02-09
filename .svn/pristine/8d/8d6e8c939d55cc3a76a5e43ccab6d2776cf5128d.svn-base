@@ -1,0 +1,290 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.widget.CommentTextView;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CommentInfo;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.OnFeedsClickListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+public class FeedsDetailAdapter extends BaseAdapter implements View.OnClickListener, View.OnLongClickListener {
+
+	private static final int ITEM_FEEDS = 0;
+	private static final int ITEM_COMMENT = 1;
+	private static final String SPACE = " ";
+	private static final String COLON = ":";
+	private int textLinkColor = 0;
+	private Feeds mFeeds;
+	private FeedsItemLayout mFeedsHolder;
+	private LinkedList<CommentInfo> mComments;
+	private Context mContext;
+	private LayoutInflater inflater;
+	private OnClickComment onClickComment = null;
+	private CommonAlertDialog mAlertDlg;
+	private PostToParam mPostToParam;
+
+	public interface OnClickComment {
+		void onClickComment(long tid, long reuid, String renickname, int pos, int height);
+	}
+
+	private CommentTextView.HighlightClickableSpan replyToUserSpan = new CommentTextView.HighlightClickableSpan() {
+		@Override
+		public void onClick(View widget) {
+			long ruid = (Long) widget.getTag();
+			//ShowPersonalInfoActivity.startShowPersonalInfoActivity(mContext, ruid, mFeeds.baobaouid);
+		}
+	};
+
+	public FeedsDetailAdapter(Context context, PostToParam postTo) {
+		this.mContext = context;
+		inflater = LayoutInflater.from(mContext);
+		mPostToParam = postTo;
+		textLinkColor = ContextCompat.getColor(context, R.color.colorPrimary);
+	}
+
+	public void setFeeds(Feeds mFeeds) {
+		if (mFeeds == null) {
+			return;
+		}
+		this.mFeeds = mFeeds;
+		mComments = new LinkedList<CommentInfo>();
+		if (mFeeds.ext_topic_comments != null) {
+			mComments.addAll(mFeeds.ext_topic_comments);
+		}
+		this.notifyDataSetChanged();
+	}
+
+	public void insertComments(CommentInfo comments) {
+		mComments.add(comments);
+		this.notifyDataSetChanged();
+	}
+
+	public void setComments(LinkedList<CommentInfo> comments) {
+		mComments.clear();
+		if (comments != null && comments.size() > 0) {
+			for (CommentInfo comment : comments) {
+				if (comment.flag != CommentInfo.COMMENT_DELETEED) {
+					mComments.add(comment);
+				}
+			}
+		}
+		this.notifyDataSetChanged();
+	}
+
+	@Override
+	public int getCount() {
+		if (mFeeds == null) {
+			return 1;
+		}
+		return mComments.size() + 1;
+	}
+
+	@Override
+	public Object getItem(int i) {
+		if (i == 0) {
+			return mFeeds;
+		} else if (mComments == null || i < 0 || i > mComments.size()) {
+			return null;
+		}
+		return mComments.get(i - 1);
+	}
+
+	@Override
+	public long getItemId(int i) {
+		return i;
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if (position == 0) {
+			return ITEM_FEEDS;
+		}
+		return ITEM_COMMENT;
+	}
+
+	public void setOnClickComment(OnClickComment listener) {
+		onClickComment = listener;
+	}
+
+	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+
+	public View getFeedsView(View convertView, ViewGroup parent) {
+		if (convertView == null || mFeedsHolder == null) {
+			convertView = inflater.inflate(R.layout.item_feeds_detail, parent, false);
+			mFeedsHolder = new FeedsItemLayout(mContext, convertView, new OnFeedsClickListener(mContext, mPostToParam));
+			mFeedsHolder.setFeedsDetail();
+		}
+		mFeedsHolder.initViewItems(convertView);
+		if (mFeeds != null) {
+			mFeedsHolder.setFeeds(mFeeds, "");
+		}
+		return convertView;
+	}
+
+	public View getCommentView(int position, View convertView, ViewGroup parent) {
+		ViewHolder holder = null;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.item_feeds_detail_comment, parent, false);
+			holder = new ViewHolder();
+			holder.logo = (ImageView) convertView.findViewById(R.id.user_logo);
+			holder.replyer = (TextView) convertView.findViewById(R.id.replyer);
+			holder.commentTime = (TextView) convertView.findViewById(R.id.comment_time);
+			holder.comment = (CommentTextView) convertView.findViewById(R.id.comment);
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
+		CommentInfo comment = mComments.get(position - 1);
+		holder.position = position;
+		holder.commentTime.setText(DateUtil.parseTime(mContext, comment.create_time));
+		String name = comment.getFullGxName();
+		holder.replyer.setText(name);
+		fillTextContent(comment, holder.comment);
+		convertView.setOnClickListener(this);
+		convertView.setOnLongClickListener(this);
+		ImageLoader.getInstance().displayImage(comment.getCircleMember().avatar, holder.logo, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+		holder.logo.setTag(comment.comment_uid);
+		holder.replyer.setTag(comment.reply_uid);
+		holder.logo.setOnClickListener(this);
+		holder.replyer.setOnClickListener(this);
+		return convertView;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		int viewType = getItemViewType(position);
+
+		switch (viewType) {
+		case ITEM_FEEDS:
+			return getFeedsView(convertView, parent);
+		case ITEM_COMMENT:
+			return getCommentView(position, convertView, parent);
+		}
+		return convertView;
+	}
+
+	private void fillTextContent(CommentInfo commentInfo, CommentTextView tv) {
+		tv.setTag(commentInfo.reply_uid);
+		tv.setLinkTextColor(textLinkColor);
+		SpannableStringBuilder ssb = new SpannableStringBuilder();
+
+		if (commentInfo.reply_uid != 0) {
+			String reply = "回复";
+			ssb.append(reply).append(SPACE);
+
+			int pos = ssb.length();
+			String replyerName = TextUtils.isEmpty(commentInfo.reply_realname) ? "" : commentInfo.reply_realname;
+			ssb.append(replyerName).append(COLON);
+			ssb.setSpan(replyToUserSpan, pos, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		String commentContent = commentInfo.content;
+		ssb.append(SPACE).append(commentContent);
+		tv.setText(ssb, TextView.BufferType.SPANNABLE);
+	}
+
+	static class ViewHolder {
+		ImageView logo;
+		TextView replyer;
+		TextView commentTime;
+		CommentTextView comment;
+		int position;
+	}
+
+	public void showlikePopWindow(final View locationView, boolean isAnonymous) {
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		if (id == R.id.user_logo || id == R.id.replyer) {
+			long ruid = (Long) v.getTag();
+			//ShowPersonalInfoActivity.startShowPersonalInfoActivity(mContext, ruid, mFeeds.baobaouid);
+		}
+		if (id == R.id.root) {
+			if (onClickComment != null) {
+				int pos = ((ViewHolder) v.getTag()).position;
+				CommentInfo comment = mComments.get(pos - 1);
+				onClickComment.onClickComment(comment.tid, comment.comment_uid, comment.getFullGxName(), pos, v.getHeight());
+			}
+		}
+
+	}
+
+	@Override
+	public boolean onLongClick(View arg0) {
+		int pos = ((ViewHolder) arg0.getTag()).position;
+		final CommentInfo comment = mComments.get(pos - 1);
+		if (!FeedServer.canDeleteComment(mFeeds, comment.comment_uid)) {
+			return true;
+		}
+		//comment.dtype = mFeeds.circle_type;
+		int resId = R.string.alter_comment_delete;
+		alterDialog(resId, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FeedServer.deleteComment(comment, new XLTResponseCallback<Object>() {
+					@Override
+					public void onResponse(Object data, XLTError error) {
+						if (error == null) {
+							Iterator<CommentInfo> it = mComments.iterator();
+							while (it.hasNext()) {
+								if (comment.comment_id == it.next().comment_id) {
+									it.remove();
+									notifyDataSetChanged();
+									break;
+								}
+							}
+						}
+					}
+
+				});
+				mAlertDlg.dismiss();
+			}
+		});
+		return true;
+	}
+
+	private void alterDialog(int msgResId, View.OnClickListener comfirm) {
+		if (mAlertDlg == null) {
+			mAlertDlg = new CommonAlertDialog(mContext);
+			mAlertDlg.setTitle(R.string.main_prompt);
+			mAlertDlg.setCancelable(false);
+			mAlertDlg.setNegativeButton(mContext.getString(android.R.string.no), new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mAlertDlg.dismiss();
+				}
+			});
+
+		}
+		mAlertDlg.setMessage(msgResId);
+		mAlertDlg.setPositiveButton(mContext.getString(android.R.string.yes), comfirm);
+		mAlertDlg.show();
+	}
+}

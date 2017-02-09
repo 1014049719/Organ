@@ -1,0 +1,22 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/5/25.
+ */
+
+public class SendPayBookOrderData {
+    public final static String URL = "book.php?mod=buybook&cmdcode=130";
+    public int  baobao_id;
+    public String  package_label;
+    public int  num;
+    public int paytype;
+
+    public SendPayBookOrderData(String  package_label,int  baobao_id,int num,int paytype){
+        this.package_label=package_label;
+        this.baobao_id=baobao_id;
+        this.num=num;
+        this.paytype=paytype;
+    }
+}

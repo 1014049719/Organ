@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/space_5_0"
+    android:paddingLeft="@dimen/space_5_0"
+    android:paddingRight="@dimen/space_5_0"
+    android:paddingTop="@dimen/space_5_0"
+    android:background="@color/white"
+    tools:context="com.talenton.organ.ui.user.CreateAppActivity">
+
+
+    <GridView
+        android:id="@+id/gv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:verticalSpacing="@dimen/app_type_gv_spacing"
+        android:horizontalSpacing="@dimen/app_type_gv_spacing"
+        android:scrollbars="none"
+        android:gravity="center"
+        android:numColumns="@integer/app_type_gv_num_columns" />
+
+</LinearLayout>

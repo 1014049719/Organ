@@ -1,0 +1,372 @@
+package com.talenton.organ.ui.school;
+
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.TextView;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.talenton.organ.BaseListFragment;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.widget.ImageTextButton;
+import com.talenton.organ.event.LoginEvent;
+import com.talenton.organ.server.SchoolServer;
+import com.talenton.organ.server.bean.school.BaseRspList;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.server.bean.school.ReqAdvertisement;
+import com.talenton.organ.server.bean.school.ReqClassJoin;
+import com.talenton.organ.server.bean.school.ReqClassList;
+import com.talenton.organ.server.bean.school.RspClassJoin;
+import com.talenton.organ.server.bean.school.RspFilterAgeList;
+import com.talenton.organ.server.bean.school.RspListClass;
+import com.talenton.organ.server.bean.school.event.JoinClassEvent;
+import com.talenton.organ.ui.school.adapter.MyJoinClassAdapter;
+import com.talenton.organ.widget.AdvertisementView;
+import com.talenton.organ.widget.dialog.TipsDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/6
+ */
+public class SchoolHomeFragment extends BaseListFragment implements View.OnClickListener, AdapterView.OnItemClickListener, SwipeMenuListView.OnMenuItemClickListener {
+    private static final int LOAD_AGE_LIST = 1;
+    private static final int LOAD_CLASS_LIST = 2;
+    private AdvertisementView ad_view; //广告
+    private ImageTextButton btn_class_all; //全部课程按钮
+    private ImageTextButton btn_class_recommend; //推荐课程按钮
+    private ImageTextButton btn_class_hot; //热门课程
+    private ImageTextButton btn_class_experimental; //实验校
+    private List<ClassData> myClassDatas;
+    private View listEmptyFooterView; //没有课程时显示提示view
+    private SchoolServer schoolServer = new SchoolServer();
+    private TipsDialog giveUptipsDialog; //放弃课程提示dialog
+    private int delPostion; //放弃课程位置
+    private int loadFialType;
+    private  SchoolServer.SchoolClassListServer classListServer;
+    private boolean isAddFootView;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup v = (ViewGroup) inflater.inflate(R.layout.fragment_school, container, false);
+        super.onCreateView(inflater, v, savedInstanceState);
+        initActionBar(v);
+        initView();
+        fillAdViewData(false);
+        fillListData();
+        return v;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(JoinClassEvent joinClassEvent){
+        manualRefreshData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LoginEvent loginEvent) {
+        LoadMyClassData();
+    }
+
+    /**
+     * 获取年龄列表
+     */
+    private void loadAgeList() {
+        schoolServer.getAgeList(getContext(), new XLTResponseListener<RspFilterAgeList>() {
+            @Override
+            public void onResponse(RspFilterAgeList responseData, XLTError errorData) {
+                if (errorData != null) {
+                    showLoadErrorView();
+                    loadFialType = LOAD_AGE_LIST;
+                }else {
+                    showData();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected int getPullRefreshListViewResId() {
+        return R.id.list;
+    }
+
+    /**
+     * 填充广告view数据
+     */
+    private void fillAdViewData(boolean isRefresh) {
+        ad_view.setIsRefresh(isRefresh);
+        ad_view.setData(new ReqAdvertisement(ReqAdvertisement.AD_SCHOOL_HOME));
+    }
+
+
+
+    public void fillListData(){
+        myClassDatas = new ArrayList<>();
+        classListServer = new SchoolServer.SchoolClassListServer(new ReqClassList(ReqClassList.ClassListType.MY_JOIN));
+        LoadMyClassData();
+        mAdapter = new MyJoinClassAdapter(getContext(),myClassDatas);
+        mPullToRefreshSlideListView.setAdapter(mAdapter);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+                // set item background
+                openItem.setBackground(new ColorDrawable(getResources().getColor(R.color.bg_give_up)));
+                // set item width
+                openItem.setWidth((int)TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics()));
+                // set item title
+                openItem.setTitle(getString(R.string.feeds_list_delete));
+                // set item title fontsize
+                openItem.setTitleSize(16);
+                // set item title font color
+                openItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(openItem);
+            }
+        };
+
+        // set creator
+        mPullToRefreshSlideListView.getRefreshableView().setMenuCreator(creator);
+        mPullToRefreshSlideListView.getRefreshableView().setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        mPullToRefreshSlideListView.getRefreshableView().setOnItemClickListener(this);
+        mPullToRefreshSlideListView.getRefreshableView().setOnMenuItemClickListener(this);
+    }
+
+    /**
+     * 加载我收藏的课程数据
+     */
+    private void LoadMyClassData() {
+        startGetData(classListServer, new ListResponseCallback<RspListClass>() {
+            @Override
+            public void onSuccess(RspListClass data) {
+                myClassDatas.clear();
+                myClassDatas.addAll(data.getList());
+                mAdapter.notifyDataSetChanged();
+                if (data.getList().isEmpty()) {
+                    addEmptyFooterView();
+                } else {
+                    removeEmptyFooterView();
+                }
+                loadAgeList();
+            }
+
+            @Override
+            public void onError(XLTError error) {
+                loadFialType = LOAD_CLASS_LIST;
+            }
+        });
+    }
+
+    private void removeEmptyFooterView() {
+        if (isAddFootView){
+            mPullToRefreshSlideListView.getRefreshableView().removeFooterView(listEmptyFooterView);
+            isAddFootView = false;
+        }
+    }
+
+    private void addEmptyFooterView() {
+        if (!isAddFootView){
+            mPullToRefreshSlideListView.getRefreshableView().addFooterView(listEmptyFooterView);
+            isAddFootView = true;
+        }
+    }
+
+
+    /**
+     * 初始化view
+     */
+    private void initView() {
+        //初始化listview的头部
+        View listHeaderView = LayoutInflater.from(getContext()).inflate(R.layout.item_header_school_home,null);
+        btn_class_all = (ImageTextButton) listHeaderView.findViewById(R.id.btn_class_all);
+        btn_class_recommend = (ImageTextButton) listHeaderView.findViewById(R.id.btn_class_recommend);
+        btn_class_hot = (ImageTextButton) listHeaderView.findViewById(R.id.btn_class_hot);
+        btn_class_experimental = (ImageTextButton) listHeaderView.findViewById(R.id.btn_class_experimental);
+        ad_view = (AdvertisementView) listHeaderView.findViewById(R.id.ad_view);
+
+        btn_class_experimental.setOnClickListener(this);
+        btn_class_all.setOnClickListener(this);
+        btn_class_recommend.setOnClickListener(this);
+        btn_class_hot.setOnClickListener(this);
+
+        listEmptyFooterView = LayoutInflater.from(getContext()).inflate(R.layout.item_footer_no_join_class, null);
+        TextView tv_join_class = (TextView) listEmptyFooterView.findViewById(R.id.tv_join_class);
+        tv_join_class.setOnClickListener(this);
+
+        mPullToRefreshSlideListView.getRefreshableView().addHeaderView(listHeaderView);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_class_experimental:
+                if (!isTeacher()){
+                    showShortToast("您没有权限查看");
+                    return;
+                }
+                ExperimentalActivity.startExperimentalActivity(getContext());
+                break;
+            case R.id.btn_class_all:
+                ClassificationActivity.startClassFilterActivty(getContext());
+                break;
+            case R.id.btn_class_recommend:
+                ReqClassList recommendReq = new ReqClassList(ReqClassList.ClassListType.RECOMMEND,ReqClassList.BASIS_LAST);
+                recommendReq.setCattype(1);
+                ClassListActivity.startClassListActivityNoFilter(getContext(), btn_class_recommend.getText(),recommendReq,false);
+                break;
+            case R.id.btn_class_hot:
+                ReqClassList hotdReq = new ReqClassList(ReqClassList.ClassListType.HOT,ReqClassList.BASIS_LAST);
+                hotdReq.setCattype(1);
+                ClassListActivity.startClassListActivityNoFilter(getContext(), btn_class_hot.getText(),hotdReq ,false);
+                break;
+            case R.id.tv_join_class:
+                ClassificationActivity.startClassFilterActivty(getContext());
+                break;
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.school_my_class_title;
+    }
+
+    @Override
+    protected int getLeftImageResourceId() {
+        return R.mipmap.nav_search;
+    }
+
+    @Override
+    protected void onLeftClick() {
+        SearchActivity.startSearchActivity(getContext());
+    }
+
+    @Override
+    public void onDestroy() {
+        if (ad_view != null){
+            ad_view.onDestroy();
+        }
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        if (ad_view != null){
+            ad_view.onResume();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        if (ad_view != null){
+            ad_view.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected int getListType() {
+        return PULL_TO_REFRESH_SLIDE_LISTVIEW;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        position = position - mPullToRefreshSlideListView.getRefreshableView().getHeaderViewsCount();
+        if(position >=0 && position < mAdapter.getCount()){
+            ClassData classData = (ClassData) mAdapter.getItem(position);
+            ClassDetailActivity.startClassDetailActivity(getContext(),classData.getAid(),true);
+        }
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+        if (index == 0){
+            //点击放弃学习
+            AppLogger.d("onMenuItem == >" + position);
+            delPostion = position;
+            if (giveUptipsDialog == null){
+                giveUptipsDialog = new TipsDialog();
+                giveUptipsDialog.setMsg(getString(R.string.dialog_give_up_class));
+                giveUptipsDialog.setOnClickRightBtnListener(new TipsDialog.OnClickRightBtnListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ClassData classData = (ClassData) mAdapter.getItem(delPostion);
+                        schoolServer.joinClass(new ReqClassJoin(classData.getAid(), false), new XLTResponseListener<RspClassJoin>() {
+                            @Override
+                            public void onResponse(RspClassJoin responseData, XLTError errorData) {
+                                if (errorData == null) {
+                                    AppLogger.d("onMenuItemClick == >" + delPostion);
+                                    mAdapter.remove(delPostion);
+                                    mAdapter.notifyDataSetChanged();
+                                    if (mAdapter.getDatas().isEmpty()){
+                                        addEmptyFooterView();
+                                    }
+                                }else {
+                                    showShortToast(errorData.getMesssage());
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            giveUptipsDialog.show(getFragmentManager(),"giveup_class");
+
+        }
+        return false;
+    }
+
+    @Override
+    protected void onRefresh(BaseRspList data, XLTError error) {
+        if (error == null && data != null && data.getList() != null){
+            if (!data.getList().isEmpty()){
+                removeEmptyFooterView();
+            }else {
+                addEmptyFooterView();
+            }
+        }
+        fillAdViewData(true); //刷新广告
+    }
+
+    @Override
+    public void onReload(View v) {
+        fillAdViewData(true);
+        if (loadFialType == LOAD_AGE_LIST){
+            loadAgeList();
+        }else {
+            super.onReload(v);
+        }
+    }
+
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_white_bg_selector"
+    android:gravity="center"
+    android:minHeight="@dimen/height_50"
+    android:orientation="horizontal"
+    android:padding="@dimen/space_7_5" >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/height_50"
+        android:layout_height="@dimen/height_50"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <com.rockerhieu.emojicon.EmojiconTextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="left|center"
+        android:maxLines="3"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/text_28"
+        emojicon:emojiconSize="@dimen/text_32" />
+    <ProgressBar
+        android:id="@+id/upprogress"
+        android:layout_width="0dip"
+        android:layout_height="4dip"
+        android:layout_weight="2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:gravity="left|center"
+        android:text="上传中"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_24" />
+
+</LinearLayout>

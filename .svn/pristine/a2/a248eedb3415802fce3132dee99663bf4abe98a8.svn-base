@@ -1,0 +1,55 @@
+package com.talenton.organ.server.bean.message;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/11
+ */
+public class RspMsgList{
+    private int num; //当前消息数
+    private int maxnum; //一次查询最大消息数目
+    private int type;//查询类型
+    private int newnum; //最新消息数目（当type=0时，该值有效）
+    private List<MsgData> arr;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getMaxnum() {
+        return maxnum;
+    }
+
+    public void setMaxnum(int maxnum) {
+        this.maxnum = maxnum;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getNewnum() {
+        return newnum;
+    }
+
+    public void setNewnum(int newnum) {
+        this.newnum = newnum;
+    }
+
+    public List<MsgData> getArr() {
+        return arr;
+    }
+
+    public void setArr(List<MsgData> arr) {
+        this.arr = arr;
+    }
+}

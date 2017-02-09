@@ -1,0 +1,64 @@
+package com.talenton.organ.ui.discovery.adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.R;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.discovery.Action;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * Created by Administrator on 2016/4/19.
+ */
+public class ActionAdapter extends LSGBaseAdapter<Action>{
+
+    public ActionAdapter(Context context, List<Action> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        Action action= (Action) getItem(position);
+        ViewHloder viewHloder=null;
+        if (viewHloder==null){
+
+            viewHloder=new ViewHloder();
+            convertView= LayoutInflater.from(context).inflate(R.layout.action_cell,null);
+            viewHloder.timeTextView= (TextView) convertView.findViewById(R.id.time_tv);
+            viewHloder.nameTexeView= (TextView) convertView.findViewById(R.id.actionName_TextView);
+            viewHloder.detailTextView= (TextView) convertView.findViewById(R.id.actionDescribe_tv);
+            viewHloder.actionImageView= (ImageView) convertView.findViewById(R.id.actionImage);
+            convertView.setTag(viewHloder);
+        }else {
+
+           viewHloder= (ViewHloder) convertView.getTag();
+        }
+
+        viewHloder.timeTextView.setText(DateUtil.parseTime(context, action.dateline));
+        viewHloder.nameTexeView.setText(action.subject);
+        viewHloder.detailTextView.setText(action.describe);
+
+        //获取网络图片
+        ImageLoader.getInstance().displayImage(action.attachment, viewHloder.actionImageView, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+
+        return convertView;
+    }
+
+    class ViewHloder{
+
+        ImageView actionImageView;
+        TextView nameTexeView;
+        TextView detailTextView;
+        TextView timeTextView;
+    }
+}

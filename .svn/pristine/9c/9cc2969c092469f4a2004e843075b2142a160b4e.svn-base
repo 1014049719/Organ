@@ -1,0 +1,99 @@
+package com.talenton.base.widget;
+
+import com.rockerhieu.emojicon.EmojiconTextView;
+
+import android.content.Context;
+import android.text.Layout;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.style.ClickableSpan;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
+
+public class CommentTextView extends EmojiconTextView {
+	private HighlightClickableSpan mLastSpan;
+
+	public static abstract class HighlightClickableSpan extends ClickableSpan {
+		private boolean pressed;
+		private int bgColorPressed = 0xffc7c7c7;
+
+		public HighlightClickableSpan() {
+		}
+
+		public HighlightClickableSpan(int bgColorPressed) {
+			this.bgColorPressed = bgColorPressed;
+		}
+
+		public void onDown(View widget) {
+			pressed = true;
+		}
+
+		public void onUp(View widget) {
+			pressed = false;
+		}
+
+		@Override
+		public void updateDrawState(TextPaint ds) {
+			ds.setColor(ds.linkColor);
+			ds.bgColor = pressed ? bgColorPressed : 0;
+			ds.setUnderlineText(false);
+		}
+	}
+
+	public CommentTextView(Context context) {
+		super(context, null);
+	}
+
+	public CommentTextView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean ret = false;
+		CharSequence text = getText();
+		Spannable stext = Spannable.Factory.getInstance().newSpannable(text);
+		TextView widget = this;
+		int action = event.getAction();
+
+		if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
+			int x = (int) event.getX();
+			int y = (int) event.getY();
+
+			x -= widget.getTotalPaddingLeft();
+			y -= widget.getTotalPaddingTop();
+
+			x += widget.getScrollX();
+			y += widget.getScrollY();
+
+			Layout layout = widget.getLayout();
+			int line = layout.getLineForVertical(y);
+			int off = layout.getOffsetForHorizontal(line, x);
+
+			ClickableSpan[] link = stext.getSpans(off, off, ClickableSpan.class);
+
+			if (link.length != 0) {
+				if (action == MotionEvent.ACTION_UP) {
+					if (link[0] == mLastSpan) {
+						link[0].onClick(widget);
+					}
+				} else if (action == MotionEvent.ACTION_DOWN) {
+					if (link[0] instanceof HighlightClickableSpan) {
+						mLastSpan = (HighlightClickableSpan) link[0];
+						mLastSpan.onDown(widget);
+					}
+				}
+				ret = true;
+			}
+		}
+
+		if ((action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) && mLastSpan != null) {
+			mLastSpan.onUp(widget);
+			mLastSpan = null;
+		}
+
+		return ret || super.onTouchEvent(event);
+	}
+}

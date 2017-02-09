@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/load_image_500.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/load_image_500.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/load_image_failed_200.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/load_image_failed_200.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/popup_background.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/popup_background.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/icon_shop_cart_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/icon_shop_cart_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/btn_gray.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/btn_gray.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/main_error.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/main_error.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/load_image_200.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/load_image_200.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/actionbar_back_btn_normal.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/actionbar_back_btn_normal.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/load_image_failed_500.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/load_image_failed_500.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/main_empty.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/main_empty.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/user_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/user_photo.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/mipmap-xhdpi-v4/actionbar_back_btn_pressed.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/mipmap-xhdpi/actionbar_back_btn_pressed.png"
+    }
+]

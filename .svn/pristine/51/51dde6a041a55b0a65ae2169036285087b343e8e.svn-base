@@ -1,0 +1,247 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.ui.user.JumpType;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommentTextView;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CommentInfo;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.FeedsCommentActivity;
+import com.talenton.organ.ui.feed.OnFeedsClickListener;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import com.talenton.organ.R;
+import com.talenton.organ.ui.user.ShowPersonalInfoActivity;
+
+public class CommentContainerLayout extends LinearLayout {
+
+	private Context mContext;
+	private ArrayList<CommentInfo> commonInfos;
+	private static int textLinkColor = 0;
+
+	private WeakReference<Feeds> mFeeds;
+	private static final String SPACE = " ";
+	private static final String COLON = ":";
+	private static final int MAX_SIZE = 100;
+	private LayoutInflater inflater;
+	private OnFeedsClickListener mOnFeedsClickListener;
+
+	private CommentTextView.HighlightClickableSpan commenterSpan = new CommentTextView.HighlightClickableSpan() {
+		@Override
+		public void onClick(View widget) {
+			if (mFeeds.get() != null) {
+				CommentInfo comment = commonInfos.get((Integer) widget.getTag());
+				ShowPersonalInfoActivity.startShowPersonalInfoActivity(mContext, comment.comment_uid
+						, comment.getFullGxName(), comment.getCircleMember().avatar);
+			}
+		}
+	};
+
+	private CommentTextView.HighlightClickableSpan replyToUserSpan = new CommentTextView.HighlightClickableSpan() {
+		@Override
+		public void onClick(View widget) {
+			if (mFeeds.get() != null) {
+				CommentInfo comment = commonInfos.get((Integer) widget.getTag());
+				ShowPersonalInfoActivity.startShowPersonalInfoActivity(mContext, comment.reply_uid
+						, comment.getFullGxName(), comment.getCircleMember().avatar);
+			}
+		}
+	};
+
+	private OnClickListener onClickUserLogo = new OnClickListener() {
+		@Override
+		public void onClick(View widget) {
+			if (mFeeds.get() != null) {
+				CommentInfo comment = commonInfos.get((Integer) widget.getTag());
+				ShowPersonalInfoActivity.startShowPersonalInfoActivity(mContext, comment.comment_uid
+						, comment.getFullGxName(), comment.getCircleMember().avatar);
+			}
+		}
+	};
+
+	private OnClickListener onClickComment = new OnClickListener() {
+		@Override
+		public void onClick(View widget) {
+			if (mFeeds.get() != null) {
+				CommentInfo comment = commonInfos.get((Integer) widget.getTag());
+				if (comment.comment_id <= 0) {
+					XLTToast.makeText(mContext, R.string.comment_uploading).show();
+					return;
+				}
+				int[] lm = new int[2];
+				widget.getLocationOnScreen(lm);
+				int[] lp = new int[2];
+				View p = (View) CommentContainerLayout.this.getParent().getParent();
+				p.getLocationOnScreen(lp);
+				PostToParam param = new PostToParam();
+				param.circleId = mFeeds.get().circle_id;
+				param.tid = mFeeds.get().tid;
+				param.guid = mFeeds.get().guid;
+				param.commentUID = comment.comment_uid;
+				param.name = comment.getFullGxName();
+				param.height = lm[1] - lp[1];
+
+				FeedsCommentActivity.startCommentActivity(mContext, param);
+			}
+		}
+	};
+
+	private OnLongClickListener onLongClickComment = new OnLongClickListener() {
+
+		@Override
+		public boolean onLongClick(View v) {
+			// CommentServer.deleteComment(mDtype, comment, null);
+			// return true;
+			if (mOnFeedsClickListener != null && mFeeds.get() != null) {
+				CommentInfo comment = commonInfos.get((Integer) v.getTag());
+				if (FeedServer.canDeleteComment(mFeeds.get(), comment.comment_uid)) {
+					comment.guid = mFeeds.get().guid;
+					mOnFeedsClickListener.onDeleteComment(comment);
+				}
+			}
+
+			return true;
+		}
+	};
+
+	private ArrayList<View> commentViews = new ArrayList<View>(1);
+
+	public CommentContainerLayout(Context context) {
+		this(context, null);
+		mContext = context;
+		if (textLinkColor == 0) {
+			textLinkColor = ContextCompat.getColor(context, R.color.colorPrimary); //mContext.getResources().getColor(R.color.menu_main);
+		}
+	}
+
+	// public void setCommonInfo(ArrayList<CommentInfo> infos, String feedId,
+	// int dtype, long bbId) {
+
+	public void setCommonInfo(Feeds feeds) {
+		commonInfos = new ArrayList<CommentInfo>();
+		for (CommentInfo comment : feeds.ext_topic_comments) {
+			if (comment.flag != CommentInfo.COMMENT_DELETEED) {
+				commonInfos.add(comment);
+			}
+		}
+		mFeeds = new WeakReference<Feeds>(feeds);
+		inflater = LayoutInflater.from(mContext);
+		fillCommonData();
+	}
+
+	public void setOnFeedsClickListener(OnFeedsClickListener onFeedsClickListener) {
+		mOnFeedsClickListener = onFeedsClickListener;
+	}
+
+	private void fillCommonData() {
+		if (commonInfos == null || commonInfos.isEmpty()) {
+			setVisibility(View.GONE);
+			return;
+		} else {
+			setVisibility(View.VISIBLE);
+		}
+		addTextViews();
+	}
+
+	private void addTextViews() {
+		int showingSize = Math.min(MAX_SIZE, commonInfos.size());
+		if (commentViews.size() < showingSize) {
+			int gap = showingSize - commentViews.size();
+			for (int i = 0; i < gap; i++) {
+
+				View commentv = inflater.inflate(R.layout.item_feeds_comment, null);
+				CommentTextView tv = (CommentTextView) commentv.findViewById(R.id.comment);
+				LayoutParams params = new LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+						LayoutParams.WRAP_CONTENT);
+				tv.setLinkTextColor(textLinkColor);
+				addView(commentv, params);
+				tv.setOnClickListener(onClickComment);
+				tv.setOnLongClickListener(onLongClickComment);
+				commentViews.add(commentv);
+
+			}
+		}
+
+		for (int i = 0; i < showingSize; i++) {
+			View v = commentViews.get(i);
+			v.setVisibility(View.VISIBLE);
+
+			CommentTextView tv = (CommentTextView) v.findViewById(R.id.comment);
+			CommentInfo commentInfo = commonInfos.get(i);
+			fillTextContent(commentInfo, tv, i);
+			ImageView logo = (ImageView) v.findViewById(R.id.user_logo);
+			logo.setTag(i);
+			logo.setOnClickListener(onClickUserLogo);
+
+			ImageLoader.getInstance().displayImage(commentInfo.getCircleMember().avatar, logo, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+		}
+
+		if (commentViews.size() > showingSize) {
+			for (int i = showingSize; i < commentViews.size(); i++) {
+				View tv = commentViews.get(i);
+				if (tv != null) {
+					tv.setVisibility(View.GONE);
+				}
+			}
+		}
+	}
+
+	public void fillTextContent(CommentInfo commentInfo, CommentTextView tv, int commentPos) {
+		tv.setVisibility(View.VISIBLE);
+		tv.setTag(commentPos);
+
+		String own_name = commentInfo.getFullGxName();
+		SpannableStringBuilder ssb = new SpannableStringBuilder();
+
+		if (own_name != null) {
+			ssb.append(own_name);
+		}
+		if (commentInfo.reply_uid == 0) {
+			ssb.append(COLON);
+		}
+		ssb.setSpan(commenterSpan, 0, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+		if (commentInfo.reply_uid != 0) {
+			String reply = "回复";
+			ssb.append(SPACE).append(reply).append(SPACE);
+			int pos = ssb.length();
+			String replyerName = TextUtils.isEmpty(commentInfo.reply_realname) ? "" : commentInfo.reply_realname;
+			ssb.append(replyerName).append(COLON);
+			ssb.setSpan(replyToUserSpan, pos, ssb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		String commentContent = commentInfo.content;
+		// String commentContent = String.format("%d,%s\n%s",
+		// commentInfo.localid, commentInfo.cguid, commentInfo.content);
+		ssb.append(SPACE).append(commentContent);
+		tv.setText(ssb, TextView.BufferType.SPANNABLE);
+	}
+
+	public CommentContainerLayout(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		mContext = context;
+		if (textLinkColor == 0) {
+			textLinkColor = ContextCompat.getColor(context, R.color.colorPrimary);//mContext.getResources().getColor(R.color.menu_main);
+		}
+		setOrientation(LinearLayout.VERTICAL);
+	}
+
+	public interface OnCommentItemClickListener {
+		void onCommonItemClick(int index, View view);
+	}
+}

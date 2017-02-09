@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <com.talenton.organ.widget.MsgTipsView
+        android:id="@+id/iv_message"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <ImageView
+        android:id="@+id/iv_shopping"
+        android:layout_alignTop="@+id/iv_message"
+        android:layout_toLeftOf="@+id/iv_message"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/gch_icon" />
+
+    <LinearLayout
+        android:id="@+id/ll_avatar"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/iv_avatar"
+            lsg:civ_border_color="@color/white"
+            lsg:civ_border_width="@dimen/space_2_0"
+            android:layout_width="@dimen/mine_avatar_width"
+            android:layout_height="@dimen/mine_avatar_width"
+            android:src="@mipmap/tx" />
+    </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:layout_marginBottom="@dimen/space_10_0"-->
+        <!--android:layout_alignBottom="@+id/ll_avatar"-->
+        <!--android:id="@+id/iv_photo"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@mipmap/xj_photo" />-->
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:layout_width="@dimen/width_150"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_36"
+        android:textColor="@color/white"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center"
+        android:layout_below="@+id/ll_avatar"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:layout_width="@dimen/width_120"
+        android:layout_height="@dimen/height_36"
+        android:background="@drawable/btn_bg_corner_green"
+        android:textSize="@dimen/text_36"
+        android:textColor="@color/white"
+        android:text="@string/mine_text_login"
+        android:layout_below="@+id/ll_avatar"
+        android:gravity="center"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

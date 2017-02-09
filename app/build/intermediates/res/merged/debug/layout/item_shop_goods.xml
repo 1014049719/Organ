@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/shop_goods_picture"
+        android:layout_width="141dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:paddingBottom="15dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_marginRight="15dp">
+    <TextView
+        android:id="@+id/shop_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:text="幻影系列"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/text_30" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+        <ImageView
+            android:id="@+id/shop_picture_item"
+            android:layout_width="31dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_red"
+            android:text="1079元"
+            android:textSize="@dimen/text_24" />
+            <TextView
+                android:id="@+id/market_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/gray1"
+                android:text="1079元"
+                android:textSize="@dimen/text_24" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="销量"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/text_24" />
+
+        <TextView
+            android:id="@+id/sale_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="100件"
+            android:textColor="@color/black_mark"
+            android:textSize="@dimen/text_24" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="好评"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/text_24" />
+        <TextView
+            android:id="@+id/favourable_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="80%"
+            android:textColor="@color/black_mark"
+            android:textSize="@dimen/text_24" />
+    </LinearLayout>
+</LinearLayout>
+
+</LinearLayout>

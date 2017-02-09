@@ -1,0 +1,111 @@
+package com.talenton.organ.ui.school.adapter;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.organ.server.bean.school.CatalogData;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/5
+ */
+public abstract class BaseCatalogAdapter extends LSGBaseAdapter<CatalogData>{
+    private int lastSelectedPosition = -1;
+
+    public BaseCatalogAdapter(Context context, List<CatalogData> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
+        if (convertView == null){
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(getConvertViewId(),null);
+            viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            viewHolder.tv_content = (TextView) convertView.findViewById(R.id.tv_content);
+            viewHolder.tv_try = (TextView) convertView.findViewById(R.id.tv_try);
+            viewHolder.rl_content = (RelativeLayout) convertView.findViewById(R.id.rl_content);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        CatalogData catalogData = getItem(position);
+        if (catalogData.getCtype() == 0){
+            viewHolder.tv_title.setVisibility(View.VISIBLE);
+            viewHolder.rl_content.setVisibility(View.GONE);
+            viewHolder.tv_title.setText(catalogData.getName());
+        }else {
+            viewHolder.rl_content.setVisibility(View.VISIBLE);
+            viewHolder.tv_title.setVisibility(View.GONE);
+            viewHolder.tv_content.setText(catalogData.getName());
+            showContentLeftDrawable(viewHolder, catalogData.getCtype());
+        }
+
+        if (catalogData.getTrailers() == 1){
+            viewHolder.tv_try.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.tv_try.setVisibility(View.GONE);
+            //TODO 不可以试看
+        }
+
+
+        if (lastSelectedPosition == position){
+            viewHolder.tv_content.setSelected(true);
+        }else {
+            viewHolder.tv_content.setSelected(false);
+        }
+
+        return convertView;
+    }
+
+
+    private void showContentLeftDrawable(ViewHolder viewHolder, int ctype) {
+        switch (ctype){
+            case CatalogData.CTYPE_VIDEO:
+                Drawable videoDrawble = context.getResources().getDrawable(R.drawable.btn_bg_player_video_selector);
+                videoDrawble.setBounds(0,0,videoDrawble.getMinimumWidth(),videoDrawble.getMinimumHeight());
+                viewHolder.tv_content.setCompoundDrawables(videoDrawble, null, null, null);
+                break;
+            case CatalogData.CTYPE_DOC:
+                Drawable docDrawable = context.getResources().getDrawable(R.drawable.btn_bg_pdf_selector);
+                docDrawable.setBounds(0,0,docDrawable.getMinimumWidth(),docDrawable.getMinimumHeight());
+                viewHolder.tv_content.setCompoundDrawables(docDrawable,null,null,null);
+                break;
+            case CatalogData.CTYPE_IMGS:
+                Drawable imgsDrawable = context.getResources().getDrawable(R.drawable.btn_bg_imgs_selector);
+                imgsDrawable.setBounds(0,0,imgsDrawable.getMinimumWidth(),imgsDrawable.getMinimumHeight());
+                viewHolder.tv_content.setCompoundDrawables(imgsDrawable,null,null,null);
+                break;
+        }
+    }
+
+    public void setLastSelectedPosition(int lastSelectedPosition) {
+        this.lastSelectedPosition = lastSelectedPosition;
+        notifyDataSetChanged();
+    }
+
+    public int getLastSelectedPosition() {
+        return lastSelectedPosition;
+    }
+
+    protected abstract int getConvertViewId();
+
+    static class ViewHolder{
+        private RelativeLayout rl_content;
+        public TextView tv_title;
+        public TextView tv_content;
+        private TextView tv_try;
+        private TextView tv_time;
+    }
+}

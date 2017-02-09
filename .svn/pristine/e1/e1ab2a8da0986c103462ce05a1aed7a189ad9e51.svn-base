@@ -1,0 +1,37 @@
+package com.talenton.organ.server.bean.school;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/1
+ */
+public class BaseRspList<T> {
+    private int maxnum; //总条数
+    private int num; //当前返回条数
+    private List<T> list;
+
+    public int getMaxnum() {
+        return maxnum;
+    }
+
+    public void setMaxnum(int maxnum) {
+        this.maxnum = maxnum;
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+}

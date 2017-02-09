@@ -1,0 +1,91 @@
+package com.talenton.organ.server.bean.user;
+
+import android.text.TextUtils;
+
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.school.IBaseReq;
+
+/**
+ * @author zjh
+ * @date 2016/5/24
+ */
+public class ReqBabayData implements IBaseReq{
+    private static String MODIFY_BASE_URL = "user.php?mod=modbaobao&cmdcode=126";
+    private static String MODIFY_SCHOOL_URL = "user.php?mod=modbaobaoschool&cmdcode=127";
+
+    public static final int MODIFY_BASE_DATA = 1; //修改基础数据
+    public static final int MODIFY_SHCOOL_DATA = 2; //修改学校
+
+    private int modifyType; //修改类型
+
+    private long baobaouid;
+    private String name; //宝宝名称
+    private long birthdate; //出生日期，时间戳
+    private String classname; //宝宝所在班级
+
+    private long schoolid;
+    private String schoolname; //学校名称
+    private String resideprovince; //学校所在的省
+    private String residecity; //学校所在的市
+    private String residedist; //学校所在的区
+    private String message; //验证信息
+
+    public ReqBabayData(int modifyType) {
+        this.modifyType = modifyType;
+    }
+
+    public ReqBabayData(long baobaouid, String name, long birthdate, String classname) {
+        modifyType = MODIFY_BASE_DATA;
+        this.baobaouid = baobaouid;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.classname = classname;
+    }
+
+
+    public ReqBabayData(long baobaouid,long schoolid, String schoolname, String resideprovince, String residecity, String residedist,String message) {
+        modifyType = MODIFY_SHCOOL_DATA;
+        this.baobaouid = baobaouid;
+        this.schoolid = schoolid;
+        this.schoolname = schoolname;
+        this.resideprovince = resideprovince;
+        this.residecity = residecity;
+        this.residedist = residedist;
+        this.message = message;
+    }
+
+    @Override
+    public String getReqParams() {
+        JsonObjUtil jsonObjUtil = JsonObjUtil.getInstance();
+        jsonObjUtil.addParam("baobaouid",baobaouid);
+        if (modifyType == MODIFY_SHCOOL_DATA){
+            jsonObjUtil.addParam("schoolid",schoolid);
+            jsonObjUtil.addParam("schoolname",schoolname);
+            jsonObjUtil.addParam("resideprovince",resideprovince);
+            jsonObjUtil.addParam("residecity",residecity);
+            jsonObjUtil.addParam("residedist",residedist);
+            jsonObjUtil.addParam("message",message);
+        }else if(modifyType == MODIFY_BASE_DATA){
+            if (!TextUtils.isEmpty(name)){
+                jsonObjUtil.addParam("name",name);
+            }
+            if (birthdate != 0){
+                jsonObjUtil.addParam("birthdate",birthdate);
+            }
+            if (!TextUtils.isEmpty(classname)){
+                jsonObjUtil.addParam("classname",classname);
+            }
+        }
+        return jsonObjUtil.toJsonString();
+    }
+
+    @Override
+    public String getReqUrl() {
+        if (modifyType == MODIFY_SHCOOL_DATA){
+            return MODIFY_SCHOOL_URL;
+        }else if (modifyType == MODIFY_BASE_DATA){
+            return MODIFY_BASE_URL;
+        }
+        return "";
+    }
+}

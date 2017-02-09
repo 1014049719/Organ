@@ -1,0 +1,32 @@
+package com.talenton.organ.util;
+
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.talenton.base.util.AppLogger;
+
+/**
+ * @author zjh
+ * @date 2016/5/17
+ */
+public class QiNiuUtil {
+
+    public static String getThumbailUrl(String url,int width,int height){
+        StringBuilder sb = new StringBuilder(url);
+        sb.append("?");
+        sb.append("imageMogr2");
+        sb.append("/auto-orient");
+        sb.append("/thumbnail");
+        sb.append("/");
+        sb.append(width);
+        sb.append("x");
+        sb.append(height);
+        AppLogger.d("thumbaiUrl==>"+sb.toString());
+        return sb.toString();
+    }
+
+    public static String getThumbailUrl(String url,ImageView imageView){
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        return getThumbailUrl(url,layoutParams.width,layoutParams.height);
+    }
+}

@@ -1,0 +1,8 @@
+package com.talenton.organ.event;
+
+public class SelectedDateEvent {
+
+	public SelectedDateEvent(){
+		
+	}
+}

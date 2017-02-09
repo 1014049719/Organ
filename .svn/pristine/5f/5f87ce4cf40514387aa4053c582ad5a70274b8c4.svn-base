@@ -1,0 +1,199 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.organ.event.AttentionAgeEvent;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.AttentionRecordData;
+import com.talenton.organ.server.bean.user.SchoolBabyData;
+import com.talenton.organ.ui.feed.AttentionSchoolBabyActivity;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/6/7.
+ */
+public class SchoolBabyAdapter extends BaseAdapter implements View.OnClickListener{
+
+    LayoutInflater mInflater;
+    LinkedList<SchoolBabyData> mDatas = new LinkedList<>();
+    int mType;
+    Context mContext;
+
+    public SchoolBabyAdapter(Context context, int type){
+        mInflater = LayoutInflater.from(context);
+        mType = type;
+        mContext = context;
+    }
+
+    public void setDatas(LinkedList<SchoolBabyData> datas){
+        if (datas == null) return;
+        mDatas.clear();
+        mDatas.addAll(datas);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+        return mDatas.size();
+    }
+
+    @Override
+    public SchoolBabyData getItem(int position) {
+        return mDatas.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        HolderView holder;
+        if (convertView == null){
+            convertView = mInflater.inflate(R.layout.item_feed_attention_age, parent, false);
+            holder = new HolderView();
+            holder.mCirclePhoto = (ImageView)convertView.findViewById(R.id.circle_photo);
+            holder.mCircleName = (TextView)convertView.findViewById(R.id.tv_circle_name);
+            holder.mCircleDescription = (TextView)convertView.findViewById(R.id.tv_circle_description);
+            holder.mAttention = (TextView)convertView.findViewById(R.id.tv_attention);
+            holder.mAttention2 = (TextView)convertView.findViewById(R.id.tv_attention_2);
+            holder.mAttention.setVisibility(View.GONE);
+            holder.mAttention2.setVisibility(View.VISIBLE);
+            convertView.setTag(holder);
+        }else {
+            holder = (HolderView)convertView.getTag();
+        }
+        SchoolBabyData data = getItem(position);
+
+        holder.mCircleName.setText(data.name);
+        if(mType == AttentionSchoolBabyActivity.TYPE_SCHOOL){
+            String name = TextUtils.isEmpty(data.realname) ? "" : data.realname;
+            holder.mCircleDescription.setText(String.format("家长 %s", name));
+            ImageLoader.getInstance().displayImage(data.avartar, holder.mCirclePhoto
+                    , ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+        }else{
+            holder.mCircleDescription.setText(data.getSchooldata().name);
+            ImageLoader.getInstance().displayImage(data.getCircledata().circle_photo, holder.mCirclePhoto
+                    , ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+        }
+
+
+        if (data.isattention == 1){
+            holder.mAttention2.setBackgroundResource(R.drawable.btn_main_bg_selector);
+            holder.mAttention2.setTextColor(Color.parseColor("#FFFFFF"));
+        }else {
+            holder.mAttention2.setBackgroundResource(R.drawable.btn_blue_conner_stroke_selector);
+            holder.mAttention2.setTextColor(Color.parseColor("#0082C8"));
+        }
+        holder.mAttention2.setTag(position);
+        holder.mAttention2.setOnClickListener(this);
+        return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_attention_2:
+                attentionCircle((int) v.getTag());
+                break;
+        }
+    }
+
+    private void attentionCircle(final int pos){
+        if (pos > mDatas.size()) return;
+        SchoolBabyData d = mDatas.get(pos);
+        final long babyId = d.baobaouid;
+        final long circleId = d.getCircledata().circle_id;
+        final boolean isAttention = d.getCircledata().ext_is_attented;
+        if(d.getCircledata().circle_id == 0){
+            XLTToast.makeText(mContext, "该宝宝没有创建圈子，不能关注或取消").show();
+            return;
+        }
+        if(isAttention){
+            final CommonAlertDialog mAlertDlg = new CommonAlertDialog(mContext);
+            mAlertDlg.setTitle(R.string.main_prompt);
+            mAlertDlg.setCancelable(false);
+            mAlertDlg.setNegativeButton(mContext.getString(R.string.main_cancel), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                }
+            });
+
+            mAlertDlg.setPositiveButton(mContext.getString(R.string.main_confirm), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                    handleAttentionCirlce(babyId, circleId, !isAttention);
+                }
+            });
+            mAlertDlg.setMessage(R.string.circle_prompt_attention);
+            mAlertDlg.show();
+        }else {
+            if(d.getCircledata().ext_attent_status == AttentionRecordData.ATTENTION_STATUS_APPLY){
+                XLTToast.makeText(mContext, "该宝宝圈已经关注过，正在等待对方审批！").show();
+                return;
+            }
+            handleAttentionCirlce(babyId, circleId, !isAttention);
+        }
+    }
+
+    private void handleAttentionCirlce(final long babyId, final long circleId, final boolean isAttention){
+        if(mContext != null && mContext instanceof BaseCompatActivity)
+            ((BaseCompatActivity)mContext).showProgress(R.string.main_processing, true);
+
+        FeedServer.attentionOrCancelCircle(circleId, 0, mType, isAttention, new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if(mContext != null && mContext instanceof BaseCompatActivity)
+                    ((BaseCompatActivity)mContext).hideProgress();
+                if (error == null) {
+                    if (mDatas != null && !isAttention) {
+                        for (SchoolBabyData c : mDatas) {
+                            if (c.baobaouid == babyId) {
+                                c.isattention = isAttention ? 1 : 0;
+                                notifyDataSetChanged();
+                                EventBus.getDefault().post(new AttentionAgeEvent(true));
+                                break;
+                            }
+                        }
+                    }
+                    int resId = isAttention ? R.string.circle_prompt_attention_success_wait : R.string.circle_prompt_cancel_attention;
+                    XLTToast.makeText(mContext, resId).show();
+                } else {
+                    if (TextUtils.isEmpty(error.getMesssage())) {
+                        XLTToast.makeText(mContext, R.string.main_request_fail).show();
+                    } else {
+                        XLTToast.makeText(mContext, error.getMesssage()).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private class HolderView{
+        public ImageView mCirclePhoto;
+        public TextView mCircleName, mCircleDescription, mAttention, mAttention2;
+    }
+}

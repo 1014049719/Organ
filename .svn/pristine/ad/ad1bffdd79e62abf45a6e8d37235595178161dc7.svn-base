@@ -1,0 +1,31 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.io.Serializable;
+
+/**
+ * Created by xiaoxiang on 2016/4/22.
+ */
+public class SendAddAdressData {
+    public final static String URL = "mobile/add_address.php?cmdcode=45";
+
+
+
+    public String address;
+    public String mobile;
+    public String consignee;
+    public String area;
+    public String zipcode;
+    public int is_default;
+    public String best_time;
+
+    public SendAddAdressData(String consignee,String mobile,String area,String address,int is_default){
+
+        this.address=address;
+        this.mobile=mobile;
+        this.consignee=consignee;
+        this.area=area;
+      //  this.zipcode=zipcode;
+        this.is_default=is_default;
+    //    this.best_time=best_time;
+    }
+}

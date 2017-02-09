@@ -1,0 +1,66 @@
+package com.talenton.organ.server.bean.user;
+
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.school.IBaseReq;
+
+/**
+ * @author zjh
+ * @date 2016/5/24
+ */
+public class ReqListApproval implements IBaseReq{
+    private static final String URL_APPROVAL_LIST = "user.php?mod=getschoolexaminelist&cmdcode=128";
+    private long schoolid; //学校id
+    private int flag = 3; //0-未审批(默认)、1-通过、2-拒绝、3-全部
+    private int getcount;
+    private int page;
+
+    public ReqListApproval(long schoolid) {
+        this.schoolid = schoolid;
+    }
+
+    @Override
+    public String getReqParams() {
+        return JsonObjUtil.getInstance()
+                .addParam("schoolid",schoolid)
+                .addParam("flag",flag)
+                .addParam("getcount",getcount)
+                .addParam("page",page).toJsonString();
+    }
+
+    @Override
+    public String getReqUrl() {
+        return URL_APPROVAL_LIST;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    public int getGetcount() {
+        return getcount;
+    }
+
+    public void setGetcount(int getcount) {
+        this.getcount = getcount;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public long getSchoolid() {
+        return schoolid;
+    }
+
+    public void setSchoolid(long schoolid) {
+        this.schoolid = schoolid;
+    }
+}

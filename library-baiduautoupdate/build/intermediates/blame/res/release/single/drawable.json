@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/build/intermediates/res/merged/release/drawable/bdp_update_progress_download.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/src/main/res/drawable/bdp_update_progress_download.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/build/intermediates/res/merged/release/drawable/bdp_update_bg_dialog_content.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/src/main/res/drawable/bdp_update_bg_dialog_content.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/build/intermediates/res/merged/release/drawable/bdp_update_bg_dialog_btn.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/src/main/res/drawable/bdp_update_bg_dialog_btn.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/build/intermediates/res/merged/release/drawable/bdp_update_bg_dialog_title.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-baiduautoupdate/src/main/res/drawable/bdp_update_bg_dialog_title.xml"
+    }
+]

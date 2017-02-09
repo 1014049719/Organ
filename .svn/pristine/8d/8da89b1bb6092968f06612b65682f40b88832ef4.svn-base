@@ -1,0 +1,30 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.io.Serializable;
+
+/**
+ * Created by xiaoxiang on 2016/5/25.
+ */
+
+
+public final class ClassOrderInfo implements Serializable {
+    /**
+     *
+     */
+
+    private static final long serialVersionUID = -582457752806705419L;
+
+    public long aid; //课程id
+    public double price; //价钱
+    public String title; //标题
+    public String imgUrl; //图片地址
+
+    public ClassOrderInfo(){}
+
+    public ClassOrderInfo(long aid, double price,String title,String imgUrl) {
+        this.aid = aid;
+        this.price = price;
+        this.title = title;
+        this.imgUrl = imgUrl;
+    }
+}

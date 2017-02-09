@@ -1,0 +1,10 @@
+package com.talenton.organ.server.bean.user;
+
+/**
+ * Created by Wang.'''' on 2016/5/4.
+ */
+public class MyPointsParam {
+
+    //网络接口
+    public final static String URL="my.php?mod=mypoints&cmdcode=62";
+}

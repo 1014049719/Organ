@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/raw/armeabi.so",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-native/unspecified/res/raw/armeabi.so"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/raw/x86.so",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-native/unspecified/res/raw/x86.so"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/raw/arm64_v8a.so",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-native/unspecified/res/raw/arm64_v8a.so"
+    }
+]

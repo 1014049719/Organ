@@ -1,0 +1,198 @@
+package com.talenton.base.server.task;
+
+import com.talenton.base.dao.model.TaskBean;
+import com.talenton.base.server.DBHelper;
+import com.talenton.base.server.XLTError;
+import com.google.gson.Gson;
+
+public class TaskBase implements Comparable<TaskBase> {
+	protected static Gson gson = new Gson();
+	public final static int STATUS_READY = 1;
+	public final static int STATUS_PENDING = 2;
+	public final static int STATUS_FAILED = 3;
+	public final static int STATUS_CANCELED = 4;
+	public final static int STATUS_SUCCESS = 5;
+
+	public final static int RETRYS_MAX = 2;
+	public final static int RETRYS_INTERVAL = 10000;// 重试间隔时间片,单位m秒
+
+	public Long id;
+	public String type;
+	public volatile Integer status;
+	public Integer retrys;
+	public Integer updateTime;
+	public Long reTryTime;// 下次重试时间
+	public String message;
+	public String content;
+
+	/**
+	 * Priority values. Requests will be processed from higher priorities to
+	 * lower priorities, in FIFO order.
+	 */
+	public enum Priority {
+		LOW, NORMAL, HIGH, IMMEDIATE
+	}
+
+	public TaskBase() {
+	}
+
+	public TaskBase(long id) {
+		if (id < 0) {
+			this.id = id;
+			this.status = STATUS_READY;
+			this.retrys = 0;// 重新开始任务
+		} else {
+			this.id = TaskManager.generateLocalFeedsId();
+			this.status = STATUS_READY;
+			this.retrys = 0;// 新的任务
+		}
+	}
+
+	/**
+	 * 把数据库的任务对象转换为本地对象
+	 */
+	public TaskBase(TaskBean taskBean) {
+		this.id = taskBean.getId();
+		this.type = taskBean.getType();
+		this.status = taskBean.getStatus();
+		this.message = taskBean.getMessage();
+		this.retrys = 1;// 从数据库取出的任务，重试次都从1开始
+		this.reTryTime = 0L;
+		setContent(taskBean.getContent());
+	}
+
+	public void setTaskDetail(TaskBean taskBean) {
+		this.id = taskBean.getId();
+		this.type = taskBean.getType();
+		this.status = taskBean.getStatus();
+		this.message = taskBean.getMessage();
+		this.updateTime = taskBean.getUpdateTime();
+		this.retrys = 1;// 从数据库取出的任务，重试次都从1开始
+		this.reTryTime = 0L;
+		setContent(taskBean.getContent());
+	}
+
+	public TaskBean generateTask() {
+		return new TaskBean(this.id, this.type, this.status, (int) (System.currentTimeMillis() / 1000), getContent(),
+				message);
+	}
+
+	/**
+	 * Returns the {@link Priority} of this request; {@link Priority#NORMAL} by
+	 * default.
+	 */
+	public Priority getPriority() {
+		return Priority.NORMAL;
+	}
+
+	// 任务详情
+	public void setContent(String content) {
+		this.content = content;
+
+	}
+
+	// 任务详情
+	public String getContent() {
+		return content;
+	}
+
+	// 执行本任务
+	public void onExcute() {
+		status = TaskBase.STATUS_PENDING;
+		DBHelper.getInstance().insertOrReplace(DBHelper.DAO_TASK, generateTask(), false);
+	}
+
+	// 终止任务，清理数据库，通知UI
+	public void onFinish(int status, String message) {
+		//AppLogger.i(Thread.currentThread().getName() + " on onFinish:" + Long.toString(id) + " status:"
+		//		+ Integer.toString(status) + ",message=" + message);
+		this.status = status;
+		this.message = message;
+		TaskManager.finishTask(this);
+		if (status == STATUS_CANCELED) {
+			// 取消的就删掉
+			DBHelper.getInstance().delete(DBHelper.DAO_TASK, generateTask(), false);
+		} else {
+			// 其他的缓存起来
+			DBHelper.getInstance().insertOrReplace(DBHelper.DAO_TASK, generateTask(), false);
+		}
+		if(status == STATUS_SUCCESS){
+			TaskManager.deleteOldTask();
+		}
+	}
+
+	// 任务是否已终止
+	public boolean isFinish() {
+		return status == STATUS_FAILED || status == STATUS_SUCCESS || status == STATUS_CANCELED;
+	}
+
+	// 缓存任务
+	public void onCache() {
+		//AppLogger.i(Thread.currentThread().getName() + " on onCache:" + Long.toString(id));
+		DBHelper.getInstance().insertOrReplace(DBHelper.DAO_TASK, generateTask(), false);
+	}
+
+	// 马上继续任务
+	public void onContinue() {
+		//AppLogger.i(Thread.currentThread().getName() + " on onContinue:" + Long.toString(id));
+		TaskManager.continueTask(this);
+	}
+
+	// 尝试重试
+	public void onRetry(XLTError errorData) {
+		//AppLogger.i(Thread.currentThread().getName() + " on onRetry:" + Long.toString(id));
+		if (isFinish()) {
+			return;
+		}
+		if (errorData.shouldRetry() && retrys < RETRYS_MAX) {
+			++retrys;
+			reTryTime = System.currentTimeMillis() + RETRYS_INTERVAL * retrys;
+			if(status != STATUS_CANCELED) //delete the task not retry
+				TaskManager.retryTask(this);
+		} else {
+			//AppLogger.i(Thread.currentThread().getName() + " on onRetry STATUS_FAILED " + errorData.toString()
+			//		+ Long.toString(id));
+			if(status != STATUS_CANCELED)//delete the task not finish
+				onFinish(STATUS_FAILED, errorData.getMesssage());
+		}
+	}
+
+	@Override
+	public int compareTo(TaskBase another) {
+		Priority left = this.getPriority();
+		Priority right = another.getPriority();
+
+		// High-priority requests are "lesser" so they are sorted to the front.
+		// Equal priorities are sorted by sequence number to provide FIFO
+		// ordering.
+		return left == right ? (int) (this.id - another.id) : right.ordinal() - left.ordinal();
+	}
+
+	@Override
+	public String toString() {
+		return "TaskBase [id=" + id + ", type=" + type + ", status=" + status + ", retrys=" + retrys + ", updateTime="
+				+ updateTime + ", reTryTime=" + reTryTime + ", message=" + message + ", content=" + content + "]";
+	}
+
+	public static TaskBase getInstance(TaskBean bean) {
+		if (bean == null) {
+			return null;
+		}
+
+		try {
+			Class<?> clazz = Class.forName(bean.getType());
+			TaskBase task = (TaskBase) clazz.newInstance();
+			task.setTaskDetail(bean);
+			return task;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return new TaskBase(bean);
+
+	}
+
+}

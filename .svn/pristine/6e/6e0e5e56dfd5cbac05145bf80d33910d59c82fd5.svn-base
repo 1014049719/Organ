@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/layout_start"
+        android:layout_width="match_parent"
+        android:layout_height="172dip"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:background="@mipmap/popup_background"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/layout_pick"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_10"
+                android:text="本地相册导入"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_28" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_1_0"
+            android:background="@color/gray2" />
+        <LinearLayout
+            android:id="@+id/layout_capture"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:layout_marginTop="@dimen/space_1_0"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_10"
+                android:text="拍照"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_28" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_1_0"
+            android:background="@color/gray2" />
+        <LinearLayout
+            android:id="@+id/layout_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_10"
+                android:text="@string/main_cancel"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_28" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_crop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/black"
+        android:visibility="gone">
+        <com.talenton.base.widget.CropImageView
+            android:id="@+id/crop_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal" >
+            <Button
+                android:id="@+id/crop_ok"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/height_40"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="@string/main_confirm"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_28" />
+            <View
+                android:layout_width="@dimen/space_1_0"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/crop_cancel"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/height_40"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="@string/main_cancel"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_28" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

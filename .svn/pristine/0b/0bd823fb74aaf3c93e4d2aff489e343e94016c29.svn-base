@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/tb_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/space_10_0" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/guide_import_p" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/guide_import" />
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/gv_chat_pic_send"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/space_5_0"
+        android:layout_weight="1"
+        android:cacheColorHint="@color/transparent"
+        android:fadingEdgeLength="0dp"
+        android:gravity="center_horizontal"
+        android:listSelector="@null"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/space_5_0" >
+    </GridView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_bg" />
+
+    <FrameLayout
+        android:id="@+id/rl_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_48_0"
+        android:gravity="center"
+        android:paddingLeft="@dimen/space_10_0">
+
+        <LinearLayout
+            android:id="@+id/image_select_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center|left" >
+
+            <ImageView
+                android:id="@+id/cb_image_select_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/daily_report_checkbox" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_7_5"
+                android:background="@drawable/btn_white_bg_selector"
+                android:gravity="left"
+                android:text="@string/image_select_all"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_34" />
+
+            <TextView
+                android:id="@+id/image_select_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_white_bg_selector"
+                android:gravity="center"
+                android:text="@string/images_select_range"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_20" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_chat_pic_send"
+            style="@style/small_btn_style"
+            android:layout_gravity="center"
+            android:text="@string/image_send_all" />
+
+        <TextView
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_10_0"
+            android:paddingRight="@dimen/space_10_0"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="center"
+            android:text="@string/main_go"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_34" />
+    </FrameLayout>
+
+</LinearLayout>

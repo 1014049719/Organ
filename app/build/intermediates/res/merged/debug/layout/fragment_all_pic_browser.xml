@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <GridView
+        android:id="@+id/gv_chat_pic_send"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/space_5_0"
+        android:layout_weight="1"
+        android:cacheColorHint="@color/transparent"
+        android:fadingEdgeLength="0dp"
+        android:gravity="center_horizontal"
+        android:listSelector="@null"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/space_5_0" >
+    </GridView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_bg" />
+
+    <LinearLayout
+        android:id="@+id/rl_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_48_0"
+        android:gravity="center"
+        android:paddingRight="@dimen/space_10_0" >
+
+        <TextView
+            android:id="@+id/image_select_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="center"
+            android:paddingLeft="@dimen/space_15_0"
+            android:paddingRight="@dimen/space_15_0"
+            android:text="@string/images_preview"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_34" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_chat_pic_send"
+            style="@style/small_btn_style"
+            android:text="@string/image_send" />
+    </LinearLayout>
+
+</LinearLayout>

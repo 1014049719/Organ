@@ -1,0 +1,196 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.app.ProgressDialog;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CircleImageView;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.MyApprovalData;
+import com.talenton.organ.server.bean.user.ReqPostApproval;
+import com.talenton.organ.util.QiNiuUtil;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+import com.talenton.organ.widget.dialog.TipsDialog;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/24
+ */
+public class ApprovalAdapter extends LSGBaseAdapter<MyApprovalData>{
+    private TipsDialog tipsDialog;
+    private FragmentManager fm;
+    private int clickPosition;
+    private ProgressDialog pd;
+    public ApprovalAdapter(BaseCompatActivity context, List<MyApprovalData> datas) {
+        super(context, datas);
+        fm = context.getSupportFragmentManager();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
+        if (convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_approval,parent,false);
+            viewHolder = new ViewHolder();
+            viewHolder.iv_avatar = (CircleImageView) convertView.findViewById(R.id.iv_avatar);
+            viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.tv_accept = (TextView) convertView.findViewById(R.id.tv_accept);
+            viewHolder.tv_apply = (TextView) convertView.findViewById(R.id.tv_apply);
+            viewHolder.tv_class_info = (TextView) convertView.findViewById(R.id.tv_class_info);
+            viewHolder.tv_refuse = (TextView) convertView.findViewById(R.id.tv_refuse);
+            viewHolder.tv_result = (TextView) convertView.findViewById(R.id.tv_result);
+            viewHolder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        fillItemData(viewHolder, position);
+        
+        return convertView;
+    }
+
+    /**
+     * 填充数据
+     * @param viewHolder
+     * @param position
+     */
+    private void fillItemData(final ViewHolder viewHolder, int position) {
+        final MyApprovalData approvalData = getItem(position);
+        fillApprovalStatus(viewHolder, approvalData.getFlag());
+        ImageLoaderManager.getInstance().displayImage(QiNiuUtil.getThumbailUrl(approvalData.getAvartar(), viewHolder.iv_avatar), viewHolder.iv_avatar, ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER, null, null);
+        viewHolder.tv_accept.setTag(position);
+        viewHolder.tv_refuse.setTag(position);
+        viewHolder.tv_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                //点击同意后操作
+                clickPosition = (int) view.getTag();
+                getTipsDialog("确定同意该学生加入学校?", new TipsDialog.OnClickRightBtnListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postApproval(view, MyApprovalData.APPROVAL_ACCEPT);
+                    }
+                }).show(fm,"agree");
+
+            }
+        });
+
+        viewHolder.tv_refuse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                //点击拒绝后操作
+                clickPosition = (int) view.getTag();
+                getTipsDialog("确定拒绝该学生加入学校?", new TipsDialog.OnClickRightBtnListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postApproval(view, MyApprovalData.APPROVAL_REFUSE);
+                    }
+                }).show(fm,"refuse");
+
+            }
+        });
+
+        viewHolder.tv_name.setText(approvalData.getBaobaorealname());
+        viewHolder.tv_time.setText(DateUtil.parseTime(context, approvalData.getDateline()));
+        viewHolder.tv_class_info.setText(approvalData.getMessage());
+        viewHolder.tv_apply.setText(String.format(context.getString(R.string.mine_text_apply_join_school), approvalData.getSchoolname()));
+    }
+
+    /**
+     * 提交是否同意申请请求
+     */
+    private void postApproval(final View v, final int flag){
+        AppLogger.d("position=="+clickPosition);
+        final MyApprovalData myApprovalData = getItem(clickPosition);
+        showProgressDialog("正在提交数据中...");
+        MineServer.postApproval(new ReqPostApproval(flag, myApprovalData.getExamineid()), new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null) {
+                    myApprovalData.setFlag(flag);
+                    notifyDataSetChanged();
+                } else {
+                    XLTToast.makeText(context, error.getMesssage(), Toast.LENGTH_SHORT).show();
+                }
+                hideProgressDialog();
+            }
+        });
+    }
+
+
+
+
+    /**
+     * 设置审核状态
+     * @param viewHolder
+     * @param flag
+     */
+    private void fillApprovalStatus(ViewHolder viewHolder,int flag) {
+        if (flag == MyApprovalData.APPROVAL_NO){
+            viewHolder.tv_accept.setVisibility(View.VISIBLE);
+            viewHolder.tv_refuse.setVisibility(View.VISIBLE);
+            viewHolder.tv_result.setVisibility(View.GONE);
+        }else if (flag == MyApprovalData.APPROVAL_ACCEPT){
+            viewHolder.tv_accept.setVisibility(View.INVISIBLE);
+            viewHolder.tv_refuse.setVisibility(View.INVISIBLE);
+            viewHolder.tv_result.setVisibility(View.VISIBLE);
+            viewHolder.tv_result.setText(context.getString(R.string.mine_text_accepted));
+        }else {
+            viewHolder.tv_accept.setVisibility(View.INVISIBLE);
+            viewHolder.tv_refuse.setVisibility(View.INVISIBLE);
+            viewHolder.tv_result.setVisibility(View.VISIBLE);
+            viewHolder.tv_result.setText(context.getString(R.string.mine_text_refused));
+        }
+    }
+
+    static class ViewHolder{
+        public CircleImageView iv_avatar;
+        public TextView tv_name;
+        public TextView tv_class_info;
+        public TextView tv_apply;
+        public TextView tv_accept;
+        public TextView tv_refuse;
+        public TextView tv_result;
+        public TextView tv_time;
+    }
+
+    private TipsDialog getTipsDialog(String msg,TipsDialog.OnClickRightBtnListener onClickConfirmListener){
+        if (tipsDialog == null){
+            tipsDialog = new TipsDialog();
+            tipsDialog.setOnClickRightBtnListener(onClickConfirmListener);
+        }
+        tipsDialog.setMsg(msg);
+        return tipsDialog;
+    }
+
+    private void showProgressDialog(String msg){
+        if (pd == null){
+            pd = new ProgressDialog(context);
+            pd.setMessage(msg);
+            pd.setCancelable(false);
+        }
+        pd.show();
+    }
+
+    private void hideProgressDialog(){
+        if (pd != null && pd.isShowing()){
+            pd.dismiss();
+        }
+    }
+}

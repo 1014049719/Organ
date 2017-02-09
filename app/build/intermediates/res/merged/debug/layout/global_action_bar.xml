@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tb_topbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/action_bar_height"
+    android:gravity="center"
+    android:background="@android:color/holo_red_dark">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/action_bar_height"
+        android:gravity="center"
+        android:minWidth="@dimen/action_bar_height" >
+
+        <ImageView
+            android:id="@+id/iv_actionbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_10"
+            android:src="@drawable/actionbar_back_btn" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_actionbar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="设置"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_34" />
+
+    <FrameLayout
+        android:id="@+id/fl_actionbar_right"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/action_bar_height"
+        android:gravity="center"
+        android:minWidth="@dimen/action_bar_height"
+        android:padding="@dimen/space_10" >
+
+        <TextView
+            android:id="@+id/tv_actionbar_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_28" />
+
+        <ImageView
+            android:id="@+id/iv_actionbar_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</LinearLayout>

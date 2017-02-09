@@ -1,0 +1,23 @@
+package com.talenton.organ.server.bean.school.event;
+
+/**
+ * @author zjh
+ * @date 2016/5/10
+ */
+public class JoinClassEvent {
+    private int position;
+    public JoinClassEvent() {
+    }
+
+    public JoinClassEvent(int position) {
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+}

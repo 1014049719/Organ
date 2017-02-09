@@ -1,0 +1,229 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.base.server.bean.AppData;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CircleListData;
+import com.talenton.organ.server.bean.feed.MineCircle;
+import com.talenton.organ.server.bean.feed.ReqSocialCircle;
+import com.talenton.organ.server.bean.feed.RspMineCircle;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class SocialCircleActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    private LinkedList<CircleListData> mDatas = new LinkedList<>();
+    private LoadingViewHolder mLoading;
+    private RecyclerView mRecycler;
+    private PagerAdapter mAdapter;
+    private LinearLayout mLayoutCircle;
+    private EditText mContent;
+    private long circleId;
+    private long tid;
+
+    public static void startSocialCircleActivity(Context context, long tid, long circleId){
+        if (circleId == 0 || tid == 0) return;
+        Intent intent = new Intent(context, SocialCircleActivity.class);
+        intent.putExtra("circleId", circleId);
+        intent.putExtra("tid", tid);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_social_circle);
+
+        circleId = getIntent().getLongExtra("circleId", 0);
+        tid = getIntent().getLongExtra("tid", 0);
+
+        mLayoutCircle = (LinearLayout) findViewById(R.id.layout_circle);
+        mContent = (EditText) findViewById(R.id.et_content);
+        mRecycler = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecycler.setHasFixedSize(true);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecycler.setLayoutManager(manager);
+        mAdapter = new PagerAdapter(this);
+        mRecycler.setAdapter(mAdapter);
+
+        View loading = findViewById(R.id.loading_container);
+        mLoading = new LoadingViewHolder(mLayoutCircle, loading, this, this);
+
+        loadData();
+    }
+
+    private void loadData(){
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+        AppData app = UserServer.getRspLogin().app_cur;
+        final long appid = app != null ? app.appboxid : 0;
+        FeedServer.getMineCircle(appid, 0, MineCircle.ATTENTION_TYPE_EMPTY, new XLTResponseCallback<RspMineCircle>() {
+
+            @Override
+            public void onResponse(RspMineCircle data, XLTError error) {
+                if (error == null && data != null && data.list != null && data.list.size() > 0) {
+                    initData(data);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+        });
+    }
+
+    private void initData(RspMineCircle data){
+        if(data.list == null || data.list.size() == 0) return;
+        mDatas.clear();
+        //boolean isShowAttentionFamily = false;
+        for(MineCircle circle : data.list) {
+
+            CircleListData circleListData = circle.getCircleListData();
+            if (circleListData.circle_id == 0 || circleListData.is_public == 0
+                    || circleListData.circle_id == circleId){
+                continue;
+            }
+            mDatas.add(circleListData);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                loadData();
+                break;
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.share_action_to;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_feeds_post_text;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item){
+        if (mDatas.size() == 0){
+            showShortToast("请选择要发表的圈子");
+            return;
+        }
+        String content = mContent.getText().toString().trim();
+        if (!TextUtils.isEmpty(content) && content.length() > 300){
+            showShortToast("输入的内容不能超过300");
+            return;
+        }
+        ArrayList<Long> ids = new ArrayList<>();
+        for (CircleListData data : mDatas){
+            if (data.is_system == -1)
+                ids.add(data.circle_id);
+        }
+        if (ids.size() == 0) {
+            showShortToast("请选择要发表的圈子");
+            return;
+        }
+        ReqSocialCircle circle = new ReqSocialCircle(tid, content, ids);
+        FeedServer.socialTopicByCircle(circle, new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null && data != null){
+                    XLTToast.makeText(OrganApplication.getAppContext(), "分享到圈子成功").show();
+                    finish();
+                }else {
+                    XLTToast.makeText(OrganApplication.getAppContext(), "分享到圈子失败").show();
+                }
+            }
+        });
+    }
+
+    private class PagerAdapter extends RecyclerView.Adapter<PagerVewHodler> implements View.OnClickListener{
+
+        LayoutInflater mInflater;
+
+        public PagerAdapter(Context context){
+            super();
+            mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public PagerVewHodler onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.item_social_circle, parent, false);
+            final PagerVewHodler holder = new PagerVewHodler(view);
+            holder.mCheck.setOnClickListener(this);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(PagerVewHodler holder, int position) {
+            CircleListData circle = mDatas.get(position);
+            holder.mCheck.setTag(position);
+            holder.mName.setText(circle.circle_name);
+            int resId = circle.is_system == -1 ? R.mipmap.select : R.mipmap.select_gray;
+            holder.mCheck.setImageResource(resId);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.iv_check:
+                    int pos = (int)v.getTag();
+                    //RadioButton rb = (RadioButton) v;
+                    CircleListData circle = mDatas.get(pos);
+                    if (circle != null){
+                        circle.is_system = circle.is_system == -1 ? 0 : -1;
+                    }
+                    notifyDataSetChanged();
+                    break;
+            }
+        }
+    }
+
+    private class PagerVewHodler extends RecyclerView.ViewHolder{
+
+        public TextView mName;
+        public ImageView mCheck;
+
+        public PagerVewHodler(View itemView) {
+            super(itemView);
+
+            mName = (TextView)itemView.findViewById(R.id.tv_name);
+            mCheck = (ImageView)itemView.findViewById(R.id.iv_check);
+        }
+    }
+}

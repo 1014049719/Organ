@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.ShopFragment">
+    <!--商城-->
+    <!--顶部-->
+    <RelativeLayout
+        android:background="@color/main_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ViewStub
+            android:id="@+id/vs_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/global_app_bar" />
+
+        <com.talenton.organ.widget.MsgTipsView
+            android:id="@+id/iv_msg_tips"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/space_8_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_shop_cart"
+            android:layout_toLeftOf="@+id/iv_msg_tips"
+            android:layout_marginRight="@dimen/space_15_0"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_shop_cart" />
+
+    </RelativeLayout>
+
+
+    <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
+        android:id="@+id/shop_home_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

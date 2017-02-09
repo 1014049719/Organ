@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.AttentionTypeActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        android:id="@+id/layout_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:background="@drawable/btn_white_bg_selector"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_admin"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/space_10"
+                android:text="@string/fix_family_owner"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/text_28" />
+            <ImageView
+                android:id="@+id/iv_admin"
+                android:layout_width="@dimen/space_20_0"
+                android:layout_height="@dimen/space_20_0"
+                android:src="@mipmap/circle_orange_yes" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_10"
+            android:hint="@string/fix_family_owner_notice"
+            android:textColor="@color/gray1"
+            android:textSize="@dimen/text_24" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_audience"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_1_0"
+        android:gravity="center_vertical"
+        android:background="@drawable/btn_white_bg_selector"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_audience"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/space_10"
+                android:text="@string/fix_family_viewer"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/text_28" />
+            <ImageView
+                android:id="@+id/iv_audience"
+                android:layout_width="@dimen/space_20_0"
+                android:layout_height="@dimen/space_20_0"
+                android:src="@mipmap/circle_orange_yes" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_10"
+            android:hint="@string/fix_family_viewer_notice"
+            android:textColor="@color/gray1"
+            android:textSize="@dimen/text_24" />
+    </LinearLayout>
+</LinearLayout>

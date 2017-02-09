@@ -1,0 +1,67 @@
+package com.talenton.organ.server.bean.feed;
+
+import android.text.TextUtils;
+
+import com.talenton.base.server.bean.UserInfo;
+
+public class CommentInfo {
+	public static final String URL_POST = "topic.php?mod=addtopiccomment&cmdcode=80";
+	public static final String URL_LIST = "topic.php?mod=gettopiccommentsbytopicid&cmdcode=82";
+	public static final String URL_DELETE = "topic.php?mod=deletetopiccomment&cmdcode=84";
+	public final static String KEY_CGUID = "cguid";
+	public final static int COMMENT_NORMAL = 0;
+	public final static int COMMENT_DELETEED = 1;
+
+	public long comment_id; // 评论唯一id,
+	public long circle_id;//圈子id,
+	public long tid;//话题id,
+	public int ttype;//话题类型,
+	public long comment_uid;//评论人uid,
+	public String comment_realname;//评论人姓名,
+	public long reply_uid;//回复人uid,
+	public String reply_realname;//回复人姓名,
+	public long reply_comment_id;//回复评论id,
+	public String content;//内容,
+	public long baobao_id;//宝宝id,
+	public String baobao_name;//宝宝姓名,
+	public String gxid;//关系ID,
+	public String gxname;//关系名称,
+	public int is_report;//是否举报 0 否 1 是,
+	public String guid;//评论GUID,
+	public String localid;// APP本地ID,
+	public long create_time;//发表时间,
+	public long modify_time;//最后修改时间,
+	public String operator;//最后操作人,
+
+	public CircleMember ext_comment_member;
+
+	public int flag;
+
+	public CommentInfo(long tid, long reply_uid, String content){
+		this.tid = tid;
+		if (reply_uid > 0){
+			this.reply_uid = reply_uid;
+		}
+		this.content = content;
+	}
+
+	public CommentInfo() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getFullGxName() {
+
+		if (TextUtils.isEmpty(comment_realname)) {
+			String gx = TextUtils.isEmpty(gxname) ? "" : gxname;
+			return String.format("%s%s", baobao_name, gx);
+		}
+		return comment_realname;
+	}
+
+	public CircleMember getCircleMember(){
+		if (ext_comment_member == null){
+			return CircleMember.EMPTY;
+		}
+		return ext_comment_member;
+	}
+}

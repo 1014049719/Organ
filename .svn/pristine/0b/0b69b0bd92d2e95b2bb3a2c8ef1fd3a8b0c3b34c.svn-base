@@ -1,0 +1,97 @@
+package com.talenton.organ.ui.feed;
+
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.organ.server.bean.feed.CircleListData;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.image.AllPicBrowserActivity;
+
+public class PostTypeDialog extends DialogFragment implements View.OnClickListener {
+
+	private PostToParam mPostToParam;
+
+	public static PostTypeDialog newInstance(PostToParam params) {
+		PostTypeDialog fragment = new PostTypeDialog();
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("key_post_params", params);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		Bundle bundle = getArguments();
+		mPostToParam = null;
+		if (bundle != null) {
+			if (bundle.containsKey("key_post_params")) {
+				mPostToParam = (PostToParam) getArguments().getParcelable("key_post_params");
+			}
+		}
+		if (mPostToParam == null){
+			dismiss();
+		}
+		mPostToParam.tid = 0;
+		mPostToParam.guid = "";
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		Dialog dialog = new Dialog(getActivity(), R.style.common_dialog);
+		dialog.setContentView(R.layout.dialog_main_post_type);
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
+
+		dialog.findViewById(R.id.back).setOnClickListener(this);
+		dialog.findViewById(R.id.main_feeds_photo).setOnClickListener(this);
+		dialog.findViewById(R.id.main_feeds_video).setOnClickListener(this);
+		TextView tvGallery = (TextView)dialog.findViewById(R.id.main_feeds_gallery);
+		if(mPostToParam != null && mPostToParam.circleType == CircleListData.CIRCLE_TYPE_BABY) {
+			tvGallery.setOnClickListener(this);
+			tvGallery.setVisibility(View.VISIBLE);
+		}else {
+			tvGallery.setVisibility(View.GONE);
+		}
+		dialog.findViewById(R.id.main_feeds_text).setOnClickListener(this);
+		ImageView close = (ImageView) dialog.findViewById(R.id.main_feeds_close);
+		close.setOnClickListener(this);
+		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		return dialog;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.back:
+			case R.id.main_feeds_close:
+				dismiss();
+				break;
+			case R.id.main_feeds_gallery:
+				mPostToParam.mediaType = PostToParam.POST_GALLERY;
+				AllPicBrowserActivity.startImportGallery(getActivity(), mPostToParam);
+				break;
+			case R.id.main_feeds_video:
+				mPostToParam.mediaType = PostToParam.POST_VIDEO;
+				FeedsPostActivity.startPostFeedsActivity(getActivity(), mPostToParam);
+				break;
+			case R.id.main_feeds_photo:
+				mPostToParam.mediaType = PostToParam.POST_IMAGE;
+				FeedsPostActivity.startPostFeedsActivity(getActivity(), mPostToParam);
+				break;
+			case R.id.main_feeds_text:
+				mPostToParam.mediaType = PostToParam.POST_TEXT;
+				FeedsPostActivity.startPostFeedsActivity(getActivity(), mPostToParam);
+				break;
+		}
+		dismiss();
+	}
+
+}

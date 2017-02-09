@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.feed.AttentionRecordActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/pull_refresh_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent" />
+    <include
+        android:id="@+id/loading_container"
+        layout="@layout/load_fail_view" />
+</LinearLayout>

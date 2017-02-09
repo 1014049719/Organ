@@ -1,0 +1,110 @@
+package com.talenton.organ.widget.dialog;
+
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * @author zjh
+ * @date 2016/5/3
+ */
+public class FilterPopup<T extends FilterPopup.FilterPopupBean> extends PopupWindow{
+    private List<T> iFilterPopups;
+    private  LinearLayout ll_container;
+    private ScrollView scroll_view;
+    private OnPopupItemClickListener onPopupItemClickListener;
+    private int selectedPostion; //当前选择位置
+    private int lastPosition; //上一个被选择的位置
+
+    public FilterPopup(Context context,ArrayList<T> iFilterPopups,int selectedPostion) {
+        super(context);
+        this.iFilterPopups = iFilterPopups;
+        this.lastPosition  = this.selectedPostion = selectedPostion;
+        initView(context);
+    }
+
+    private void initView(Context context) {
+        ll_container = new LinearLayout(context);
+        ll_container.setOrientation(LinearLayout.VERTICAL);
+        ll_container.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        if (iFilterPopups != null && !iFilterPopups.isEmpty()){
+            for (int i=0; i<iFilterPopups.size(); i++){
+                final int positon = i;
+                View view = LayoutInflater.from(context).inflate(R.layout.item_popup_filter,ll_container,false);
+                RelativeLayout rl_content = (RelativeLayout) view.findViewById(R.id.rl_content);
+                final TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+                final ImageView iv_selected = (ImageView) view.findViewById(R.id.iv_selected);
+                View divider_line = view.findViewById(R.id.divider_line);
+                if (i == 0){
+                    divider_line.setVisibility(View.GONE);
+                }
+                tv_name.setText(iFilterPopups.get(i).getTitle());
+                rl_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onPopupItemClickListener != null) {
+                            onPopupItemClickListener.popupItemClickListener(ll_container, v, positon);
+                        }
+                        if (!tv_name.isSelected()) {
+                            iv_selected.setVisibility(View.VISIBLE);
+                            tv_name.setSelected(true);
+                            ll_container.getChildAt(lastPosition).findViewById(R.id.iv_selected).setVisibility(View.GONE);
+                            ll_container.getChildAt(lastPosition).findViewById(R.id.tv_name).setSelected(false);
+                        }
+                        lastPosition = positon;
+                        dismiss();
+                    }
+                });
+                if (selectedPostion == i){
+                    tv_name.setSelected(true);
+                    iv_selected .setVisibility(View.VISIBLE);
+                }
+                ll_container.addView(view);
+            }
+        }
+        scroll_view = new ScrollView(context);
+        scroll_view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        scroll_view.addView(ll_container);
+        setContentView(scroll_view);
+        setTouchable(true);
+        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        ColorDrawable dw = new ColorDrawable(context.getResources().getColor(R.color.transparent_3));
+        this.setBackgroundDrawable(dw);
+
+    }
+
+
+    public static class FilterPopupBean{
+        public String getTitle(){
+            return "";
+        }
+    }
+
+
+    public interface OnPopupItemClickListener{
+        void popupItemClickListener(View parent,View v,int position);
+    }
+
+    public OnPopupItemClickListener getOnPopupItemClickListener() {
+        return onPopupItemClickListener;
+    }
+
+    public void setOnPopupItemClickListener(OnPopupItemClickListener onPopupItemClickListener) {
+        this.onPopupItemClickListener = onPopupItemClickListener;
+    }
+}

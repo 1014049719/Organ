@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_bottom_menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/activity_bg" />
+
+    <RadioGroup
+        android:id="@+id/main_bottom_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal" >
+
+        <com.talenton.organ.widget.JYRadioButton
+            android:id="@+id/main_bottom_feed"
+            style="@style/main_bottom_bar_radio_style"
+            android:drawableTop="@drawable/main_menu_plaza_selector"
+            android:text="@string/main_menu_feed" />
+
+        <com.talenton.organ.widget.JYRadioButton
+            android:id="@+id/main_bottom_school"
+            style="@style/main_bottom_bar_radio_style"
+            android:drawableTop="@drawable/main_menu_school_selector"
+            android:text="@string/main_menu_school" />
+
+        <com.talenton.organ.widget.JYRadioButton
+            android:id="@+id/main_bottom_shop"
+            style="@style/main_bottom_bar_radio_style"
+            android:drawableTop="@drawable/main_menu_shop_selector"
+            android:text="@string/main_menu_shop" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_discover"
+            style="@style/main_bottom_bar_radio_style"
+            android:drawableTop="@drawable/main_menu_discover_selector"
+            android:text="@string/main_menu_discover" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_mine"
+            style="@style/main_bottom_bar_radio_style"
+            android:drawableTop="@drawable/main_menu_mine_selector"
+            android:text="@string/main_menu_mine" />
+    </RadioGroup>
+
+</LinearLayout>

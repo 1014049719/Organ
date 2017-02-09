@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:paddingBottom="@dimen/space_10"
+        android:paddingLeft="@dimen/space_10"
+        android:paddingRight="@dimen/space_10"
+        android:background="@drawable/btn_school_white_corner_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:layout_width="@dimen/width_120"
+            android:layout_height="@dimen/height_120" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_toRightOf="@+id/iv_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_32"
+            android:text="乐高教育tubes ExperimentS" />
+
+        <TextView
+            android:id="@+id/tv_discount_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥1079.00"
+            android:textColor="@color/text_charge"
+            android:layout_toRightOf="@+id/iv_left"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:textSize="@dimen/text_38" />
+
+        <TextView
+            android:id="@+id/tv_original_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥1200.00"
+            android:layout_marginLeft="@dimen/space_10"
+            android:textSize="@dimen/text_24"
+            android:textColor="@color/text_sub"
+            android:layout_toRightOf="@+id/tv_discount_price"
+            android:layout_below="@+id/tv_title"
+            android:layout_alignTop="@+id/tv_discount_price"
+            android:layout_alignBottom="@+id/tv_discount_price"
+            android:gravity="bottom" />
+
+
+        <TextView
+            android:id="@+id/tv_sales"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:layout_below="@+id/tv_discount_price"
+            android:layout_toRightOf="@+id/iv_left"
+            android:layout_alignLeft="@+id/tv_discount_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_text_sales"
+            android:textSize="@dimen/text_24"
+            android:textColor="@color/text_sub" />
+
+        <TextView
+            android:id="@+id/tv_sales_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_24"
+            android:text="120件"
+            android:textColor="@color/text_main"
+            android:layout_below="@+id/tv_discount_price"
+            android:layout_toRightOf="@+id/tv_sales"
+            android:layout_alignTop="@+id/tv_sales"
+            android:layout_marginLeft="@dimen/space_5_0" />
+
+
+        <TextView
+            android:id="@+id/tv_praise"
+            android:layout_marginLeft="@dimen/space_30_0"
+            android:layout_alignTop="@+id/tv_sales"
+            android:layout_below="@+id/tv_discount_price"
+            android:layout_toRightOf="@+id/tv_sales_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_text_praise"
+            android:textSize="@dimen/text_24"
+            android:textColor="@color/text_sub" />
+
+
+        <TextView
+            android:id="@+id/tv_praise_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_24"
+            android:text="98%"
+            android:textColor="@color/text_main"
+            android:layout_below="@+id/tv_discount_price"
+            android:layout_toRightOf="@+id/tv_praise"
+            android:layout_alignTop="@+id/tv_praise"
+            android:layout_marginLeft="@dimen/space_5_0" />
+
+    </RelativeLayout>
+
+</LinearLayout>

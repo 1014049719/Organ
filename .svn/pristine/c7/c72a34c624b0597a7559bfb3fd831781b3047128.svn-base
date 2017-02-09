@@ -1,0 +1,17 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/5/23.
+ */
+public class SendUpdateOrderData {
+    public final static String URL="mobile/updateorder.php?cmdcode=55";
+    public String  orderid;
+    public String  reason;
+    public int result;
+    public SendUpdateOrderData(String sOrderid,int iResult,String sReason){
+        orderid = sOrderid;
+        reason=sReason;
+        result=iResult;
+
+    }
+}

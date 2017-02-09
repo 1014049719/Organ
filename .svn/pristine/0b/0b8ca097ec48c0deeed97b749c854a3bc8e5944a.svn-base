@@ -1,0 +1,21 @@
+package com.talenton.organ.event;
+
+/**
+ * Created by ttt on 2016/6/12.
+ */
+public class LoginEvent {
+
+    private boolean isLogin;
+
+    public LoginEvent(boolean isLogin){
+        this.isLogin = isLogin;
+    }
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(boolean isLogin) {
+        this.isLogin = isLogin;
+    }
+}

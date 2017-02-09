@@ -1,0 +1,75 @@
+package com.talenton.organ.widget;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+
+/**
+ * @author zjh
+ * @date 2016/4/13
+ */
+public class LeftLineTextView extends TextView{
+    private int leftLineColor;
+    private float leftLineSize;
+
+    public LeftLineTextView(Context context) {
+        super(context);
+    }
+
+    public LeftLineTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initAttrs(context,attrs);
+    }
+
+
+    /**
+     * 初始化属性
+     */
+    private void initAttrs(Context context,AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LeftLineTextView);
+        leftLineColor = typedArray.getColor(R.styleable.LeftLineTextView_leftLineColor,context.getResources().getColor(R.color.text_vertical_line));
+        leftLineSize = typedArray.getDimensionPixelSize(R.styleable.LeftLineTextView_leftLineSize,3);
+    }
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        int paddingTop = getPaddingTop();
+        int paddingBotton = getPaddingBottom();
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(leftLineColor);
+
+        float left = 0;
+        float top = paddingTop;
+        float right = left + leftLineSize;
+        float bottom = getMeasuredHeight() - top - paddingBotton;
+//        canvas.drawLine(startX,startY,stopX,stopY,paint);
+
+        canvas.drawRect(left,top,right,bottom,paint);
+        super.onDraw(canvas);
+    }
+
+
+    public int getLeftLineColor() {
+        return leftLineColor;
+    }
+
+    public void setLeftLineColor(int leftLineColor) {
+        this.leftLineColor = leftLineColor;
+    }
+
+    public float getLeftLineSize() {
+        return leftLineSize;
+    }
+
+    public void setLeftLineSize(float leftLineSize) {
+        this.leftLineSize = leftLineSize;
+    }
+}

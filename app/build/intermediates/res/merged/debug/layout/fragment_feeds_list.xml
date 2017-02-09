@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.feed.FeedsListFragment">
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+        <View
+            android:layout_width="@dimen/width_50"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_circle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_36"
+            android:text="@string/main_menu_feed"/>
+        <LinearLayout
+            android:id="@+id/layout_message"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right">
+            <com.talenton.organ.widget.MsgTipsView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/space_8_0" />
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/circle_fragment_feed"
+            android:name="com.talenton.organ.ui.feed.CircleFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_circle" />
+    </FrameLayout>
+</LinearLayout>

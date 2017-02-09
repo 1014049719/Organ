@@ -1,0 +1,17 @@
+package com.talenton.organ.server.bean.user;
+
+/**
+ * Created by Wang.'''' on 2016/5/18.
+ */
+public class PingjiaParam {
+
+    //网络接口
+    public final static String URL="mobile/comment_up.php?cmdcode=59";
+    //要传入的参数
+    public int order_id;
+    public int goods_id;
+    public int comment_rank;
+    public String username;
+    public String content;
+    public int comment_type;
+}

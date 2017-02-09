@@ -1,0 +1,261 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatFragment;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.bean.SchoolData;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.widget.pulltozoomview.PullToZoomScrollViewEx;
+import com.talenton.organ.event.LoginEvent;
+import com.talenton.organ.event.UpdateAvatarEvent;
+import com.talenton.organ.server.bean.user.event.ModifyUserNameEvent;
+import com.talenton.organ.ui.feed.InviteAttentionActivity;
+import com.talenton.organ.ui.shop.ShoppingCartActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/12
+ */
+public class MineHomeFragment extends BaseCompatFragment implements View.OnClickListener {
+    private PullToZoomScrollViewEx srcoll_view;
+    private TextView tv_name;
+    private TextView tv_login;
+    private ImageView iv_avatar;
+    private ImageView iv_shopping;
+    private LinearLayout ll_avatar;
+    private LinearLayout ll_topice;
+    private LinearLayout ll_child_info;
+    private LinearLayout ll_order;
+    private LinearLayout ll_integral;
+    private LinearLayout ll_collection;
+    private LinearLayout ll_invite_friends;
+    private LinearLayout ll_suggestion;
+    private LinearLayout ll_setting;
+    private LinearLayout ll_my_approval;  //我的审批,教师权限
+    private LinearLayout ll_member;
+    private LinearLayout ll_model;
+
+    private SchoolData schoolData; //学校信息
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ModifyUserNameEvent modifyUserNameEvent) {
+        if (modifyUserNameEvent.getName() != null){
+            tv_name.setText(modifyUserNameEvent.getName());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(UpdateAvatarEvent updateAvatarEvent) {
+        if (updateAvatarEvent.getImgPath() != null && !updateAvatarEvent.equals("")){
+            Bitmap bitmap =  BitmapFactory.decodeFile(updateAvatarEvent.getImgPath());
+            if (bitmap != null){
+                iv_avatar.setImageBitmap(bitmap);
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = LayoutInflater.from(getContext()).inflate(R.layout.fragment_mine_home, container, false);
+        initView(v);
+        fillData();
+        return v;
+    }
+
+    private void fillData() {
+        String realName = UserServer.getCurrentUser().realname;
+        String avartarUrl = UserServer.getCurrentUser().avartar;
+        AppLogger.d("avartarUrl==>" + avartarUrl);
+        long uid = UserServer.getCurrentUser().uid;
+        if (uid == 0){
+            tv_login.setVisibility(View.VISIBLE);
+            tv_name.setVisibility(View.GONE);
+        }else {
+            tv_login.setVisibility(View.GONE);
+            tv_name.setVisibility(View.VISIBLE);
+            tv_name.setText(realName);
+        }
+
+        ImageLoaderManager.getInstance().displayImage(avartarUrl, iv_avatar, ImageLoaderManager.createImgOptions(R.mipmap.tx, R.mipmap.tx), null, null);
+        List<SchoolData> schoolDatas = UserServer.getCurrentUser().schooldata;
+        if (isLogin() && isTeacher() && schoolDatas != null && !schoolDatas.isEmpty()){
+            ll_my_approval.setVisibility(View.VISIBLE);
+            schoolData = schoolDatas.get(0);
+        }else {
+            ll_my_approval.setVisibility(View.GONE);
+        }
+    }
+
+    private void initView(View v) {
+        srcoll_view = (PullToZoomScrollViewEx) v.findViewById(R.id.scroll_view);
+
+        View headerView = LayoutInflater.from(getContext()).inflate(R.layout.item_mine_header, null, false);
+        tv_name = (TextView) headerView.findViewById(R.id.tv_name);
+        tv_login = (TextView) headerView.findViewById(R.id.tv_login);
+        ll_avatar = (LinearLayout) headerView.findViewById(R.id.ll_avatar);
+        iv_avatar = (ImageView) headerView.findViewById(R.id.iv_avatar);
+        iv_shopping = (ImageView) headerView.findViewById(R.id.iv_shopping);
+
+        iv_shopping.setOnClickListener(this);
+        ll_avatar.setOnClickListener(this);
+        tv_login.setOnClickListener(this);
+
+        View zoomView = LayoutInflater.from(getContext()).inflate(R.layout.item_mine_zoom, null, false);
+
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.item_mine_content, null, false);
+        ll_topice = (LinearLayout) contentView.findViewById(R.id.ll_topice);
+        ll_child_info = (LinearLayout) contentView.findViewById(R.id.ll_child_info);
+        ll_order = (LinearLayout) contentView.findViewById(R.id.ll_order);
+        ll_integral = (LinearLayout) contentView.findViewById(R.id.ll_integral);
+        ll_collection = (LinearLayout) contentView.findViewById(R.id.ll_collection);
+        ll_invite_friends = (LinearLayout) contentView.findViewById(R.id.ll_invite_friends);
+        ll_suggestion = (LinearLayout) contentView.findViewById(R.id.ll_suggestion);
+        ll_setting = (LinearLayout) contentView.findViewById(R.id.ll_setting);
+        ll_my_approval = (LinearLayout) contentView.findViewById(R.id.ll_my_approval);
+        ll_member = (LinearLayout) contentView.findViewById(R.id.ll_member);
+        ll_model = (LinearLayout) contentView.findViewById(R.id.ll_model);
+
+        ll_topice.setOnClickListener(this);
+        ll_child_info.setOnClickListener(this);
+        ll_order.setOnClickListener(this);
+        ll_integral.setOnClickListener(this);
+        ll_collection.setOnClickListener(this);
+        ll_invite_friends.setOnClickListener(this);
+        ll_suggestion.setOnClickListener(this);
+        ll_setting.setOnClickListener(this);
+        ll_my_approval.setOnClickListener(this);
+        ll_member.setOnClickListener(this);
+        ll_model.setOnClickListener(this);
+
+        srcoll_view.setHeaderView(headerView);
+        srcoll_view.setZoomView(zoomView);
+        srcoll_view.setScrollContentView(contentView);
+
+        if(UserServer.isCreateOrManager()){
+            ll_model.setVisibility(View.VISIBLE);
+            ll_member.setVisibility(View.VISIBLE);
+        }else {
+            ll_model.setVisibility(View.GONE);
+            ll_member.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_avatar:
+                //修改头像
+                UserInfoActivity.startUserInfoActivity(getContext());
+                break;
+            case R.id.iv_shopping:
+                //购物车
+                startActivity(new Intent(getContext(),ShoppingCartActivity.class));
+                break;
+            case R.id.ll_topice:
+                //我发布的话题
+                MyTopicActivity.startMyTopicActivity(getContext());
+                break;
+            case R.id.ll_child_info:
+                //孩子信息
+                if (UserServer.getCurrentUser().baobaodata == null || UserServer.getCurrentUser().baobaodata.isEmpty()
+                        || UserServer.getCurrentUser().baobaodata.get(0).baobaouid == 0){
+                    PerfectPersonalInfoActivity.startPerfectPersonalInfoActivity(getContext(),true);
+                }else {
+                    ChildInfoActivity.startChildInfoActivity(getContext());
+                }
+                break;
+            case R.id.ll_order:
+                //订单
+            {
+                Intent intent = new Intent(OrganApplication.getAppContext(), MyOrderActivity.class);
+                getContext().startActivity(intent);
+            }
+            break;
+            case R.id.ll_integral:
+                //积分
+            {
+                Intent intent = new Intent(OrganApplication.getAppContext(), MyPointsActivity.class);
+                getContext().startActivity(intent);
+            }
+            break;
+            case R.id.ll_collection:
+                //收藏
+            {
+                Intent intent=new Intent(OrganApplication.getAppContext(),MyCollectionActivity.class);
+                getContext().startActivity(intent);
+            }
+                break;
+            case R.id.ll_invite_friends:
+                //邀请好友
+//                InvitationActivity.startInvitationActivity(getContext());
+                InviteAttentionActivity.startInviteAttentionActivity(getContext(),InviteAttentionActivity.INVITE_FRIENDS);
+                break;
+            case R.id.ll_suggestion:
+                //意见反馈
+                SuggestionActivity.startSuggestionActivity(getContext());
+                break;
+            case R.id.ll_setting:
+                //设置
+                SettingActivity.startSettingActivity(getContext());
+                break;
+            case R.id.tv_login:
+                //立即登录
+                //UserServer.reLogin(true);
+                LoginMainActivity.startLoginMainActivity(getContext(), true);
+                break;
+            case R.id.ll_my_approval:
+                //我的审批
+                ApprovalActivity.startApprovalActivity(getContext(),schoolData.schoolid);
+                break;
+            case R.id.ll_member:
+                //粉丝
+                MemberListActivity.startMemberListActivity(getContext());
+                break;
+            case R.id.ll_model:
+                //模块设置
+                ModelListActivity.startModelListActivity(getContext());
+                break;
+        }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LoginEvent loginEvent) {
+        fillData();
+    }
+
+}

@@ -1,0 +1,94 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatFragment;
+import com.talenton.organ.R;
+import com.talenton.organ.ui.message.MsgActivity;
+
+import java.util.HashMap;
+
+
+public class FeedsListFragment extends BaseCompatFragment implements View.OnClickListener{
+
+    private TextView mCircle;
+
+    @Override
+    public void onAttach(Context context) {
+        // TODO Auto-generated method stub
+        super.onAttach(context);
+        if (context instanceof View.OnClickListener) {
+
+        } else {
+
+        }
+    }
+
+    static public FeedsListFragment newInstance() {
+        FeedsListFragment f = new FeedsListFragment();
+        f.isLazyMode = true;
+        return f;
+    }
+
+    public FeedsListFragment(){
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // image_detail_fragment.xml contains just an ImageView
+        super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_feeds_list, container, false);
+        //mToolbar = (Toolbar)v.findViewById(R.id.toolbar);
+        mCircle = (TextView)v.findViewById(R.id.tv_circle);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.main_menu_feed;
+    }
+
+    @Override
+    protected int getLeftImageResourceId() {
+        return 0;
+    }
+
+    protected void onRightClick(MenuItem item) {
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+}

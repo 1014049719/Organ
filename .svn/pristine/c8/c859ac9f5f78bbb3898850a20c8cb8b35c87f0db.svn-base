@@ -1,0 +1,21 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.io.Serializable;
+
+/**
+ * Created by xiaoxiang on 2016/5/25.
+ */
+
+
+public final class GoodsOrderInfo implements Serializable {
+    /**
+     *
+     */
+
+    private static final long serialVersionUID = -582457752806705419L;
+
+    public int order_id;
+    public String order_sn;
+    public double total_price;
+
+}

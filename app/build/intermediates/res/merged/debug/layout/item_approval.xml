@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingLeft="@dimen/space_15_0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:layout_marginRight="@dimen/space_10_0"
+            android:layout_width="@dimen/mine_approval_avatar_width"
+            android:layout_height="@dimen/mine_approval_avatar_height"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_32"
+            android:singleLine="true"
+            android:paddingRight="@dimen/space_5_0"
+            android:layout_toLeftOf="@+id/tv_time"
+            android:layout_alignTop="@+id/iv_avatar"
+            android:layout_toRightOf="@+id/iv_avatar"
+            android:text="李小天" />
+
+
+        <TextView
+            android:id="@+id/tv_class_info"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="班主任李俊达 三年级2班"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_24"
+            android:layout_below="@+id/tv_name"
+            android:layout_toLeftOf="@+id/tv_accept"
+            android:layout_alignLeft="@+id/tv_name" />
+
+
+        <TextView
+            android:id="@+id/tv_apply"
+            android:layout_marginTop="@dimen/space_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_26"
+            android:text="@string/mine_text_apply_join_school"
+            android:layout_toLeftOf="@+id/tv_accept"
+            android:layout_below="@+id/tv_class_info"
+            android:layout_alignLeft="@+id/tv_class_info" />
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_alignTop="@+id/tv_name"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="08:20"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_26" />
+
+
+        <TextView
+            android:id="@+id/tv_accept"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="@dimen/height_30"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_26"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_marginTop="@dimen/space_10_0"
+            android:background="@drawable/btn_blue_conner_solid"
+            android:text="@string/mine_text_accept"
+            android:layout_below="@+id/tv_time"
+            android:layout_toLeftOf="@+id/tv_refuse" />
+
+
+        <TextView
+            android:id="@+id/tv_refuse"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="@dimen/height_30"
+            android:textColor="@color/main_blue"
+            android:textSize="@dimen/text_26"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/space_10_0"
+            android:background="@drawable/btn_bg_gray_stroke"
+            android:text="@string/mine_text_refuse"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_time" />
+
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:visibility="gone"
+            android:layout_width="@dimen/width_50"
+            android:layout_height="@dimen/height_30"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_26"
+            android:gravity="bottom|center_horizontal"
+            android:layout_marginTop="@dimen/space_10_0"
+            android:text="@string/mine_text_accepted"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_time" />
+
+    </RelativeLayout>
+    <View
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_13_0"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line"
+        android:layout_alignParentBottom="true" />
+</LinearLayout>
+

@@ -1,0 +1,177 @@
+package com.talenton.organ.ui.shop.adapter;
+
+import android.content.Context;
+import android.graphics.Paint;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.shop.GoodsInfo;
+import com.talenton.organ.ui.shop.ShopFragment;
+import com.talenton.organ.widget.LeftLineTextView;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/4/19.
+ */
+public class GoodsExpandableListViewAdapter extends BaseExpandableListAdapter {
+
+    private Context context;
+    private LayoutInflater mInflater;
+    private ArrayList<ArrayList<GoodsInfo>> mGoodsInfo_list;/////所有具体的值
+    private ArrayList<ShopFragment.GroupString> mGoodsInfoGroup_list;///显示更多
+
+    public GoodsExpandableListViewAdapter(Context context) {
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        mGoodsInfo_list = new ArrayList<ArrayList<GoodsInfo>>();
+        mGoodsInfoGroup_list = new ArrayList<ShopFragment.GroupString>();
+    }
+
+    public void setData(ArrayList<ShopFragment.GroupString> path,ArrayList<ArrayList<GoodsInfo>> paths) {
+        mGoodsInfoGroup_list.clear();
+        mGoodsInfoGroup_list.addAll(path);
+        mGoodsInfo_list.clear();
+        mGoodsInfo_list.addAll(paths);
+        notifyDataSetChanged();
+    }
+    @Override
+    public int getGroupCount() {
+        return mGoodsInfoGroup_list.size();
+    }
+
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        return mGoodsInfo_list.get(groupPosition).size();
+    }
+
+    @Override
+    public ShopFragment.GroupString getGroup(int groupPosition) {
+        return mGoodsInfoGroup_list.get(groupPosition);
+    }
+
+    @Override
+    public GoodsInfo getChild(int groupPosition, int childPosition) {
+
+
+        return mGoodsInfo_list.get(groupPosition).get(childPosition);
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        GroupHolder groupHolder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.item_shop_group, parent, false);
+            groupHolder = new GroupHolder();
+            groupHolder.tex=(TextView) convertView.findViewById(R.id.shop_goodgroup_type);
+            groupHolder.texEnglish=(TextView) convertView.findViewById(R.id.shop_goodgroup_type_english);
+            convertView.setTag(groupHolder);
+        } else {
+            groupHolder = (GroupHolder) convertView.getTag();
+        }
+
+        groupHolder.tex.setText(mGoodsInfoGroup_list.get(groupPosition).tex.toString());
+        groupHolder.texEnglish.setText(mGoodsInfoGroup_list.get(groupPosition).texEnglish.toString());
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+        ItemHolder itemHolder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.item_shop_goods, parent, false);
+            itemHolder = new ItemHolder();
+            itemHolder.img=(ImageView)convertView.findViewById(R.id.shop_goods_picture);
+            itemHolder.imgItem=(ImageView) convertView.findViewById(R.id.shop_picture_item);
+            itemHolder.goods_name=(TextView) convertView.findViewById(R.id.shop_goods_name);
+            itemHolder.price=(TextView) convertView.findViewById(R.id.price);
+            itemHolder.salenum=(TextView) convertView.findViewById(R.id.sale_number);
+            itemHolder.haol=(TextView) convertView.findViewById(R.id.favourable_comment);
+            itemHolder.market_price=(TextView) convertView.findViewById(R.id.market_price);
+
+            convertView.setTag(itemHolder);
+        } else {
+            itemHolder = (ItemHolder) convertView.getTag();
+        }
+
+        itemHolder.goods_name.setText(mGoodsInfo_list.get(groupPosition).get(
+                childPosition).name);
+        itemHolder.price.setText("￥"+mGoodsInfo_list.get(groupPosition).get(
+                childPosition).shop_price);
+        itemHolder.salenum.setText(mGoodsInfo_list.get(groupPosition).get(
+                childPosition).salesnum+"件");
+        itemHolder.haol.setText(mGoodsInfo_list.get(groupPosition).get(
+                childPosition).haol);
+        ImageLoaderManager.getInstance().displayImage(mGoodsInfo_list.get(groupPosition).get(
+                childPosition).goods_img, itemHolder.img, ImageLoaderManager.DEFAULT_IMAGE_GRAY_LOADING_DISPLAYER, null, null);
+        itemHolder.market_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+
+        if(groupPosition==0){
+            itemHolder.imgItem.setImageResource(R.mipmap.icon_shop_discount_item);
+            itemHolder.price.setText("￥"+mGoodsInfo_list.get(groupPosition).get(
+                    childPosition).shop_price);
+        }
+        if(groupPosition==1){
+            itemHolder.imgItem.setImageResource(R.mipmap.icon_shop_recommend_item);
+         //   itemHolder.market_price.setVisibility(View.INVISIBLE);
+        }
+        if(groupPosition==2){
+            itemHolder.imgItem.setImageResource(R.mipmap.icon_shop_hot_item);
+         //   itemHolder.market_price.setVisibility(View.INVISIBLE);
+        }
+
+
+/*
+        itemHolder.img.setBackgroundResource(mGoodsInfo_list.get(groupPosition).get(
+                childPosition).img);
+*/
+
+        return convertView;
+    }
+
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+    static class GroupHolder {
+        public TextView tex ;
+        public TextView texEnglish ;
+    }
+
+    static class ItemHolder {
+        public ImageView img;
+        public ImageView imgItem;
+        public TextView goods_name;
+        public TextView price;
+        public TextView salenum;
+        public TextView haol;
+        public TextView market_price;
+    }
+}
+

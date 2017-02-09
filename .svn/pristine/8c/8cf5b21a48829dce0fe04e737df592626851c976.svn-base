@@ -1,0 +1,84 @@
+package com.talenton.base.server.bean;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * Created by ttt on 2016/7/12.
+ */
+public class AppModule implements Parcelable {
+    public String f_desc;
+    public int f_id;
+    public String f_name;
+    public int f_type;
+    public String f_type_name;
+
+    public boolean isSelected; //是否被选中,仅用于临时保存状态
+
+
+   @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.f_desc);
+        dest.writeInt(this.f_id);
+        dest.writeString(this.f_name);
+        dest.writeInt(this.f_type);
+        dest.writeString(this.f_type_name);
+        dest.writeByte(isSelected ? (byte) 1 : (byte) 0);
+    }
+
+    public AppModule() {
+    }
+
+    protected AppModule(Parcel in) {
+        this.f_desc = in.readString();
+        this.f_id = in.readInt();
+        this.f_name = in.readString();
+        this.f_type = in.readInt();
+        this.f_type_name = in.readString();
+        this.isSelected = in.readByte() != 0;
+    }
+
+    public static final Creator<AppModule> CREATOR = new Creator<AppModule>() {
+        @Override
+        public AppModule createFromParcel(Parcel source) {
+            return new AppModule(source);
+        }
+
+        @Override
+        public AppModule[] newArray(int size) {
+            return new AppModule[size];
+        }
+    };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppModule appModule = (AppModule) o;
+
+        if (f_id != appModule.f_id) return false;
+        if (f_type != appModule.f_type) return false;
+        if (f_desc != null ? !f_desc.equals(appModule.f_desc) : appModule.f_desc != null)
+            return false;
+        if (f_name != null ? !f_name.equals(appModule.f_name) : appModule.f_name != null)
+            return false;
+        return !(f_type_name != null ? !f_type_name.equals(appModule.f_type_name) : appModule.f_type_name != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = f_desc != null ? f_desc.hashCode() : 0;
+        result = 31 * result + f_id;
+        result = 31 * result + (f_name != null ? f_name.hashCode() : 0);
+        result = 31 * result + f_type;
+        result = 31 * result + (f_type_name != null ? f_type_name.hashCode() : 0);
+        return result;
+    }
+}

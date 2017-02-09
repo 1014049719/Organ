@@ -1,0 +1,12 @@
+package com.talenton.organ.server.bean.user;
+
+/**
+ * Created by ttt on 2016/4/18.
+ */
+public class UploadFile {
+    public static final String URL = "user.php?mod=uploadavartar&cmdcode=2";
+
+    public String url_big; //大头像URL
+    public String url_middle;//中头像URL",
+    public String url_small;//小头像URL"
+}

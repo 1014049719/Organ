@@ -1,0 +1,83 @@
+package com.talenton.organ.ui.school.adapter;
+
+import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.util.QiNiuUtil;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/17
+ */
+public class BaseClassListAdapter extends LSGBaseAdapter<ClassData> {
+    public BaseClassListAdapter(Context context, List<ClassData> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        if (convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_school_class,null);
+            viewHolder = new ViewHolder();
+            viewHolder.iv_left = (ImageView) convertView.findViewById(R.id.iv_left);
+            viewHolder.tv_right_desc = (TextView) convertView.findViewById(R.id.tv_right_desc);
+            viewHolder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
+            viewHolder.tv_join_number = (TextView) convertView.findViewById(R.id.tv_join_number);
+            viewHolder.tv_update_class = (TextView) convertView.findViewById(R.id.tv_update_class);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        ClassData classData = getItem(position);
+
+        ImageLoaderManager.getInstance().displayImage(QiNiuUtil.getThumbailUrl(classData.getPic(), viewHolder.iv_left), viewHolder.iv_left, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200, null, null);
+        viewHolder.tv_right_desc.setText(classData.getTitle());
+        if(classData.getIspay() == ClassData.CHARGE){
+            viewHolder.tv_price.setTextColor(context.getResources().getColor(R.color.text_charge));
+            viewHolder.tv_price.setText("￥"+classData.getPrice());
+        }else {
+            viewHolder.tv_price.setTextColor(context.getResources().getColor(R.color.text_free));
+            viewHolder.tv_price.setText(context.getString(R.string.school_text_free));
+        }
+        viewHolder.tv_join_number.setText(String.format(context.getString(R.string.school_class_join_member),classData.getJoincount()));
+        if (classData.getIscomplete() == 1){
+            viewHolder.tv_update_class.setText(context.getString(R.string.school_text_update_finish));
+        }else {
+            if (classData.getLastupdate() == 0){
+                viewHolder.tv_update_class.setText("");
+            }else {
+                String updateSection = String.format(context.getString(R.string.school_text_last_update_section),classData.getUpdatesections());
+                String totalSection = String.format(context.getString(R.string.school_text_total_section),String.valueOf(classData.getTotalcatalog()));
+                SpannableString spannableString = new SpannableString(updateSection);
+                spannableString.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.text_free)), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                viewHolder.tv_update_class.setText(spannableString);
+                viewHolder.tv_update_class.append(totalSection);
+            }
+        }
+
+        return convertView;
+    }
+
+    static class ViewHolder{
+        public ImageView iv_left;
+        public TextView tv_right_desc;
+        public TextView tv_price;
+        public TextView tv_join_number;
+        public TextView tv_update_class;
+    }
+}

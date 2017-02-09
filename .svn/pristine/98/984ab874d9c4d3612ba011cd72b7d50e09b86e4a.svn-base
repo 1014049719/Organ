@@ -1,0 +1,39 @@
+package com.talenton.organ.server.bean.school;
+
+import android.text.TextUtils;
+
+import com.talenton.base.util.JsonObjUtil;
+
+public class ReqAdvertisement implements IBaseReq{
+    public static final int AD_SCHOOL_HOME = 21; //首页
+    public static final int AD_SCHOOL_CLASS_LIST = 22; //课堂列表
+    public static final int AD_SCHOOL_ALL = 23; //全部课程
+    public static final int AD_SCHOOL_EXPERIMENT = 24; //实验校
+    public static final int AD_SHOP_CLASS_LIST = 31; //商成列表
+    public static final String AD_URL = "user.php?mod=ad&cmdcode=15";
+    private int advPosition;
+    private String params;
+    private String appsource;
+
+    public ReqAdvertisement(int advPosition) {
+        this.advPosition = advPosition;
+    }
+
+    @Override
+    public String getReqParams() {
+        JsonObjUtil jsonObjUtil = JsonObjUtil.getInstance();
+        jsonObjUtil.addParam("advPosition", advPosition);
+        if (params != null && !TextUtils.isEmpty(params)) {
+            jsonObjUtil.addParam("params", params);
+        }
+        if (appsource != null && !TextUtils.isEmpty(appsource)) {
+            jsonObjUtil.addParam("appsource", appsource);
+        }
+        return jsonObjUtil.toJsonString();
+    }
+
+    @Override
+    public String getReqUrl() {
+        return AD_URL;
+    }
+}

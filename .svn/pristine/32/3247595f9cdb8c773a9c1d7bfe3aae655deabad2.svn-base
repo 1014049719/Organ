@@ -1,0 +1,232 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.BabyData;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.server.bean.SchoolData;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.widget.TimePopupWindow;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqBabayData;
+import com.talenton.organ.server.bean.user.RspListBabyData;
+
+import java.util.Date;
+
+public class ChildInfoActivity extends BaseCompatActivity implements View.OnClickListener {
+    private final static int FLAG_APPROVAL_DEAFULT = -1;
+    private final static int FLAG_APPROVAL_WAIT = 0; //未审批
+    private final static int FLAG_APPROVAL_ACCEPT = 1;//通过
+    private final static int FLAG_APPROVAL_REFUSE = 2;//拒绝
+    private final int REQUEST_MODIFY_NAME = 1001;
+    private final int REQUEST_SELECT_SCHOOL = 1002;
+    private final int REQUEST_MODIFY_SCHOOL = 1003;
+    private TextView tv_school;
+    private TextView tv_birthday;
+    private TextView tv_name;
+    private TextView tv_modify_status; //修改学校状态
+    private RelativeLayout rl_name;
+    private RelativeLayout rl_birthday;
+    private RelativeLayout rl_school;
+
+    private TimePopupWindow mTimePopupWindow; //时间选择器
+    private long mGraphtime;
+    private BabyData mBabyData; //孩子信息
+    private SchoolData schoolData; //学校信息
+    private boolean hasChildInfo;//是否有孩子信息
+
+    private boolean isApproval; //是否处于审核中
+    private boolean isAddSchoolName;
+
+
+    public static void startChildInfoActivity(Context context) {
+        context.startActivity(new Intent(context, ChildInfoActivity.class));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_child_info);
+
+        initView();
+        fillData();
+        mGraphtime = System.currentTimeMillis() / 1000;
+    }
+
+    private void fillData() {
+        if (UserServer.getCurrentUser().getUid() == 0) {
+            showShortToast("您还未登录,无孩子信息");
+            hasChildInfo = false;
+            return;
+        }
+
+        showProgress("获取孩子信息中...");
+        MineServer.getMyChildInfo(new XLTResponseCallback<RspListBabyData>() {
+            @Override
+            public void onResponse(RspListBabyData data, XLTError error) {
+                if (error == null && data != null && data.getList() != null) {
+                    if (data.getList().isEmpty()) {
+                        showShortToast("无孩子信息");
+                    } else {
+                        hasChildInfo = true;
+                        mBabyData = data.getList().get(0);
+                        schoolData = mBabyData.schooldata;
+                        mGraphtime = mBabyData.birthday;
+                        if (mGraphtime != 0) {
+                            tv_birthday.setText(DateUtil.parseTimeToYMD(mGraphtime));
+                        }else {
+                            mGraphtime = System.currentTimeMillis() / 1000;
+                        }
+                        tv_name.setText(mBabyData.name);
+//                        String area = "";
+//                        if (schoolData != null) {
+//                            if (schoolData.resideprovince == null){
+//                                schoolData.resideprovince = "";
+//                            }
+//                            if (schoolData.residecity == null){
+//                                schoolData.residecity = "";
+//                            }
+//                            if (schoolData.residedist == null){
+//                                schoolData.residedist = "";
+//                            }
+//                            area = schoolData.resideprovince + schoolData.residecity + schoolData.residedist;
+                        if (schoolData.flag == FLAG_APPROVAL_WAIT) {
+                            updateApprovalStatus();
+                        }
+                    }
+                    if (schoolData == null || schoolData.name == null || "".equals(schoolData.name)) {
+                        isAddSchoolName = true;
+                    } else {
+                        tv_school.setText(schoolData.name);
+                    }
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    /**
+     * 更改审核状态
+     */
+    private void updateApprovalStatus() {
+        tv_modify_status.setVisibility(View.VISIBLE);
+        isApproval = true;
+    }
+
+    private void initView() {
+        tv_school = (TextView) findViewById(R.id.tv_school);
+        tv_birthday = (TextView) findViewById(R.id.tv_birthday);
+        tv_name = (TextView) findViewById(R.id.tv_name);
+        tv_modify_status = (TextView) findViewById(R.id.tv_modify_status);
+
+        rl_name = (RelativeLayout) findViewById(R.id.rl_name);
+        rl_birthday = (RelativeLayout) findViewById(R.id.rl_birthday);
+        rl_school = (RelativeLayout) findViewById(R.id.rl_school);
+
+        rl_name.setOnClickListener(this);
+        rl_birthday.setOnClickListener(this);
+        rl_school.setOnClickListener(this);
+    }
+
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.child_info_title;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (!hasChildInfo) {
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.rl_name:
+                ModifyNameActivity.startModifyNameActivity(this, tv_name.getText().toString(), mBabyData.baobaouid, REQUEST_MODIFY_NAME);
+                break;
+            case R.id.rl_birthday:
+                if (mTimePopupWindow == null) {
+                    mTimePopupWindow = new TimePopupWindow(this);
+                    mTimePopupWindow.setOnTimeSelectListener(new TimePopupWindow.OnTimeSelectListener() {
+                        @Override
+                        public void onTimeSelect(Date date) {
+                            postModifyBirthday(date.getTime() / 1000);
+                        }
+                    });
+                }
+                mTimePopupWindow.setDate(new Date(mGraphtime * 1000));
+                mTimePopupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+                break;
+            case R.id.rl_school:
+                if (TextUtils.isEmpty(tv_school.getText())) {
+                    ModifyChildSchoolActivity.srartModifyChildSchoolActivity(this, mBabyData.baobaouid, ModifyChildSchoolActivity.TYPE_ADD, REQUEST_MODIFY_SCHOOL);
+                } else {
+                    //修改学校
+                    if (isApproval) {
+                        showShortToast("正在审核中,不可继续修改学校");
+                        return;
+                    }
+                    if (isAddSchoolName) {
+                        ModifyChildSchoolActivity.srartModifyChildSchoolActivity(this, mBabyData.baobaouid, ModifyChildSchoolActivity.TYPE_MODIFY, REQUEST_SELECT_SCHOOL);
+                    } else {
+                        ModifyChildSchoolActivity.srartModifyChildSchoolActivity(this, mBabyData.baobaouid, ModifyChildSchoolActivity.TYPE_MODIFY, REQUEST_MODIFY_SCHOOL);
+                    }
+                }
+
+                break;
+        }
+    }
+
+    /**
+     * 提交修改出生日期
+     *
+     * @param milliseconds
+     */
+    private void postModifyBirthday(final long milliseconds) {
+        showProgress("正在提交数据中...");
+        MineServer.modifyBabyInfo(new ReqBabayData(mBabyData.baobaouid, null, milliseconds, null), new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null) {
+                    showShortToast("数据提交成功");
+                    mGraphtime = milliseconds;
+                    tv_birthday.setText(DateUtil.parseTimeToYMD(mGraphtime));
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_MODIFY_NAME) {
+                String name = data.getStringExtra(ModifyNameActivity.NAME);
+                tv_name.setText(name);
+            } else if (requestCode == REQUEST_SELECT_SCHOOL) {
+                String schoolName = data.getStringExtra(ModifyChildSchoolActivity.SCHOOL_NAME);
+                tv_school.setText(schoolName);
+            } else if (requestCode == REQUEST_MODIFY_SCHOOL) {
+//                String schoolName = data.getStringExtra(ModifyChildSchoolActivity.SCHOOL_NAME);
+//                tv_school.setText(schoolName);
+                updateApprovalStatus();
+            }
+        }
+    }
+
+}

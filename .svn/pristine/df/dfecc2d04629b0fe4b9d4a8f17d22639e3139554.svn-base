@@ -1,0 +1,78 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.widget.EditText;
+
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.RspLogin;
+import com.talenton.base.util.XLTToast;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.RspAttentionUserApp;
+import com.talenton.organ.util.AppManager;
+
+public class AttentionUserAppActivity extends BaseCompatActivity {
+
+    private EditText mInviteCode;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attention_user_app);
+
+        mInviteCode = (EditText)findViewById(R.id.et_invite_code);
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.user_add_private_application;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_main_complete;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menu_main_complete:
+                String code = mInviteCode.getText().toString().trim();
+                if (TextUtils.isEmpty(code)){
+                    XLTToast.makeText(this, R.string.circle_prompt_attention_by_code).show();
+                    return;
+                }
+                showProgress(R.string.main_processing);
+                MineServer.attentionUserApplication(code, new XLTResponseCallback<RspAttentionUserApp>() {
+                    @Override
+                    public void onResponse(RspAttentionUserApp data, XLTError error) {
+                        hideProgress();
+                        if (error == null) {
+                            int resId = R.string.circle_prompt_attention_fail;
+                            if (data != null && data.app_cur != null) {
+                                resId = R.string.circle_prompt_attention_success;
+                                RspLogin login = UserServer.getRspLogin();
+                                login.app_cur = data.app_cur;
+                                login.app_list = data.app_list;
+                                UserServer.setRspLogin(login);
+                                Intent intent = new Intent();
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                            XLTToast.makeText(OrganApplication.getAppContext(), resId).show();
+                        } else {
+                            XLTToast.makeText(OrganApplication.getAppContext(), error.getMesssage()).show();
+                        }
+                    }
+                });
+                break;
+        }
+    }
+}

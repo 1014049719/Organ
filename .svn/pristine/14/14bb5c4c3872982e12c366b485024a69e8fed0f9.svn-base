@@ -1,0 +1,92 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.XLTToast;
+import com.talenton.organ.event.AttentionAgeEvent;
+import com.talenton.organ.server.FeedServer;
+
+import org.greenrobot.eventbus.EventBus;
+
+public class AttentionByOtherActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    public static final int VERIFY_TYPE_CODE = 1;
+    public static final int VERIFY_TYPE_PHONE = 2;
+
+    private EditText mInviteCode;
+    private TextView mNote;
+
+    private int mVerifyType;
+
+    public static void startAttentionByOtherActivity(Context context, int verifyType){
+        Intent intent = new Intent(context, AttentionByOtherActivity.class);
+        intent.putExtra("verifyType", verifyType);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attention_by_other);
+
+        mVerifyType = getIntent().getIntExtra("verifyType", VERIFY_TYPE_CODE);
+
+        mInviteCode = (EditText)findViewById(R.id.et_invite_code);
+        mNote = (TextView)findViewById(R.id.tv_notice);
+
+        if (mVerifyType == VERIFY_TYPE_PHONE){
+            mInviteCode.setHint(R.string.login_prompt_phone);
+            mNote.setVisibility(View.GONE);
+
+            if(mActionBarTitle != null){
+                mActionBarTitle.setText(R.string.register_phone_number);
+            }
+        }
+        findViewById(R.id.layout_verify).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        hideSoftInput(v);
+        switch (v.getId()){
+            case R.id.layout_verify:
+                String inviteCode = mInviteCode.getText().toString().trim();
+                if (TextUtils.isEmpty(inviteCode)){
+                    XLTToast.makeText(this, R.string.circle_prompt_attention_by_code).show();
+                    return;
+                }
+                FeedServer.AttentionByOther(inviteCode, new XLTResponseCallback<ObjectCode>() {
+                    @Override
+                    public void onResponse(ObjectCode data, XLTError error) {
+                        hideProgress();
+                        if (error == null){
+                            EventBus.getDefault().post(new AttentionAgeEvent(true));
+                            XLTToast.makeText(AttentionByOtherActivity.this, R.string.circle_prompt_attention_success).show();
+                            finish();
+                        }else {
+                            String msg = TextUtils.isEmpty(error.getMesssage()) ? getString(R.string.circle_prompt_attention_fail)
+                                    : error.getMesssage();
+                            XLTToast.makeText(AttentionByOtherActivity.this, msg).show();
+                        }
+                    }
+                });
+                break;
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.circle_title_attention_by_code;
+    }
+}

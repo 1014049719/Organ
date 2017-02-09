@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.feed.AttentionByOtherActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        style="@style/common_layout_edit_text"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_invite_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:hint="@string/circle_prompt_attention_by_code"
+            android:textColorHint="@color/text_light"
+            android:background="@null"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ems="20"
+            android:numeric="integer"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_verify"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        style="@style/comment_btn_style"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_verify"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_34"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_notice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_15_0"
+        android:text="@string/circle_invite_code_notice"
+        android:textColor="@color/gray1"
+        android:textSize="14sp" />
+</LinearLayout>

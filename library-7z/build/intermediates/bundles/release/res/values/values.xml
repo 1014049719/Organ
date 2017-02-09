@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Extract-archive-android-lib</string>
+    <string name="file_not_found">File not found !</string>
+    <string name="is_directory">File is a directory !</string>
+    <string name="isnt_directory">File isn\'t a directory !</string>
+    <string name="loading_file_complete">Loading file complete !</string>
+    <string name="loading_file_error">Error on loading file, please use a compatible format !</string>
+    <string name="not_enough_memory_for_operation">Not enough memory for operation !</string>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+</resources>

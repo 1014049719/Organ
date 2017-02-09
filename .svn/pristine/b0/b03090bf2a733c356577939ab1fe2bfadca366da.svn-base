@@ -1,0 +1,166 @@
+package com.talenton.base.okhttp.callback;
+
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.talenton.base.R;
+import com.talenton.base.XltApplication;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.FormatUtil;
+import com.talenton.base.util.OkHttpException;
+import com.talenton.base.util.XLTToast;
+
+import org.json.JSONObject;
+
+import okhttp3.Call;
+import okhttp3.Response;
+
+/**
+ * Created by ttt on 2016/3/25.
+ */
+public class GsonCallback<T> extends Callback<T> {
+
+    /**
+     * Class type for the response
+     */
+    private final Class<T> mClass;
+
+    /**
+     * Class type for the error response
+     */
+    private final Class<XLTError> mErrorClass = XLTError.class;
+
+    private XLTError errorData = null;
+
+    /**
+     * Callback for response delivery
+     */
+    private final XLTResponseListener<T> mResponseListener;
+
+    /**
+     * @param responseClass
+     *            expected class type for the response. Used by gson for
+     *            serialization.
+     * @param successListener
+     *            handler for the response
+     */
+    public GsonCallback(Class<T> responseClass, final XLTResponseListener<T> successListener) {
+
+        this.mClass = responseClass;
+        this.mResponseListener = successListener;
+        errorData = null;
+    }
+
+    @Override
+    public T parseNetworkResponse(Response response, int id) throws Exception{
+        String json = response.body().string();
+        AppLogger.d("http response ==>\n"+ FormatUtil.formatJson(json));
+        errorData = null;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            T obj = null;
+            if (jsonObject.has("res")) {
+                int res = jsonObject.getInt("res");
+                if (res == 1) {
+                    errorData = null;
+                    if (jsonObject.has("data")) {
+                        if (mClass.equals(JSONObject.class)) {
+                            obj = (T)jsonObject.getJSONObject("data");
+                            //mResponseListener.onResponse(obj, errorData);
+                            return obj;
+                        }
+                        json = jsonObject.getJSONObject("data").toString();
+
+                    }
+                } else if (res == 2) {
+                    errorData = new XLTError(2, "未登录");
+                } else if (res == 3) {
+                    errorData = new XLTError(3, "参数有误");
+                } else {
+                    String error = jsonObject.getString("msg");
+                    if (TextUtils.isEmpty(error)) {
+                        error = "未知错误";
+                    }
+                    errorData = new XLTError(res, error);
+                }
+            }
+            else if (jsonObject.has("resultcode")) {
+                int res = jsonObject.getInt("resultcode");
+                if (res == 200) {
+                    errorData = null;
+                    if (jsonObject.has("result")) {
+                        if (mClass.equals(JSONObject.class)) {
+                            obj = (T)jsonObject.getJSONObject("result");
+                            //mResponseListener.onResponse(obj, errorData);
+                            return obj;
+                        }
+                        json = jsonObject.getJSONObject("result").toString();
+
+                    }
+                }else {
+                    String error = jsonObject.getString("reason");
+                    if (TextUtils.isEmpty(error)) {
+                        error = "未知错误";
+                    }
+                    errorData = new XLTError(res, error);
+                }
+            }
+            obj = OkHttpClientManager.getInstance().getmGson().fromJson(json, mClass);
+            return obj;
+            //mResponseListener.onResponse(obj, errorData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        errorData = new XLTError(505, "系统数据解析错误，请重试");
+        return null;
+    }
+
+    @Override
+    public void onError(Call call, Exception e, int id){
+        if (e instanceof OkHttpException){
+            errorData = ((OkHttpException) e).getErrorData();
+        }
+
+        if (errorData == null){
+            if(e instanceof java.net.ConnectException){
+                errorData = new XLTError(502, "网络错误，请重试");
+            }
+            else if (e instanceof java.net.SocketTimeoutException){
+                errorData = new XLTError(501, "连接超时，请重试");
+            }
+            else{
+                errorData = new XLTError(500, e.getMessage());
+            }
+        }
+
+        if (!TextUtils.isEmpty(errorData.getMesssage())) {
+            if (errorData.getCode() != 501 && errorData.getCode() != 502 && errorData.getCode() != 503) {
+                XLTToast.makeText(XltApplication.getAppContext(), errorData.getMesssage()).show();
+            }
+        } else {
+            XLTToast.makeText(XltApplication.getAppContext(), R.string.global_network_error).show();
+        }
+        if (mResponseListener != null){
+            mResponseListener.onResponse(null, errorData);
+        }
+    }
+
+    @Override
+    public void onResponse(T response, int id){
+
+        if(errorData != null && errorData.getCode() == 2){
+            XLTToast.makeText(XltApplication.getAppContext(), "登录信息已过期，请重新登录").show();
+            UserServer.reLogin(true);
+            return;
+        }
+        if (mResponseListener != null){
+            mResponseListener.onResponse(response, errorData);
+        }
+    }
+
+}

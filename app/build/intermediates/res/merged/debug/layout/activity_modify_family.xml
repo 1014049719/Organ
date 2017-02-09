@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.ModifyFamilyActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="@dimen/height_100"
+            android:layout_height="wrap_content"
+            android:text="@string/family_input_name"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main" />
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main"
+            android:singleLine="true"
+            android:background="@null" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_relation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:background="@drawable/btn_white_bg_selector"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="@dimen/height_100"
+            android:layout_height="wrap_content"
+            android:text="@string/family_with_baby_relation"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main" />
+        <TextView
+            android:id="@+id/relation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="@string/family_with_baby_relation_hint"
+            android:textSize="@dimen/text_28"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_main" />
+        <ImageView
+            android:layout_width="@dimen/height_15"
+            android:layout_height="@dimen/height_15"
+            android:src="@mipmap/xy_icon"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_attention"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_1_0"
+        android:background="@drawable/btn_white_bg_selector"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="@dimen/height_100"
+            android:layout_height="wrap_content"
+            android:text="@string/fix_family_authority_set"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main" />
+        <TextView
+            android:id="@+id/attentionType"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_28"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_main" />
+        <ImageView
+            android:layout_width="@dimen/height_15"
+            android:layout_height="@dimen/height_15"
+            android:src="@mipmap/xy_icon"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/save_ok"
+        style="@style/match_btn_style"
+        android:text="@string/main_save" />
+</LinearLayout>

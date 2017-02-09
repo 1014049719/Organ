@@ -1,0 +1,13 @@
+package com.talenton.organ.event;
+
+public class DeleteCommentEvent {
+	public long tid;
+	public long ctid;
+	public long circleId;
+
+	public DeleteCommentEvent(long circleId, long tid, long ctid) {
+		this.circleId = circleId;
+		this.tid = tid;
+		this.ctid = ctid;
+	}
+}

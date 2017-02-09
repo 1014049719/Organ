@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_footer_container">
+
+    <TextView
+        android:id="@+id/tv_join_class"
+        android:background="@drawable/btn_bg_corner_blue"
+        android:layout_marginTop="@dimen/space_30_0"
+        android:layout_width="@dimen/width_120"
+        android:layout_height="@dimen/height_40"
+        android:text="@string/school_text_join_class"
+        android:textSize="@dimen/text_32"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_marginTop="@dimen/space_20_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_26"
+        android:text="@string/school_text_no_join_class_tips"
+        android:layout_below="@+id/tv_join_class"
+        android:gravity="center_horizontal" />
+
+</RelativeLayout>

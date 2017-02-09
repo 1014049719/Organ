@@ -1,0 +1,84 @@
+package com.talenton.organ.server.bean.user;
+
+import android.os.Bundle;
+
+/**
+ * @author zjh
+ * @date 2016/6/6
+ */
+public class NotificationBean {
+    private int notificationId;
+    private String title;
+    private String content;
+    private Class intentClass;
+    private Bundle intentExtr;
+    private String ticker;
+
+
+    public NotificationBean(int notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    public NotificationBean(int notificationId, String title, String content) {
+        this.notificationId = notificationId;
+        this.title = title;
+        this.content = content;
+    }
+
+    public NotificationBean(int notificationId, String title, String content,String ticker, Class intentClass, Bundle intentExtr) {
+        this.notificationId = notificationId;
+        this.title = title;
+        this.content = content;
+        this.ticker = ticker;
+        this.intentClass = intentClass;
+        this.intentExtr = intentExtr;
+    }
+
+    public int getNotificationId() {
+        return notificationId;
+    }
+
+    public void setNotificationId(int notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Class getIntentClass() {
+        return intentClass;
+    }
+
+    public void setIntentClass(Class intentClass) {
+        this.intentClass = intentClass;
+    }
+
+    public Bundle getIntentExtr() {
+        return intentExtr;
+    }
+
+    public void setIntentExtr(Bundle intentExtr) {
+        this.intentExtr = intentExtr;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
+    }
+}

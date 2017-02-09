@@ -1,0 +1,93 @@
+package com.talenton.organ.widget.dialog;
+
+import android.app.DialogFragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+
+/**
+ * @author zjh
+ * @date 2016/5/12
+ */
+public class PDFJumpDialog extends DialogFragment{
+    private TextView tv_cancel;
+    private TextView tv_confirm;
+    private TextView tv_page_tips;
+    private EditText et_input;
+    private String tipsText;
+    private OnClickCancelListener onClickCancelListener;
+    private OnClickConfirmListener onClickConfirmListener;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); //去除标题
+        View v = inflater.inflate(R.layout.dialog_pdf_jump,container,false);
+        tv_cancel = (TextView) v.findViewById(R.id.tv_cancel);
+        tv_confirm = (TextView) v.findViewById(R.id.tv_confirm);
+        et_input = (EditText) v.findViewById(R.id.et_input);
+        tv_page_tips = (TextView) v.findViewById(R.id.tv_page_tips);
+        if (tipsText != null){
+            tv_page_tips.setText(tipsText);
+        }
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickCancelListener != null){
+                    onClickCancelListener.onClick(v);
+                }
+                dismiss();
+            }
+        });
+
+        tv_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickConfirmListener != null){
+                    onClickConfirmListener.onClick(v, et_input.getText().toString());
+                }
+                dismiss();
+            }
+        });
+
+        return v;
+    }
+
+    public void setTipsPage(String text){
+        if (text != null){
+            tipsText = text;
+        }
+    }
+
+
+    public interface OnClickCancelListener{
+        void onClick(View v);
+    }
+
+    public interface OnClickConfirmListener{
+        void onClick(View v,String text);
+    }
+
+    public OnClickCancelListener getOnClickCancelListener() {
+        return onClickCancelListener;
+    }
+
+    public void setOnClickCancelListener(OnClickCancelListener onClickCancelListener) {
+        this.onClickCancelListener = onClickCancelListener;
+    }
+
+    public OnClickConfirmListener getOnClickConfirmListener() {
+        return onClickConfirmListener;
+    }
+
+    public void setOnClickConfirmListener(OnClickConfirmListener onClickConfirmListener) {
+        this.onClickConfirmListener = onClickConfirmListener;
+    }
+}

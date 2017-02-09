@@ -1,0 +1,15 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/5/30.
+ */
+public class RecvLogisticsQueryData {
+    public  String company;
+    public String com;
+    public String no;
+    public String status;
+    public ArrayList<LogisticsQuery> list;
+
+}

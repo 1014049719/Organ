@@ -1,0 +1,208 @@
+package com.talenton.organ.ui.user.myOrders;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.event.OrderUpdateEvent;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.MyOrdersParam;
+import com.talenton.organ.server.bean.user.RspMyOrders;
+import com.talenton.organ.ui.user.adapter.MyOrdersAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.LinkedList;
+
+public class AllOrdersActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    //传入参数
+    public int type;
+    private String zhuangtaiStr;
+    //声明对象
+    private ListView listView;
+    //适配器
+    private MyOrdersAdapter myOrdersAdapter;
+
+    //刷新相关
+    private PullToRefreshListView pullToRefreshListView;
+    private LoadingViewHolder loadingViewHolder;
+
+    //外部进入接口
+    public static void startAllOrdersActivity(Context context, int type) {
+        Intent intent = new Intent(context, AllOrdersActivity.class);
+        intent.putExtra("type", type);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_orders);
+
+        //注册EventBus接受通知
+        EventBus.getDefault().register(this);
+
+        type = getIntent().getIntExtra("type", 5);
+        AppLogger.d("进入页面类型："+String.valueOf(type));
+        if (type == 1) {
+            zhuangtaiStr = "待付款";
+        } else if (type == 2) {
+            zhuangtaiStr = "待发货";
+        } else if (type == 3) {
+            zhuangtaiStr = "待收货";
+        } else if (type == 4) {
+            zhuangtaiStr = "待评价";
+        } else if (type == 5) {
+            zhuangtaiStr = "全部订单";
+        }
+        //设置标题
+        if(mActionBarTitle != null){
+            mActionBarTitle.setText(zhuangtaiStr);
+        }
+
+        //实例化
+        pullToRefreshListView= (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        listView = pullToRefreshListView.getRefreshableView();
+        pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新
+                loadNewData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+            }
+        });
+
+        View view=findViewById(R.id.loading_container);
+        loadingViewHolder=new LoadingViewHolder(pullToRefreshListView,view,this,this);
+        //装载适配器
+        myOrdersAdapter = new MyOrdersAdapter(this, new LinkedList<RspMyOrders>(), zhuangtaiStr);
+        listView.setAdapter(myOrdersAdapter);
+        //请求数据
+        getMyOrdersData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //反注册EventBus
+        EventBus.getDefault().unregister(this);
+    }
+
+    //请求数据
+    protected void getMyOrdersData() {
+
+        loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+
+        final MyOrdersParam myOrdersParam = new MyOrdersParam();
+        myOrdersParam.status = type;
+        MineServer.getMyOrdersData(myOrdersParam, new XLTResponseCallback<RspMyOrders>() {
+            @Override
+            public void onResponse(RspMyOrders data, XLTError error) {
+
+                if (error == null && data != null && data.list.size()>0) {
+                    //填充数据
+                    initData(data);
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else{
+                    loadingViewHolder.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+        });
+    }
+
+    //刷新数据
+    protected void loadNewData(){
+
+        final MyOrdersParam myOrdersParam = new MyOrdersParam();
+        myOrdersParam.status = type;
+        MineServer.getMyOrdersData(myOrdersParam, new XLTResponseCallback<RspMyOrders>() {
+            @Override
+            public void onResponse(RspMyOrders data, XLTError error) {
+
+                pullToRefreshListView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshListView.onRefreshComplete();
+                    }
+                },1000);
+                if (error == null && data != null) {
+                    //填充数据
+                    initData(data);
+                }
+            }
+        });
+    }
+
+    //填充数据
+    protected void initData(RspMyOrders data){
+
+        //清空数据
+        myOrdersAdapter.clear();
+        myOrdersAdapter.setDatas(data.list);
+        myOrdersAdapter.notifyDataSetChanged();
+    }
+
+
+    //点击事件
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                getMyOrdersData();
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        AppLogger.d("--------pingjia"+requestCode+"和"+resultCode);
+        if (resultCode == Activity.RESULT_OK){
+            AppLogger.d("=============pingjia");
+            //刷新列表
+            getMyOrdersData();
+        }
+    }
+
+    //接收通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OrderUpdateEvent orderUpdateEvent) {
+        if (orderUpdateEvent != null){
+            //刷新列表
+            getMyOrdersData();
+        }
+    }
+
+    //头部标题
+    @Override
+    protected int getTitleResourceId() {
+
+        return R.string.all_orders_title;
+    }
+}

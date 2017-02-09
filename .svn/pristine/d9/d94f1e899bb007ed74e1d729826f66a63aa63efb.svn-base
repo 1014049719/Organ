@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.feed.CircleFeedsActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <FrameLayout
+        android:id="@+id/frame_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/pull_refresh_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" />
+        <TextView
+            android:id="@+id/post_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_yellow"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:padding="4dp"
+            android:text="@string/circle_post_feeds_progress"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_28"
+            android:visibility="gone" />
+    </FrameLayout>
+    <include
+        android:id="@+id/loading_container"
+        layout="@layout/load_fail_view" />
+</LinearLayout>

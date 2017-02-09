@@ -1,0 +1,316 @@
+package com.talenton.base.util;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Base64;
+
+import com.talenton.base.server.UserServer;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by ttt on 2016/3/24.
+ */
+public class Preference {
+    // Preference
+    public static final String PREF_NAME = "xlt_pref";
+    private static final String KEY_RSPLOGIN_STRINGV3 = "rsplogin_stringv3";
+    private static final String KEY_USERDATA_STRING = "userdata_string";
+
+    private SharedPreferences mPref;
+    // private SharedPreferences mSchedPref;
+
+    /**
+     * mCacheMap 把preference的数据保存到内存中
+     */
+    private Map<String, Object> mCacheMap = new HashMap<String, Object>();
+    private static Preference mInstance = new Preference();
+
+    public void init(Context context) {
+        if (mPref == null) {
+            mPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        }
+    }
+
+    public static Preference getInstance() {
+        return mInstance;
+    }
+
+    public SharedPreferences getPreference() {
+
+        return mPref;
+    }
+
+    // 是否仅在wifi下自动加载图片
+    private static final String KEY_USER_ONLY_WIFI = "only_wifi";
+    private static final String KEY_WARN_NO_WIFI = "warn_no_wifi";
+    private static final String KEY_COOKIES = "cookies";
+    private static final String KEY_TOKEN = "key_token";
+    private static final String KEY_ACCOUNT = "key_account";
+    private static final String KEY_HAS_PUSH_MSG = "key_has_push_msg";
+    private static final String KEY_PUSH_TOKEN = "key_push_token";
+    private static final String KEY_APP_DATA = "key_my_app_data";
+
+    /**
+     * 是否仅在wifi下自动加载图片
+     *
+     * @return
+     */
+    public boolean isOnlyWifi() {
+        try {
+            if (mCacheMap.containsKey(KEY_USER_ONLY_WIFI)) {
+                return (Boolean) mCacheMap.get(KEY_USER_ONLY_WIFI);
+            }
+        } catch (Exception e) {
+
+        }
+
+        boolean isOnlyWifi = mPref.getBoolean(KEY_USER_ONLY_WIFI, false);
+        mCacheMap.put(KEY_USER_ONLY_WIFI, isOnlyWifi);
+        return isOnlyWifi;
+    }
+
+    public void saveOnlyUserWifi(boolean bol) {
+        mCacheMap.put(KEY_USER_ONLY_WIFI, bol);
+        mPref.edit().putBoolean(KEY_USER_ONLY_WIFI, bol).commit();
+    }
+
+    /**
+     * 提醒用户非wifi环境次数自增
+     *
+     * @return
+     */
+    public void incWarnNoWifi() {
+        int times = mPref.getInt(KEY_WARN_NO_WIFI, 0);
+        mPref.edit().putInt(KEY_WARN_NO_WIFI, ++times).commit();
+    }
+
+    /**
+     * 是否需要提醒非wifi 当：当前不是仅wifi，并且提醒不超过2次，都提醒一下
+     *
+     * @return
+     */
+    public boolean needWarnNoWifi() {
+        return !isOnlyWifi() && mPref.getInt(KEY_WARN_NO_WIFI, 0) < 2;
+    }
+
+    public void saveToken(String token) {
+        mCacheMap.put(KEY_TOKEN, token);
+        mPref.edit().putString(KEY_TOKEN, token).commit();
+    }
+
+    //保存消息未读数 时间戳
+    public void setDiscoverNum(long timer){
+        mPref.edit().putLong("key_discover_num", timer).commit();
+    }
+    public long getDiscoverNum(){
+        return mPref.getLong("key_discover_num", System.currentTimeMillis() / 1000);
+    }
+
+    //保存门店列表 地理位置 省
+    public void setShopLocation_province(String location){
+        mPref.edit().putString("key_shop_location_province", location).commit();
+    }
+    public String getShopLocation_province(){
+        return mPref.getString("key_shop_location_province", "");
+    }
+    //市
+    public void setShopLocation_city(String location){
+        mPref.edit().putString("key_shop_location_city", location).commit();
+    }
+    public String getShopLocation_city(){
+        return mPref.getString("key_shop_location_city","");
+    }
+    //区
+    public void setShopLocation_area(String location){
+        mPref.edit().putString("key_shop_location_area", location).commit();
+    }
+    public String getShopLocation_area(){
+        return mPref.getString("key_shop_location_area", "");
+    }
+
+    //保存实验校 地理位置 省
+    public void setTestSchoolLocation_province(String location){
+        mPref.edit().putString("key_TestSchool_location_province", location).commit();
+    }
+    public String getTestSchoolLocation_province(){
+        return mPref.getString("key_TestSchool_location_province", "");
+    }
+    //市
+    public void setTestSchoolLocation_city(String location){
+        mPref.edit().putString("key_TestSchool_location_city",location).commit();
+    }
+    public String getTestSchoolLocation_city(){
+        return mPref.getString("key_TestSchool_location_city","");
+    }
+    //区
+    public void setTestSchoolLocation_area(String location){
+        mPref.edit().putString("key_TestSchool_location_area", location).commit();
+    }
+    public String getTestSchoolLocation_area(){
+        return mPref.getString("key_TestSchool_location_area", "");
+    }
+    //学堂 上次观看记录
+    public void setLastOpenCatalogData(long aid,String jsonData){
+        String key = "last_open_catalog_data_" + aid + "_" + UserServer.getCurrentUser().getUid();
+        mPref.edit().putString(key, jsonData).commit();
+    }
+    public String getLastOpenCatalogData(long aid){
+        String key = "last_open_catalog_data_" + aid + "_" + UserServer.getCurrentUser().getUid();
+        return mPref.getString(key, "");
+    }
+
+
+    public String getToken(Context context) {
+
+        if (mCacheMap.containsKey(KEY_TOKEN)) {
+            return (String) mCacheMap.get(KEY_TOKEN);
+        }
+        String token = mPref.getString(KEY_TOKEN, SystemUtil.getDeviceUUID(context));
+        mCacheMap.put(KEY_TOKEN, token);
+        return token;
+    }
+
+    public void saveRspLoginString(String s) {
+        mPref.edit().putString(KEY_RSPLOGIN_STRINGV3, s).commit();
+    }
+
+    public void removeRspLoginString(){
+        mPref.edit().remove(KEY_RSPLOGIN_STRINGV3).commit();
+    }
+
+    public String getRspLoginString() {
+        if (mPref != null){
+            return mPref.getString(KEY_RSPLOGIN_STRINGV3, "");
+        }else {
+           return "";
+        }
+
+    }
+
+    public void saveAuthorityString(String s) {
+        mPref.edit().putString(KEY_USERDATA_STRING, s).commit();
+    }
+
+    public String getAuthorityString() {
+        return mPref.getString(KEY_USERDATA_STRING, "");
+    }
+
+    /**
+     * 判断是否需要引导页
+     *
+     */
+    public boolean isNeedGuide(String key) {
+        return mPref.getBoolean(key, true);
+    }
+    public boolean isNeedGuide(String key, boolean defaultValue) {
+        return mPref.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * 引导完毕
+     */
+    public void setGuideDone(String key) {
+        mPref.edit().putBoolean(key, false).commit();
+    }
+    public void setGuideDone(String key, boolean isTrueOrFalse) {
+        mPref.edit().putBoolean(key, isTrueOrFalse).commit();
+    }
+
+    /**
+     * 设置是否有新推送消息
+     * @param isNewMsg
+     */
+    public void setPushMsg(boolean isNewMsg){
+        mPref.edit().putBoolean(UserServer.getCurrentUser().uid + "_" + KEY_HAS_PUSH_MSG, isNewMsg).commit();
+    }
+    public boolean hasPushMsg(){
+        return mPref.getBoolean(UserServer.getCurrentUser().uid +"_"+KEY_HAS_PUSH_MSG,false);
+    }
+
+    /**
+     * 保存推送token
+     * @param token
+     */
+    public void savePushToken(String token){
+        mPref.edit().putString(KEY_PUSH_TOKEN,token).commit();
+    }
+
+    /**
+     * 获取推送token
+     * @return
+     */
+    public String getPushToken(){
+        return mPref.getString(KEY_PUSH_TOKEN,"");
+    }
+
+    @SuppressWarnings("unchecked")
+    public HashMap<String, Integer> getAccount() {
+        HashMap<String, Integer> accounts = (HashMap<String, Integer>) getObject(KEY_ACCOUNT);
+        if (accounts == null) {
+            accounts = new HashMap<String, Integer>();
+            saveObject(KEY_ACCOUNT, accounts);
+        }
+        return accounts;
+    }
+
+    public void saveCookies() {
+       // saveObject(KEY_COOKIES, XLTHttpClientStack.getCookieMap());
+    }
+
+    public void initCookies() {
+        //XLTHttpClientStack.setCookieMap((HashMap<String, String>) getObject(KEY_COOKIES));
+    }
+
+    private void saveObject(String key, Object object) {
+        mCacheMap.put(key, object);
+        if (object == null) {
+            mPref.edit().putString(key, "").commit();
+            return;
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+
+            String productBase64 = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
+            mPref.edit().putString(key, productBase64).commit();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getObject(String key) {
+        if (mCacheMap.containsKey(key)) {
+            return (T) mCacheMap.get(key);
+        }
+        String productBase64 = mPref.getString(key, "");
+
+        byte[] data = Base64.decode(productBase64.getBytes(), Base64.DEFAULT);
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(data);
+        ObjectInputStream ois = null;
+        T obj = null;
+        try {
+            ois = new ObjectInputStream(bais);
+            obj = (T) ois.readObject();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        mCacheMap.put(key, obj);
+
+        return obj;
+    }
+
+}

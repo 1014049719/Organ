@@ -1,0 +1,283 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+
+public class SelectRelationActivity extends BaseCompatActivity implements View.OnClickListener {
+
+    //private String [] mRelations = new String[]{
+    //        "爸爸","妈妈","爷爷","奶奶","外公","外婆","舅舅","姑妈","姐姐","哥哥","叔叔","姥姥","姥爷","干妈"
+    //        ,"小姨","阿姨","舅妈","婶婶","姨妈","姨父","干爸爸","姑父","伯母","姑姑","伯父","添加"};
+    private static final int REQUEST_CODE_INPUT = 301;
+
+    private TextView mRelation1, mRelation2, mRelation3, mRelation4, mRelation5, mRelation6;
+    private TextView mRelation7, mRelation8, mRelation9, mRelation10, mRelation11, mRelation12;
+    private TextView mRelation13, mRelation14, mRelation15, mRelation16, mRelation17, mRelation18;
+    private TextView mRelation19, mRelation20, mRelation21, mRelation22, mRelation23, mRelation24, mRelation25;
+
+    int pos = 0;
+    private int mgxID;
+    private String mgxName;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_relation);
+        mRelation1 = (TextView) findViewById(R.id.relation_1);
+        mRelation2 = (TextView) findViewById(R.id.relation_2);
+        mRelation3 = (TextView) findViewById(R.id.relation_3);
+        mRelation4 = (TextView) findViewById(R.id.relation_4);
+        mRelation5 = (TextView) findViewById(R.id.relation_5);
+        mRelation6 = (TextView) findViewById(R.id.relation_6);
+        mRelation7 = (TextView) findViewById(R.id.relation_7);
+        mRelation8 = (TextView) findViewById(R.id.relation_8);
+        mRelation9 = (TextView) findViewById(R.id.relation_9);
+        mRelation10 = (TextView) findViewById(R.id.relation_10);
+        mRelation11 = (TextView) findViewById(R.id.relation_11);
+        mRelation12 = (TextView) findViewById(R.id.relation_12);
+        mRelation13 = (TextView) findViewById(R.id.relation_13);
+        mRelation14 = (TextView) findViewById(R.id.relation_14);
+        mRelation15 = (TextView) findViewById(R.id.relation_15);
+        mRelation16 = (TextView) findViewById(R.id.relation_16);
+        mRelation17 = (TextView) findViewById(R.id.relation_17);
+        mRelation18 = (TextView) findViewById(R.id.relation_18);
+        mRelation19 = (TextView) findViewById(R.id.relation_19);
+        mRelation20 = (TextView) findViewById(R.id.relation_20);
+        mRelation21 = (TextView) findViewById(R.id.relation_21);
+        mRelation22 = (TextView) findViewById(R.id.relation_22);
+        mRelation23 = (TextView) findViewById(R.id.relation_23);
+        mRelation24 = (TextView) findViewById(R.id.relation_24);
+        mRelation25 = (TextView) findViewById(R.id.relation_25);
+
+        Intent intent = getIntent();
+        mgxID = intent.getIntExtra("gxid", 0);
+        mgxName = intent.getStringExtra("gxName");
+
+        switch (mgxID){
+            case 1:
+                mRelation1.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 2:
+                mRelation2.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 3:
+                mRelation3.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 4:
+                mRelation4.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 5:
+                mRelation5.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 6:
+                mRelation6.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 7:
+                mRelation7.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 8:
+                mRelation8.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 9:
+                mRelation9.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 10:
+                mRelation10.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 11:
+                mRelation11.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 12:
+                mRelation12.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 13:
+                mRelation13.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 14:
+                mRelation14.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 15:
+                mRelation15.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 16:
+                mRelation16.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 17:
+                mRelation17.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 18:
+                mRelation18.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 19:
+                mRelation19.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 20:
+                mRelation20.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 21:
+                mRelation21.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 22:
+                mRelation22.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 23:
+                mRelation23.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 24:
+                mRelation24.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+            case 25:
+                mRelation25.setBackgroundResource(R.mipmap.family_relation_select);
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        String name = "";
+
+        switch (v.getId()){
+            case R.id.relation_1:
+                pos = 1;
+                name = mRelation1.getText().toString();
+                break;
+            case R.id.relation_2:
+                pos = 2;
+                name = mRelation2.getText().toString();
+                break;
+            case R.id.relation_3:
+                pos = 3;
+                name = mRelation3.getText().toString();
+                break;
+            case R.id.relation_4:
+                pos = 4;
+                name = mRelation4.getText().toString();
+                break;
+            case R.id.relation_5:
+                pos = 5;
+                name = mRelation5.getText().toString();
+                break;
+            case R.id.relation_6:
+                pos = 6;
+                name = mRelation6.getText().toString();
+                break;
+            case R.id.relation_7:
+                pos = 7;
+                name = mRelation7.getText().toString();
+                break;
+            case R.id.relation_8:
+                pos = 8;
+                name = mRelation8.getText().toString();
+                break;
+            case R.id.relation_9:
+                pos = 9;
+                name = mRelation9.getText().toString();
+                break;
+            case R.id.relation_10:
+                pos = 10;
+                name = mRelation10.getText().toString();
+                break;
+            case R.id.relation_11:
+                pos = 11;
+                name = mRelation11.getText().toString();
+                break;
+            case R.id.relation_12:
+                pos = 12;
+                name = mRelation12.getText().toString();
+                break;
+            case R.id.relation_13:
+                pos = 13;
+                name = mRelation13.getText().toString();
+                break;
+            case R.id.relation_14:
+                pos = 14;
+                name = mRelation14.getText().toString();
+                break;
+            case R.id.relation_15:
+                pos = 15;
+                name = mRelation15.getText().toString();
+                break;
+            case R.id.relation_16:
+                pos = 16;
+                name = mRelation16.getText().toString();
+                break;
+            case R.id.relation_17:
+                pos = 17;
+                name = mRelation17.getText().toString();
+                break;
+            case R.id.relation_18:
+                pos = 18;
+                name = mRelation18.getText().toString();
+                break;
+            case R.id.relation_19:
+                pos = 19;
+                name = mRelation19.getText().toString();
+                break;
+            case R.id.relation_20:
+                pos = 20;
+                name = mRelation20.getText().toString();
+                break;
+            case R.id.relation_21:
+                pos = 21;
+                name = mRelation21.getText().toString();
+                break;
+            case R.id.relation_22:
+                pos = 22;
+                name = mRelation22.getText().toString();
+                break;
+            case R.id.relation_23:
+                pos = 23;
+                name = mRelation23.getText().toString();
+                break;
+            case R.id.relation_24:
+                pos = 24;
+                name = mRelation24.getText().toString();
+                break;
+            case R.id.relation_25:
+                pos = 25;
+                name = mRelation25.getText().toString();
+                break;
+            case R.id.relation_26:
+                pos = 100;
+                name = "";
+                Intent intent = new Intent(this, InputRelationActivity.class);
+                if (mgxID == 100)
+                    intent.putExtra("gxname", mgxName);
+                startActivityForResult(intent, REQUEST_CODE_INPUT);
+                return;
+
+        }
+        Intent intent = new Intent();
+        intent.putExtra("relationId", pos);
+        intent.putExtra("relationName", name);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_INPUT:
+                if (data != null && resultCode == RESULT_OK){
+                    Intent intent = new Intent();
+                    intent.putExtra("relationId", pos);
+                    intent.putExtra("relationName", data.getStringExtra("relationName"));
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.family_with_baby_relation;
+    }
+}

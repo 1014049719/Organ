@@ -1,0 +1,12 @@
+package com.talenton.organ.event;
+
+
+import com.talenton.organ.server.bean.message.CustomMessageData;
+
+public class PushMessageEvent {
+	public CustomMessageData mData;
+	
+	public PushMessageEvent(CustomMessageData data){
+		this.mData = data;
+	}
+}

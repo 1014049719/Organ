@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        layout="@layout/global_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/ll_invite_phone"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/st_icon" />
+        <TextView
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:drawableRight="@mipmap/xy_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_invite_phone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_invite_QQ"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/qq_icon" />
+        <TextView
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:drawableRight="@mipmap/xy_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_invite_QQ" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_invite_wechat"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wx" />
+        <TextView
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:drawableRight="@mipmap/xy_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_invite_wechat" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_invite_weibo"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wb_icon" />
+        <TextView
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:drawableRight="@mipmap/xy_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_32"
+            android:textColor="@color/text_main"
+            android:text="@string/mine_text_invite_weibo" />
+    </LinearLayout>
+
+</LinearLayout>

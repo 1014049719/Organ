@@ -1,0 +1,76 @@
+package com.talenton.organ.server.bean.feed;
+
+import com.talenton.base.dao.FeedsBeanDao;
+import com.talenton.base.dao.model.FeedsBean;
+import com.talenton.base.server.DBHelper;
+
+import java.util.List;
+
+import de.greenrobot.dao.query.QueryBuilder;
+
+/**
+ * Created by ttt on 2016/5/5.
+ */
+public class ReqFeedsList {
+    public static final String URL = "topic.php?mod=gettopicsbycircleid&cmdcode=74";
+    public static final String URL_TOP = "topic.php?mod=gethottopics&cmdcode=87";
+    public static final String URL_CIRCLE_COLLECT = "topic.php?mod=getmytopiccollections&cmdcode=86";
+    public static final String URL_CIRCLE_MINE = "topic.php?mod=getmytopics&cmdcode=85";
+
+    public final static int LIST_LATEST = 0;// 0-最新20条，1-大于时间点的最新20条，2-小于时间点的最新20条
+    public final static int LIST_NEWER = 1;
+    public final static int LIST_OLDER = 2;
+
+    public long circle_id;//	int	Y	圈子id
+    public String query_orderby;//	string	N	按所填写的字段进行倒序排列数据，不填则默认创建按时间倒序
+    public String query_pager;//	string	N	第几页，默认第一页
+    public long graphtime;
+    public String title;
+    public long creuid; //用户
+
+    public int circle_type;
+    public long dateline; // 从后端的时间戳
+    public long dbdateline; // 数据库获取更老的分界点
+    public int type;
+
+    public List<FeedsBean> listFromDb() {
+        int pagerNum = 20, pagerBuffer = 20;
+        StringBuilder sb = new StringBuilder(" WHERE 1=1");
+        //sb.append(" T.dtype=");
+        //sb.append(circle_type);
+        if(circle_id > 0){
+            sb.append(" and T.CATID=");
+            sb.append(circle_id);
+        }
+
+        if (dbdateline > 0) {
+            sb.append(" and T.PHOTO_TIME<");
+            sb.append(dbdateline);
+            sb.append(" order by T.PHOTO_TIME desc limit ");
+            sb.append(pagerBuffer);
+        } else {
+            sb.append(" order by T.PHOTO_TIME desc limit ");
+            sb.append(pagerBuffer);
+        }
+
+        List<FeedsBean> buffer = DBHelper.getInstance().list(sb.toString(), DBHelper.DAO_FEEDS);
+        if (buffer.size() > pagerNum) {
+            // 截断
+            long cut = buffer.get(pagerNum - 1).getPhotoTime();
+            for (int i = buffer.size() - 1; i >= pagerNum; --i) {
+                if (buffer.get(i).getPhotoTime() != cut) {
+                    buffer.remove(i);
+                } else {
+                    break;
+                }
+            }
+        }
+        return buffer;
+    }
+
+    public void deleteFromDb() {
+        QueryBuilder<FeedsBean> qb = DBHelper.getInstance().getQueryBuilder(DBHelper.DAO_FEEDS);
+        qb.where(qb.and(FeedsBeanDao.Properties.Dtype.eq(circle_type), FeedsBeanDao.Properties.Catid.eq(circle_id)));
+        qb.buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+}

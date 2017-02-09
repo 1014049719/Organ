@@ -1,0 +1,59 @@
+package com.talenton.organ.ui.user;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.bean.AppModule;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.organ.ui.user.adapter.ModelListAdapter;
+
+import java.util.List;
+import android.content.Context;
+import android.content.Intent;
+
+public class ModelListActivity extends BaseCompatActivity implements AdapterView.OnItemClickListener {
+    private ModelListAdapter adapter;
+
+    public static void startModelListActivity(Context context){
+        context.startActivity(new Intent(context,ModelListActivity.class));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_model_list);
+
+
+        List<AppModule> datas = getDatas();
+        ListView listView = (ListView) findViewById(R.id.list);
+        listView.setOnItemClickListener(this);
+        adapter = new ModelListAdapter(this,datas);
+        listView.setAdapter(adapter);
+    }
+
+    private List<AppModule> getDatas() {
+        List<AppModule> datas = UserServer.getRspLogin().app_model;
+        List<AppModule> selectedMoldelList = UserServer.getRspLogin().app_cur.modelname;
+        for (AppModule appModule : datas){
+            if (selectedMoldelList.contains(appModule)){
+                appModule.isSelected = true;
+            }
+        }
+        return datas;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        AppModule appModule = adapter.getItem(position);
+        if (appModule.isSelected){
+            appModule.isSelected = false;
+        }else {
+            appModule.isSelected = true;
+        }
+        adapter.notifyDataSetChanged();
+    }
+}

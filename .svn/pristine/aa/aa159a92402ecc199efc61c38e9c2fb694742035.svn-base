@@ -1,0 +1,272 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.AppData;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.server.bean.UserInfo;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.RspMemberList;
+import com.talenton.organ.ui.feed.InviteAttentionActivity;
+
+import java.util.LinkedList;
+
+public class MemberListActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    private SwipeMenuListView mListView;
+    private LoadingViewHolder mLoading;
+    private PagerAdapter mAdapter;
+    private LinkedList<UserInfo> mDatas = new LinkedList<>();
+
+    public static void startMemberListActivity(Context context){
+        Intent intent = new Intent(context, MemberListActivity.class);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_member_list);
+
+        mListView = (SwipeMenuListView)findViewById(R.id.listView);
+        mAdapter = new PagerAdapter(this);
+        mListView.setAdapter(mAdapter);
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(dp2px(90));
+                // set item title
+                deleteItem.setTitle(R.string.feeds_list_delete);
+                // set item title fontsize
+                deleteItem.setTitleSize(18);
+                // set item title font color
+                deleteItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        mListView.setMenuCreator(creator);
+        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        // delete
+                        alertDeleteHint(position);
+                        break;
+                }
+                return false;
+            }
+        });
+        View loading = findViewById(R.id.loading_container);
+        mLoading = new LoadingViewHolder(mListView, loading, this, this);
+
+        loadData();
+    }
+
+    private void alertDeleteHint(final int position){
+        if (position >= mDatas.size()) return;
+        UserInfo item = mDatas.get(position);
+        if(item == null) return;
+
+        AppData app = UserServer.getRspLogin().app_cur;
+        final long appid = app != null ? app.appboxid : 0;
+        if (appid == 0) return;
+        final long uid = item.uid;
+
+        final CommonAlertDialog dialog = new CommonAlertDialog(this);
+
+        String name = TextUtils.isEmpty(item.realname) ?
+                (TextUtils.isEmpty(item.username) ? "" : item.username) : item.realname;
+        String gender = "TA";
+        if (item.gender == 1){
+            gender = "他";
+        }else if(item.gender == 2){
+            gender = "她";
+        }
+        dialog.setTitle(" ");
+        dialog.setMessage(String.format("删除\"%s\"后，%s将不能进入您的专属应用", name, gender));
+        dialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+            }
+        });
+        dialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                dialog.dismiss();
+                deleteMember(appid, uid, position);
+            }
+        });
+        dialog.show();
+    }
+
+    private void deleteMember(long appid, long uid, final int position){
+        showProgress(R.string.main_processing);
+        MineServer.deleteMemberList(appid, uid, new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                hideProgress();
+                if (error == null) {
+                    mDatas.remove(position);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    XLTToast.makeText(OrganApplication.getAppContext(), error.getMesssage()).show();
+                }
+            }
+        });
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
+
+    private void loadData(){
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+        AppData app = UserServer.getRspLogin().app_cur;
+        long appid = 0;
+        if (app != null){
+            appid = app.appboxid;
+        }
+        MineServer.getMemberList(appid, new XLTResponseCallback<RspMemberList>() {
+            @Override
+            public void onResponse(RspMemberList data, XLTError error) {
+                if (error == null && data != null && data.memberlist != null && data.memberlist.size() > 0) {
+                    if (mDatas != null){
+                        mDatas.clear();
+                        mDatas.addAll(data.memberlist);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                } else if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+
+                }
+            }
+        });
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.mine_text_member;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_invite;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        AppData app = UserServer.getRspLogin().app_cur;
+        long appid = app != null ? app.appboxid : 0;
+        if (appid == 0) return;
+        InviteAttentionActivity.startInviteAttentionActivity(this, appid);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                loadData();
+                break;
+        }
+    }
+
+    private class PagerAdapter extends BaseAdapter {
+
+        LayoutInflater mInflater;
+        Context mContext;
+
+        public PagerAdapter(Context context){
+            mContext = context;
+            mInflater = LayoutInflater.from(context);
+            mDatas = new LinkedList<>();
+        }
+
+        @Override
+        public int getCount() {
+            return mDatas.size();
+        }
+
+        @Override
+        public UserInfo getItem(int position) {
+            return mDatas.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            HolderView holder;
+            if (convertView == null){
+                convertView = mInflater.inflate(R.layout.item_user_member_list, parent, false);
+                holder = new HolderView();
+                holder.mPhoto = (ImageView)convertView.findViewById(R.id.user_image);
+                holder.mName = (TextView)convertView.findViewById(R.id.tv_name);
+                convertView.setTag(holder);
+            }else {
+                holder = (HolderView)convertView.getTag();
+            }
+            UserInfo data = getItem(position);
+            ImageLoader.getInstance().displayImage(data.avartar, holder.mPhoto, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+            if(TextUtils.isEmpty(data.realname)){
+                holder.mName.setText(data.username);
+            }else {
+                holder.mName.setText(data.realname);
+            }
+            return convertView;
+        }
+    }
+
+    private class HolderView{
+        public ImageView mPhoto;
+        public TextView mName;
+    }
+}

@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-Refresh/build/intermediates/res/merged/release/drawable-xhdpi-v4/default_ptr_rotate.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-Refresh/res/drawable-xhdpi/default_ptr_rotate.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-Refresh/build/intermediates/res/merged/release/drawable-xhdpi-v4/default_ptr_flip.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-Refresh/res/drawable-xhdpi/default_ptr_flip.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/library-Refresh/build/intermediates/res/merged/release/drawable-xhdpi-v4/indicator_arrow.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/library-Refresh/res/drawable-xhdpi/indicator_arrow.png"
+    }
+]

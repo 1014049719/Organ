@@ -1,0 +1,147 @@
+package com.talenton.organ.widget.dialog;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.TextView;
+
+import com.talenton.organ.R;
+
+/**
+ * @author zjh
+ * @date 2016/4/28
+ */
+public class TipsDialog extends DialogFragment implements View.OnClickListener {
+    private TextView tv_msg;
+    private TextView tv_left;
+    private TextView tv_right;
+    private OnClickLeftBtnListener onClickLeftBtnListener;
+    private OnClickRightBtnListener onClickRightBtnListener;
+    private String msg;
+    private String leftMsg;
+    private String rightMsg;
+    private int leftTextColor;
+    private int rightTextColor;
+
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().setWindowAnimations(R.style.DialogTipsAnim);
+        return dialog;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE); //去除标题
+        View v = inflater.inflate(R.layout.dialog_msg,container,false);
+        tv_msg = (TextView) v.findViewById(R.id.tv_msg);
+        tv_left = (TextView) v.findViewById(R.id.tv_left);
+        tv_right = (TextView) v.findViewById(R.id.tv_right);
+        tv_left.setOnClickListener(this);
+        tv_right.setOnClickListener(this);
+
+        if (msg != null){
+            tv_msg.setText(msg);
+        }
+
+        if (leftMsg != null){
+            tv_left.setText(leftMsg);
+        }
+
+        if (rightMsg != null){
+            tv_right.setText(rightMsg);
+        }
+
+        if (leftTextColor != 0){
+            tv_left.setTextColor(leftTextColor);
+        }
+
+        if (rightTextColor != 0){
+            tv_right.setTextColor(rightTextColor);
+        }
+        return v;
+    }
+
+    /**
+     * 设置提示信息
+     * @param msg
+     */
+    public void setMsg(String msg){
+        this.msg = msg;
+    }
+
+    /**
+     * 设置左边button的文字
+     * @param text
+     */
+    public void setBtnLeftText(String text){
+        this.leftMsg = text;
+    }
+
+    /**
+     * 设置右边button的文字
+     * @param text
+     */
+    public void setBtnRightText(String text){
+        this.rightMsg = text;
+    }
+
+    public void setBtnLeftTextColor(int color){
+       this.leftTextColor= color;
+    }
+
+    public void setBtnRightTextColor(int color){
+       this.rightTextColor = color;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_left:
+                if (onClickLeftBtnListener != null){
+                    onClickLeftBtnListener.onClick(v);
+                }
+                break;
+            case R.id.tv_right:
+                if (onClickRightBtnListener != null){
+                    onClickRightBtnListener.onClick(v);
+                }
+                break;
+        }
+        dismiss();
+    }
+
+
+    public OnClickRightBtnListener getOnClickRightBtnListener() {
+        return onClickRightBtnListener;
+    }
+
+    public void setOnClickRightBtnListener(OnClickRightBtnListener onClickRightBtnListener) {
+        this.onClickRightBtnListener = onClickRightBtnListener;
+    }
+
+    public OnClickLeftBtnListener getOnClickLeftBtnListener() {
+        return onClickLeftBtnListener;
+    }
+
+    public void setOnClickLeftBtnListener(OnClickLeftBtnListener onClickLeftBtnListener) {
+        this.onClickLeftBtnListener = onClickLeftBtnListener;
+    }
+
+    public interface OnClickLeftBtnListener{
+        void onClick(View v);
+    }
+
+    public interface OnClickRightBtnListener{
+        void onClick(View v);
+    }
+
+
+}

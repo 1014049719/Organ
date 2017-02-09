@@ -1,0 +1,22 @@
+package com.talenton.organ.server.bean.user;
+
+import java.util.LinkedList;
+
+/**
+ * Created by Wang.'''' on 2016/5/4.
+ */
+public class RspMyPoints {
+
+
+    public LinkedList<MyPoints> list;
+
+    /**
+     * pointscount : 1000
+     * tips : 积分太少，请继续努力！
+     * num : 22
+     */
+    public String pointscount;
+    public String tips;
+    public String num;
+
+}

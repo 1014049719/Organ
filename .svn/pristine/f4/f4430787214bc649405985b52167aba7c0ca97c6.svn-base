@@ -1,0 +1,13 @@
+package com.talenton.organ.server.bean.user;
+
+import com.talenton.base.server.bean.AppData;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/7/12.
+ */
+public class RspAttentionUserApp {
+    public AppData app_cur;
+    public LinkedList<AppData> app_list;
+}

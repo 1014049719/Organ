@@ -1,0 +1,338 @@
+package com.talenton.organ;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewStub;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.talenton.base.XltApplication;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.bean.UserInfo;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.XLTToast;
+import com.talenton.organ.ui.ImageDetailViewerActivity;
+import com.talenton.organ.ui.school.PDFActivity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ * Created by ttt on 2016/3/31.
+ */
+public class BaseCompatActivity extends AppCompatActivity {
+
+    public static final int REQ_PERMISSION = 7001;
+    public Map<String, Boolean> mPermissions = new HashMap<>();
+
+    protected boolean isFinished = false;
+    private ProgressDialog mProgressDlg;
+    protected TextView mActionBarTitle;
+    protected View mActionBar;
+    protected Toolbar mToolbar;
+
+    @Override
+    protected void onCreate(Bundle arg0) {
+        if (!this.getClass().getName().equals(PDFActivity.class.getName())
+                && !this.getClass().getName().equals(ImageDetailViewerActivity.class.getName())){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        super.onCreate(arg0);
+        XltApplication.getInstance().addActivity(this);
+        AppLogger.d("oncreateActivity==>"+this.getClass().getName());
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID){
+        super.setContentView(layoutResID);
+        initActionBar();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    protected void initActionBar(){
+        ViewStub stub = (ViewStub) findViewById(R.id.vs_action_bar);
+        if (stub == null) {
+            return;
+        }
+        stub.setLayoutResource(getActionBarResourceId());
+        mActionBar = stub.inflate();
+        initActionBarContent(mActionBar);
+    }
+
+    protected void initActionBarContent(View actionBar) {
+        if (actionBar != null) {
+
+            int resourceId = getTitleResourceId();
+            if (resourceId > 0) {
+                mActionBarTitle = (TextView) actionBar.findViewById(R.id.tv_toolbar_title);
+                mActionBarTitle.setText(resourceId);
+            }
+            mToolbar = (Toolbar)actionBar.findViewById(R.id.toolbar);
+            if(mToolbar == null) return;
+            /*
+            resourceId = getRightTextResourceId();
+            if (resourceId > 0) {
+                toolbar.setTitle(resourceId);
+            }
+            */
+            resourceId = getLeftImageResourceId();
+            if (resourceId > 0) {
+                mToolbar.setNavigationIcon(resourceId);
+                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onLeftClick();
+                    }
+
+                });
+            }
+
+            resourceId = getMenuResourceId();
+
+            if (resourceId > 0) {
+                mToolbar.inflateMenu(resourceId);
+                mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        onRightClick(item);
+                        return true;
+                    }
+                });
+            }
+
+        }
+    }
+
+    protected int getActionBarResourceId() {
+        return R.layout.global_app_bar;
+    }
+
+    protected int getTitleResourceId() {
+        return R.string.app_name;
+    }
+
+    protected int getMenuResourceId() {
+        return 0;
+    }
+
+    protected void onRightClick(MenuItem item) {
+    }
+
+    protected void onLeftClick() {
+        finish();
+    }
+
+    protected int getLeftImageResourceId() {
+        return R.drawable.actionbar_back_btn;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        isFinished = true;
+        XltApplication.getInstance().removeActivity(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void finish() {
+        isFinished = true;
+        super.finish();
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    private ProgressDialog progressDlg() {
+        if (mProgressDlg == null) {
+            mProgressDlg = new ProgressDialog(this);
+            mProgressDlg.setCancelable(false);
+        }
+
+        return mProgressDlg;
+    }
+
+    public void showProgress(int msgResId) {
+        showProgress(msgResId, false);
+    }
+
+    public void showProgress(String msg) {
+        showProgress(msg, false);
+    }
+
+    public void showProgress(int msgResId, boolean cancelable){
+        if (isFinished()) {
+            return;
+        }
+
+        progressDlg().setCancelable(cancelable);
+        progressDlg().setMessage(getText(msgResId));
+        progressDlg().show();
+    }
+
+    public void showProgress(String msg, boolean cancelable) {
+        if (isFinished()) {
+            return;
+        }
+
+        progressDlg().setCancelable(cancelable);
+        progressDlg().setMessage(msg);
+        progressDlg().show();
+    }
+
+    public void hideProgress() {
+        if (isFinished()) {
+            return;
+        }
+
+        if (mProgressDlg != null) {
+            if (mProgressDlg.isShowing()) {
+                mProgressDlg.dismiss();
+                mProgressDlg.setProgress(0);
+            }
+            mProgressDlg = null;
+        }
+    }
+
+    /**
+     * 显示软键盘
+     * @param editText
+     */
+    protected void showSoftInput(final EditText editText) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager) editText.getContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(editText, 0);
+            }
+
+        }, 100);
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    protected void hideSoftInput(View view) {
+        InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (im.isActive()){
+            im.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+    /**
+     * toast提示
+     * @param msg
+     */
+    public void showLongToast(String msg){
+        XLTToast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * toast提示
+     * @param msg
+     */
+    public void showShortToast(String msg){
+        XLTToast.makeText(this,msg, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 设置标题
+     * @param text
+     */
+    protected void setTitle(String text){
+        if (text != null && mActionBarTitle != null){
+            mActionBarTitle.setText(text);
+        }
+    }
+
+    /**
+     * 判断用户是否登录
+     * @return
+     */
+    protected boolean isLogin(){
+        if (UserServer.getCurrentUser().getUid() != 0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否为老师登录
+     * @return
+     */
+    public boolean isTeacher(){
+        return UserServer.getCurrentUser().groupkey == UserInfo.GROUP_TEACHER ? true : false;
+    }
+
+    public boolean checkPermission(@NonNull String... permission){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        List<String> denyPermissions = new ArrayList<>();
+        for (String per : permission){
+            if (ContextCompat.checkSelfPermission(this, per) == PackageManager.PERMISSION_GRANTED){
+                mPermissions.put(per, true);
+            }else {
+                mPermissions.put(per, false);
+                denyPermissions.add(per);
+            }
+        }
+
+        if (denyPermissions.size() > 0){
+            ActivityCompat.requestPermissions(this, denyPermissions.toArray(new String[denyPermissions.size()]), REQ_PERMISSION);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode){
+            case REQ_PERMISSION:
+                for (int i = 0; i< grantResults.length; i++){
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED && permissions.length > i){
+                        mPermissions.put(permissions[i], true);
+                    }
+                }
+                onPermissionsResult(mPermissions);
+                break;
+        }
+    }
+
+    protected void onPermissionsResult(Map<String, Boolean> permissions){
+
+    }
+}

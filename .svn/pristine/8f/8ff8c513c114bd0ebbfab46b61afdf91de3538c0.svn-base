@@ -1,0 +1,171 @@
+package com.talenton.organ.ui.school;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+
+import com.talenton.organ.BaseCompatFragment;
+import com.talenton.organ.R;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.NetWorkUtils;
+import com.talenton.base.util.Preference;
+import com.talenton.organ.server.bean.school.CatalogData;
+import com.talenton.organ.server.bean.school.event.OpenFileEvent;
+import com.talenton.organ.ui.school.adapter.CatalogAdapter;
+import com.talenton.organ.widget.PinnedSectionListView;
+import com.talenton.organ.widget.dialog.TipsDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/8
+ */
+public class CatalogFragment extends BaseCompatFragment implements AdapterView.OnItemClickListener {
+    private CatalogAdapter catalogAdapter;
+    private ArrayList<CatalogData> catalogDatas;
+    private PinnedSectionListView pinnedSectionListView;
+    private static String DATA = "DATA";
+    private OpenFileCallback openFileCallback;
+    private ClassDetailActivity classDetailActivity;
+    private TipsDialog tipsDialog;
+
+
+    public static CatalogFragment newInstance(ArrayList<CatalogData> datas) {
+        CatalogFragment fragment = new CatalogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(DATA,datas);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            openFileCallback = (OpenFileCallback) activity;
+            classDetailActivity = (ClassDetailActivity) getActivity();
+        }catch(ClassCastException e){
+            throw new ClassCastException(activity.toString()+"must implement OpenFileCallback");
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        int position = catalogAdapter.getLastSelectedPosition();
+        if (position != -1){
+            CatalogData catalogData = catalogDatas.get(position);
+            Preference.getInstance().setLastOpenCatalogData(catalogData.getAid(),OkHttpClientManager.getInstance().getmGson().toJson(catalogData));
+        }
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+        catalogDatas = getArguments().getParcelableArrayList(DATA);
+        catalogAdapter = new CatalogAdapter(getContext(), catalogDatas);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_catalog, container, false);
+        pinnedSectionListView = (PinnedSectionListView) viewGroup.findViewById(R.id.list);
+        pinnedSectionListView.setAdapter(catalogAdapter);
+        pinnedSectionListView.setOnItemClickListener(this);
+
+        return viewGroup;
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        CatalogData catalogData = catalogAdapter.getItem(position);
+        if (!classDetailActivity.canPlay()){
+            if (catalogData.getTrailers() != 1){
+                showShortToast("请先参加该课程,进行付费后观看");
+                return;
+            }
+        }
+
+        int ctype = catalogData.getCtype();
+        if (ctype != CatalogData.CTYPE_CATALOG){
+            catalogAdapter.setLastSelectedPosition(position);
+        }
+        switch (ctype){
+            case CatalogData.CTYPE_CATALOG:
+                break;
+            case CatalogData.CTYPE_IMGS: //图片集
+                openFileCallback.openImgsCallback(catalogData.getSourcepath());
+                break;
+            case CatalogData.CTYPE_VIDEO: //视频
+                openVideo(catalogData);
+                break;
+            case CatalogData.CTYPE_DOC: //文档
+                if (catalogData.getSourcepath() != null && !catalogData.getSourcepath().isEmpty()){
+                    openFileCallback.openPDFCallback(catalogData.getSourcepath().get(0).filepath, FileUtil.getFileNameWithoutExt(catalogData.getSourcepath().get(0).imgname));
+                }
+                break;
+        }
+    }
+
+    /**
+     * 打开视频文件
+     * @param catalogData
+     */
+    private void openVideo(final CatalogData catalogData) {
+        if (catalogData.getSourcepath() != null && !catalogData.getSourcepath().isEmpty()){
+            if (NetWorkUtils.isNetworkAvailable(getContext()) && !NetWorkUtils.NETWORK_TYPE_WIFI.equals(NetWorkUtils.getConnectionType(getContext()))){
+                showTipsDialog(new TipsDialog.OnClickRightBtnListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openFileCallback.openVideoCallback(catalogData.getSourcepath().get(0).filepath,catalogData.getName(),false);
+                    }
+                });
+            }else {
+                openFileCallback.openVideoCallback(catalogData.getSourcepath().get(0).filepath,catalogData.getName(), false);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OpenFileEvent openFileEvent) {
+        int position = openFileEvent.getPosition();
+        catalogAdapter.setLastSelectedPosition(position);
+    }
+
+
+    public interface OpenFileCallback{
+        void openVideoCallback(String path,String title,boolean isSkipAd);
+        void openPDFCallback(String path,String pdfName);
+        void openImgsCallback(List<CatalogData.SourcePathData> sourcePathDatas);
+    }
+
+
+    /**
+     * 非WIFI时提示是否继续播放
+     * @param onClickRightBtnListener
+     */
+    private void showTipsDialog(TipsDialog.OnClickRightBtnListener onClickRightBtnListener){
+        if (tipsDialog == null){
+            tipsDialog = new TipsDialog();
+            tipsDialog.setMsg("您当前使用的是2/3/4g网络,是否继续播放");
+            tipsDialog.setOnClickRightBtnListener(onClickRightBtnListener);
+        }
+        tipsDialog.show(getActivity().getSupportFragmentManager(), "tipsDialog");
+    }
+
+}

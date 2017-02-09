@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        style="@style/common_layout_edit_text"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:hint="@string/login_prompt_phone"
+            android:textColorHint="@color/text_light"
+            android:background="@null"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ems="20"
+            android:numeric="integer"
+            android:textSize="@dimen/text_34" />
+
+    </LinearLayout>
+    <LinearLayout
+        style="@style/common_layout_edit_text"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_verification_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_weight="1"
+            android:background="@null"
+            android:ems="20"
+            android:hint="@string/login_sms_code"
+            android:textColorHint="@color/text_light"
+            android:textSize="@dimen/text_34" >
+        </EditText>
+        <TextView
+            android:id="@+id/tv_verification_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/space_7_5"
+            android:paddingBottom="@dimen/space_7_5"
+            android:text="@string/login_get_sms_code"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_28"
+            android:paddingLeft="@dimen/space_10_0"
+            android:paddingRight="@dimen/space_10_0"
+            android:layout_marginRight="@dimen/space_10_0"
+            android:background="@drawable/btn_login_phone_selector" />
+    </LinearLayout>
+    <View
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_main" />
+
+    <TextView
+        android:id="@+id/tv_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_15_0"
+        android:text="@string/login_prompt_notice"
+        android:textColor="@color/gray1"
+        android:textSize="@dimen/text_28" />
+    <TextView
+        android:id="@+id/tv_prompt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginBottom="@dimen/space_15_0"
+        android:text="@string/login_prompt_notice2"
+        android:textColor="@color/gray1"
+        android:textSize="@dimen/text_28" />
+    <TextView
+        android:id="@+id/tv_login_next"
+        style="@style/match_btn_style"
+        android:text="@string/main_next" />
+</LinearLayout>

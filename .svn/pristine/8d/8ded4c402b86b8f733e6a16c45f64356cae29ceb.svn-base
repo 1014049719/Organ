@@ -1,0 +1,67 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.talenton.base.server.bean.AppType;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.widget.CircleImageView;
+import com.talenton.organ.R;
+import com.talenton.organ.util.ScreenUtils;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/7/13
+ */
+public class AppTypeAdapter extends LSGBaseAdapter<AppType>{
+
+    public AppTypeAdapter(Context context, List<AppType> datas) {
+        super(context, datas);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
+        if (convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_app_type, parent,false);
+            viewHolder = new ViewHolder();
+            viewHolder.iv_avatar = (CircleImageView) convertView.findViewById(R.id.iv_avatar);
+            viewHolder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_desc);
+            viewHolder.iv_selector = (ImageView) convertView.findViewById(R.id.iv_selector);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        convertView.getLayoutParams().height = getItemHeight();
+        AppType appType = getItem(position);
+        ImageLoaderManager.getInstance().displayImage(appType.type_pic, viewHolder.iv_avatar, ImageLoaderManager.createImgOptions(R.mipmap.ic_launcher, R.mipmap.ic_launcher), null, null);
+        viewHolder.tv_name.setText(appType.type_name);
+        viewHolder.tv_desc.setText(appType.type_desc);
+        return convertView;
+    }
+
+    public int getItemHeight() {
+        int rowCount = getCount()/2;
+        int itemHeight = ScreenUtils.getScreenHeight(context) / rowCount;
+        return itemHeight - 50;
+    }
+
+
+    static class ViewHolder{
+        public CircleImageView iv_avatar;
+        public TextView tv_name;
+        public TextView tv_desc;
+        public ImageView iv_selector;
+    }
+
+
+}

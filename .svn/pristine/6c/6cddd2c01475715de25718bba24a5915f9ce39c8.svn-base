@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/emojis_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/emojis_tab"
+        android:layout_marginTop="@dimen/space_15_0" />
+
+    <LinearLayout
+        android:id="@+id/emojis_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/activity_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <FrameLayout
+            android:id="@+id/emojis_tab_1_people"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_emoji_people" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/emojis_tab_2_nature"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_emoji_nature" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/emojis_tab_3_objects"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_emoji_objects" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/emojis_tab_4_cars"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_emoji_places" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/emojis_tab_5_punctuation"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_emoji_symbols" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/emojis_backspace"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" >
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/sym_keyboard_delete" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

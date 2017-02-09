@@ -1,0 +1,208 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.talenton.organ.ui.school.BriefFragment">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_class_name"
+                android:layout_marginTop="@dimen/space_15_0"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_main"
+                android:text="乐高教育Tubes EXperiment Set 管道游戏"
+                android:textSize="@dimen/text_32" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_marginRight="@dimen/space_15_0"
+                    android:layout_marginTop="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RatingBar
+                        android:id="@+id/rating_bar"
+                        style="@style/LSGRatingBar"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_evaluate_number"
+                        android:layout_alignTop="@+id/rating_bar"
+                        android:layout_alignBottom="@+id/rating_bar"
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1258份评价"
+                        android:textColor="@color/text_sub"
+                        android:textSize="@dimen/text_24"
+                        android:layout_toRightOf="@+id/rating_bar"
+                        android:layout_marginLeft="@dimen/space_10" />
+
+
+                    <TextView
+                        android:id="@+id/tv_praise"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/space_5_0"
+                        android:layout_alignTop="@+id/rating_bar"
+                        android:layout_alignBottom="@+id/rating_bar"
+                        android:gravity="center_vertical"
+                        android:text="258"
+                        android:drawablePadding="@dimen/space_5_0"
+                        android:drawableLeft="@drawable/btn_bg_praise_selector"
+                        android:textColor="@color/text_sub"
+                        android:textSize="@dimen/text_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_praise_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="+1"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/space_30_0"
+                    android:textSize="@dimen/text_24"
+                    android:gravity="center"
+                    android:textColor="@color/red" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:layout_marginTop="@dimen/space_15_0"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_0_5"
+                android:background="@color/list_div_color" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_45"
+                android:gravity="center_vertical"
+                android:text="@string/school_text_free"
+                android:textColor="@color/text_free"
+                android:textSize="@dimen/text_36" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_10"
+                android:background="@color/list_div_color" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:paddingTop="@dimen/space_20_0"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line" />
+
+</LinearLayout>
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:paddingTop="@dimen/space_15_0"-->
+    <!--android:paddingLeft="@dimen/space_15_0"-->
+    <!--android:paddingRight="@dimen/space_15_0">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_brief"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="@dimen/text_28"-->
+    <!--android:textColor="@color/text_sub"-->
+    <!--android:text="孩子们的最爱是发现事情的运作原理!在管道游戏套装帮助下,他们能够在发展创新管道搭建方法的同时发展精细动作和问题解决技能。在孩子们研究，构建和测试因果等重要概念的过程中，这一套装还能够在他们现在树立科学家的形象" />-->
+
+
+    <!--<TextView-->
+    <!--android:layout_marginTop="@dimen/space_15_0"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="适合人群"-->
+    <!--android:textSize="@dimen/text_38" />-->
+
+    <!--<TextView-->
+    <!--android:layout_marginTop="@dimen/space_15_0"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="适合3-12岁儿童"-->
+    <!--android:textSize="@dimen/text_28"-->
+    <!--android:textColor="@color/text_sub" />-->
+
+    <!--<TextView-->
+    <!--android:layout_marginTop="@dimen/space_15_0"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="机构/讲师介绍"-->
+    <!--android:textSize="@dimen/text_38" />-->
+
+    <!--<RelativeLayout-->
+    <!--android:paddingBottom="@dimen/space_15_0"-->
+    <!--android:layout_marginTop="@dimen/space_15_0"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<com.talenton.base.widget.CircleImageView-->
+    <!--android:id="@+id/iv_header"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@mipmap/ic_launcher" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_name"-->
+    <!--android:layout_marginLeft="@dimen/space_5_0"-->
+    <!--android:layout_toRightOf="@+id/iv_header"-->
+    <!--android:layout_marginTop="@dimen/space_15_0"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="机构/讲师介绍"-->
+    <!--android:textSize="@dimen/text_32" />-->
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_teacher_brief"-->
+    <!--android:layout_marginTop="@dimen/space_10"-->
+    <!--android:layout_marginLeft="@dimen/space_5_0"-->
+    <!--android:layout_toRightOf="@+id/iv_header"-->
+    <!--android:layout_below="@+id/tv_name"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="@dimen/text_28"-->
+    <!--android:textColor="@color/text_sub"-->
+    <!--android:text="孩子们的最爱是发现事情的运作原理!在管道游戏套装帮助下,他们能够在发展创新管道搭建方法的同时发展精细动作和问题解决技能。在孩子们研究，构建和测试因果等重要概念的过程中，这一套装还能够在他们现在树立科学家的形象" />-->
+    <!--</RelativeLayout>-->
+    <!--</LinearLayout>-->

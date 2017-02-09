@@ -1,0 +1,256 @@
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in C:\works\java\adt-bundle-windows-x86_64\sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
+}
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod
+
+-optimizationpasses 5                                                           # 指定代码的压缩级别
+-dontusemixedcaseclassnames                                                     # 是否使用大小写混合
+-dontskipnonpubliclibraryclasses                                                # 是否混淆第三方jar
+-dontpreverify                                                                  # 混淆时是否做预校验
+-verbose                                                                        # 混淆时是否记录日志
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*        # 混淆时所采用的算法
+
+#-libraryjars libs/apns_1.0.6.jar
+
+#### lsg sdk begin
+-keep class **.server.bean.** { *; }
+-keep class com.talenton.base.dao.** {*;}
+-keep class **.R$* {*;}
+-keep class com.talenton.base.widget.** {*;}
+-keep class com.talenton.base.util.** {*;}
+-keep class com.talenton.organ.widget.** {*;}
+-keep class com.talenton.organ.util.** {*;}
+-keep class com.talenton.organ.wxapi.** {*;}
+-keep class com.talenton.base.okhttp.https.** {*;}
+### lsg sdk end
+
+### okhttp start
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+### okhttp end
+
+
+### gson begin
+-keep class com.google.gson** { *; }
+-keepclassmembers class com.google.gson** {*;}
+#-dontwarn com.google.gson.**
+### gson end
+
+
+### greenrobot begin
+-keep interface de.greenrobot.dao.** {*;}
+-keep class de.greenrobot.dao.** {*;}
+-keep enum de.greenrobot.dao.** {*;}
+### greenrobot end
+
+### emojicon begin
+-keep interface com.rockerhieu.emojicon.** {*;}
+-keep class com.rockerhieu.emojicon.** {*;}
+-keep enum com.rockerhieu.emojicon.** {*;}
+### emojicon end
+
+### pulltorefresh begin
+-keep interface com.handmark.pulltorefresh.library.** {*;}
+-keep class com.handmark.pulltorefresh.library.** {*;}
+-keep enum com.handmark.pulltorefresh.library.** {*;}
+### pulltorefresh end
+
+### qiniu begin
+-keep interface com.qiniu.android.** {*;}
+-keep class com.qiniu.android.** {*;}
+-keep class com.qiniu.**{public <init>();}
+-ignorewarnings
+-keep enum com.qiniu.android.** {*;}
+### qiniu end
+
+### hybridsquad begin
+-keep interface org.hybridsquad.android.library.** {*;}
+-keep class org.hybridsquad.android.library.** {*;}
+-keep enum org.hybridsquad.android.library.** {*;}
+### hybridsquad end
+
+-dontwarn com.pingplusplus.android.**
+### pingplusplus begin
+-keep interface com.pingplusplus.android.** {*;}
+-keep class com.pingplusplus.android.** {*;}
+-keep enum com.pingplusplus.android.** {*;}
+### pingplusplus end
+
+### alipaysdk begin
+-keep interface com.alipay.** {*;}
+-keep class com.alipay.** {*;}
+-keep enum com.alipay.** {*;}
+### alipaysdk end
+
+### alipaysecsdk begin
+-keep interface com.alipay.mobilesecuritysdk.** {*;}
+-keep class com.alipay.mobilesecuritysdk.** {*;}
+-keep enum com.alipay.mobilesecuritysdk.** {*;}
+-keep class HttpUtils.** {*;}
+### alipaysecsdk end
+
+### alipayutdid begin
+-keep interface com.ta.utdid2.** {*;}
+-keep class com.ta.utdid2.** {*;}
+-keep enum com.ta.utdid2.** {*;}
+
+-keep class com.ut.device.** {*;}
+### alipayutdid end
+
+### jg_filter_sdk begin
+-keep interface com.jg.** {*;}
+-keep class com.jg.** {*;}
+-keep enum com.jg.** {*;}
+### jg_filter_sdk end
+
+### tencent begin
+
+#libammsdk
+-keep interface com.tencent.** {*;}
+-keep class com.tencent.** {*;}
+-keep enum com.tencent.** {*;}
+#wup-1.0.0.E-SNAPSHOT
+-keep interface com.qq.** {*;}
+-keep class com.qq.** {*;}
+-keep enum com.qq.** {*;}
+### tencent end
+
+### imageloader begin
+-keep interface com.nostra13.universalimageloader.** {*;}
+-keep class com.nostra13.universalimageloader.** {*;}
+-keep enum com.nostra13.universalimageloader.** {*;}
+### imageloader end
+
+### eventbus begin
+-keep interface de.greenrobot.event.** {*;}
+-keep class de.greenrobot.event.** {*;}
+-keep enum de.greenrobot.event.** {*;}
+-keepclassmembers class ** {
+	public void onEvent*(**);
+}
+### eventbus end
+
+### bugly begin
+-keep public class com.tencent.bugly.**{*;}
+### bugly end
+
+### baidu begin
+-keep interface  com.baidu.autoupdatesdk.** {*;}
+-keep class  com.baidu.autoupdatesdk.** {*;}
+-keep enum  com.baidu.autoupdatesdk.** {*;}
+
+-keep interface  com.baidu.android.bba.common.** {*;}
+-keep class  com.baidu.android.bba.common.** {*;}
+-keep enum  com.baidu.android.bba.common.** {*;}
+
+-keep interface  com.baidu.appsearch.patchupdate.** {*;}
+-keep class  com.baidu.appsearch.patchupdate.** {*;}
+-keep enum  com.baidu.appsearch.patchupdate.** {*;}
+### baidu end
+
+### nineoldandroids begin
+-keep interface com.nineoldandroids.animation.** {*;}
+-keep class com.nineoldandroids.animation.** {*;}
+-keep enum com.nineoldandroids.animation.** {*;}
+-keep interface com.nineoldandroids.util.** {*;}
+-keep class com.nineoldandroids.util.** {*;}
+-keep enum com.nineoldandroids.util.** {*;}
+-keep interface com.nineoldandroids.view.** {*;}
+-keep class com.nineoldandroids.view.** {*;}
+-keep enum com.nineoldandroids.view.** {*;}
+-keep interface com.nineoldandroids.view.animation.** {*;}
+-keep class com.nineoldandroids.view.animation.** {*;}
+-keep enum com.nineoldandroids.view.animation.** {*;}
+### nineoldandroids end
+
+### basic
+-keep public class * extends android.app.Fragment
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.support.v4.**
+-keep public interface * extends android.support.annotation.**
+-keep public class com.android.vending.licensing.ILicensingService
+
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.content.Context {
+   public void *(android.view.View);
+   public void *(android.view.MenuItem);
+}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+### end basic
+
+#eventbus
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+#-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+#    <init>(java.lang.Throwable);
+#}
+
+
+-dontwarn javax.**
+-dontshrink
+
+-keep class com.duowan.android.dwyx.api.data.**
+-keepclassmembers class com.duowan.android.dwyx.api.data.** { *; }
+-keep public class * extends com.duowan.android.dwyx.base.BaseFragment
+#信鸽
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep class com.tencent.android.tpush.**  {* ;}
+-keep class com.tencent.mid.**  {* ;}
+
+#播放器
+-keep class tv.danmaku.ijk.media.player.** { *; }

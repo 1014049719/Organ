@@ -1,0 +1,9 @@
+package com.talenton.base.okhttp.cookie.store;
+
+/**
+ *
+ */
+public interface HasCookieStore
+{
+    CookieStore getCookieStore();
+}

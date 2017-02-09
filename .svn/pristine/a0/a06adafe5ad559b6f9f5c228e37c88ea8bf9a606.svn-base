@@ -1,0 +1,241 @@
+package com.talenton.organ.ui.school;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.talenton.organ.BaseListActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.widget.IndicationViewPager;
+import com.talenton.organ.server.SchoolServer;
+import com.talenton.organ.server.bean.school.BaseRspList;
+import com.talenton.organ.server.bean.school.ClassData;
+import com.talenton.organ.server.bean.school.ClassFilterData;
+import com.talenton.organ.server.bean.school.ReqAdvertisement;
+import com.talenton.organ.server.bean.school.ReqClassList;
+import com.talenton.organ.server.bean.school.ReqClassification;
+import com.talenton.organ.server.bean.school.RspListClass;
+import com.talenton.organ.server.bean.school.RspListClassType;
+import com.talenton.organ.server.bean.school.event.JoinClassEvent;
+import com.talenton.organ.ui.school.adapter.ClassAdapter;
+import com.talenton.organ.ui.school.adapter.ExperimentalAdapterMy;
+import com.talenton.organ.widget.AdvertisementView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExperimentalActivity extends BaseListActivity implements AdapterView.OnItemClickListener {
+    private AdvertisementView ad_view;
+    private IndicationViewPager indication_view_pager;
+    private List<ClassData> uploadClassDatas;
+    private ReqClassList reqClassList;
+    private View listEmptyFooterView; //没有课程时显示提示view
+    private int currentClickPostion;
+    private boolean isAddFootView;
+
+    public static void startExperimentalActivity(Context context){
+        Intent intent = new Intent(context,ExperimentalActivity.class);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_school_experimental);
+        super.onCreate(savedInstanceState);
+
+        if (!isTeacher()){
+            mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
+            showShortToast("您没有权限查看");
+            return;
+        }
+
+        initView();
+        fillAdViewData(false);
+        fillIndicationViewPagerData();
+        fillListData();
+        EventBus.getDefault().register(this);
+    }
+
+    /**
+     * 填充列表数据
+     */
+    private void fillListData() {
+        uploadClassDatas = new ArrayList<>();
+        reqClassList = new ReqClassList(ReqClassList.ClassListType.MY_UPLOAD);
+        SchoolServer.SchoolClassListServer schoolClassListServer = new SchoolServer.SchoolClassListServer(reqClassList);
+        startGetData(schoolClassListServer, new ListResponseCallback<RspListClass>() {
+
+            @Override
+            public void onSuccess(RspListClass data) {
+                uploadClassDatas.addAll(data.getList());
+                mAdapter.notifyDataSetChanged();
+                if (data.getList().isEmpty()) {
+                    addEmptyFooterView();
+                } else {
+                    removeEmptyFooterView();
+                }
+            }
+
+            @Override
+            public void onError(XLTError error) {
+
+            }
+        });
+        mAdapter = new ExperimentalAdapterMy(this,uploadClassDatas);
+        mPullRefreshListView.getRefreshableView().setAdapter(mAdapter);
+    }
+
+    private void removeEmptyFooterView() {
+        if (isAddFootView) {
+            mPullRefreshListView.getRefreshableView().removeFooterView(listEmptyFooterView);
+            isAddFootView = false;
+        }
+    }
+
+    private void addEmptyFooterView() {
+        if (!isAddFootView){
+            mPullRefreshListView.getRefreshableView().addFooterView(listEmptyFooterView);
+            isAddFootView = true;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (ad_view != null){
+            ad_view.onDestroy();
+        }
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        if (ad_view != null){
+            ad_view.onResume();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        if (ad_view != null){
+            ad_view.onPause();
+        }
+        super.onPause();
+    }
+
+    private void fillIndicationViewPagerData() {
+        final SchoolServer schoolServer = new SchoolServer();
+        schoolServer.getClassTypeData(this, new ReqClassification(ReqClassification.PUBLIC_SCHOOL), new XLTResponseCallback<RspListClassType>() {
+            @Override
+            public void onResponse(RspListClassType data, XLTError error) {
+                if (error == null) {
+                    ArrayList<ClassFilterData> classFilterDatas = schoolServer.parseToClassFilterDatas(data.getList());
+                    if (classFilterDatas.size() > 0) {
+                        String[] titles = getTitles(classFilterDatas);
+                        Fragment[] fragments = getFragments(classFilterDatas);
+                        indication_view_pager.setData(getSupportFragmentManager(), titles, fragments, true);
+                    }
+                }
+            }
+        });
+    }
+
+    private String[] getTitles(ArrayList<ClassFilterData> classFilterDatas) {
+        String[] titles = new String[classFilterDatas.size()];
+        for (int i=0; i<classFilterDatas.size(); i++){
+            titles[i] = classFilterDatas.get(i).getTitle();
+        }
+        return titles;
+    }
+
+    private Fragment[] getFragments(ArrayList<ClassFilterData> classFilterDatas){
+        Fragment[] fragments = new Fragment[classFilterDatas.size()];
+        for (int i=0; i<classFilterDatas.size(); i++){
+            ClassFilterData classFilterData = classFilterDatas.get(i);
+            fragments[i] = ExperimentalFilterFragment.newInstance(classFilterData.getClassificationDatas());
+        }
+        return fragments;
+    }
+
+    /**
+     * 填充广告数据
+     */
+    private void fillAdViewData(boolean isRefresh) {
+        ad_view.setIsRefresh(isRefresh);
+        ad_view.setData(new ReqAdvertisement(ReqAdvertisement.AD_SCHOOL_EXPERIMENT));
+    }
+    
+    
+
+    private void initView() {
+        View headerView = LayoutInflater.from(this).inflate(R.layout.item_header_school_experimental,null);
+        ad_view = (AdvertisementView) headerView.findViewById(R.id.ad_view);
+        indication_view_pager = (IndicationViewPager) headerView.findViewById(R.id.indication_view_pager);
+        listEmptyFooterView = LayoutInflater.from(this).inflate(R.layout.item_footer_no_upload_class,null);
+
+        mPullRefreshListView.getRefreshableView().addHeaderView(headerView);
+        mPullRefreshListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.school_experimental_title;
+    }
+
+    @Override
+    protected int getPullRefreshListViewResId() {
+        return R.id.list;
+    }
+
+    public IndicationViewPager getIndication_view_pager() {
+        return indication_view_pager;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        position = position - mPullRefreshListView.getRefreshableView().getHeaderViewsCount();
+        currentClickPostion = position;
+        if(position >=0 && position < mAdapter.getCount()){
+            ClassData classData = (ClassData) mAdapter.getItem(position);
+            ClassDetailActivity.startClassDetailActivity(this,classData.getAid(),position);
+        }
+    }
+
+    @Override
+    protected void onRefresh(BaseRspList data, XLTError error) {
+        if (error == null && data != null && data.getList() != null){
+            if (!data.getList().isEmpty()){
+                removeEmptyFooterView();
+            }else {
+                addEmptyFooterView();
+            }
+        }
+        fillAdViewData(true); //更新广告
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(JoinClassEvent joinClassEvent) {
+        if (joinClassEvent == null){
+            return;
+        }
+        int position = joinClassEvent.getPosition();
+        if (position != -1 && position == currentClickPostion){
+            int currentJoincount = ((ClassAdapter)mAdapter).getDatas().get(position).getJoincount();
+            ((ClassAdapter)mAdapter).getDatas().get(position).setJoincount(currentJoincount + 1);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+}

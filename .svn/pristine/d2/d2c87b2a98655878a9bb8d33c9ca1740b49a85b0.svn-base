@@ -1,0 +1,11 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.io.Serializable;
+
+/**
+ * Created by xiaoxiang on 2016/5/30.
+ */
+public class LogisticsQuery implements Serializable {
+    public String datetime;
+    public String remark;
+}

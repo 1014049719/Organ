@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/half_transparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/space_7_5"
+            android:text="取消"
+            android:textColor="@color/text_sub"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_white_bg_selector"
+            android:paddingRight="@dimen/space_7_5"
+            android:gravity="right|center"
+            android:text="确定"
+            android:textColor="@color/alert_btn"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/province_line_border" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_7_5"
+            android:layout_marginRight="@dimen/space_7_5"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <com.talenton.base.widget.wheel.WheelView
+                android:id="@+id/year"
+                android:layout_width="0dp"
+                android:layout_height="150dip"
+                android:layout_weight="1" />
+
+            <com.talenton.base.widget.wheel.WheelView
+                android:id="@+id/month"
+                android:layout_width="0dp"
+                android:layout_height="150dip"
+                android:layout_weight="1" />
+
+            <com.talenton.base.widget.wheel.WheelView
+                android:id="@+id/day"
+                android:layout_width="0dp"
+                android:layout_height="150dip"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/space_7_5"
+            android:layout_marginRight="@dimen/space_7_5"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="年"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="月"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="日"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="top"
+            android:background="@drawable/timebg_bottom" />
+
+        <View
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/timebg_top" />
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    tools:context="com.talenton.organ.ui.user.ChildInfoActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        layout="@layout/global_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/ll_user_info"-->
+                <!--android:background="@drawable/btn_mine_click_selector"-->
+                <!--android:paddingLeft="@dimen/space_15_0"-->
+                <!--android:paddingRight="@dimen/space_15_0"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/height_53">-->
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:src="@mipmap/zhx_icon" />-->
+                <!--<TextView-->
+                    <!--android:layout_marginLeft="@dimen/space_15_0"-->
+                    <!--android:drawableRight="@mipmap/xy_icon"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/text_32"-->
+                    <!--android:textColor="@color/text_main"-->
+                    <!--android:text="@string/mine_text_user_info" />-->
+            <!--</LinearLayout>-->
+
+            <LinearLayout
+                android:id="@+id/ll_app_manager"
+                android:background="@drawable/btn_mine_click_selector"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/gy_icon" />
+                <TextView
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:drawableRight="@mipmap/xy_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_app_manager" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_clear_data"
+                android:layout_marginTop="@dimen/space_10_0"
+                android:background="@drawable/btn_mine_click_selector"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/qhc_icon" />
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_clear_data" />
+
+                <TextView
+                    android:id="@+id/tv_cache_size"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_sub"
+                    android:drawablePadding="@dimen/space_5_0"
+                    android:drawableRight="@mipmap/xy_icon"
+                    android:text="0.00M" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_0_5"
+                    android:background="@color/divider_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_only_wifi_upload"
+                android:background="@drawable/btn_mine_click_selector"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wifi_icon" />
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_only_wifi_upload" />
+
+
+                <com.talenton.organ.widget.SwitchView
+                    android:id="@+id/wifi_switch"
+                    android:layout_weight="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_about"
+                android:background="@drawable/btn_mine_click_selector"
+                android:layout_marginTop="@dimen/space_10_0"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/gy_icon" />
+                <TextView
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:drawableRight="@mipmap/xy_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_about" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_0_5"
+                    android:background="@color/divider_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_help_center"
+                android:background="@drawable/btn_mine_click_selector"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/bzx_icon" />
+                <TextView
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:drawableRight="@mipmap/xy_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_help_center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_0_5"
+                    android:background="@color/divider_line" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_exit"
+                android:background="@drawable/btn_mine_click_selector"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_53">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/tc_icon" />
+                <TextView
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_32"
+                    android:textColor="@color/text_main"
+                    android:text="@string/mine_text_exit" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

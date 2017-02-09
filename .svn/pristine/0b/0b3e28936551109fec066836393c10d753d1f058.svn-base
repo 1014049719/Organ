@@ -1,0 +1,139 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.SchoolData;
+import com.talenton.organ.event.SelectSchoolEvent;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqSchoolData;
+import com.talenton.organ.ui.school.adapter.SelectSchoolAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+
+public class ModifySchoolNameActivity extends BaseCompatActivity implements  AdapterView.OnItemClickListener {
+    private EditText et_school_name;
+    public static final String PROVINCE = "province";
+    public static final String CITY = "city";
+    public static final String AREA = "area";
+    private SchoolData selectSchoolData; //选中的学校
+    private String mProvince = "";
+    private String mCity = "";
+    private String mArea = "";
+    private ListView mListView;
+    private SelectSchoolAdapter selectSchoolAdapter;
+
+    public static void startModifySchoolNameActivity(Context context,String mProvince,String mCity,String mArea){
+        Intent intent = new Intent(context,ModifySchoolNameActivity.class);
+        intent.putExtra(PROVINCE,mProvince);
+        intent.putExtra(CITY,mCity);
+        intent.putExtra(AREA,mArea);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_modify_school_name);
+
+        mListView = (ListView) findViewById(R.id.list);
+        selectSchoolAdapter = new SelectSchoolAdapter(this,new ArrayList<SchoolData>());
+        mListView.setAdapter(selectSchoolAdapter);
+        mListView.setOnItemClickListener(this);
+
+        et_school_name = (EditText) findViewById(R.id.et_school_name);
+        et_school_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mListView.setVisibility(View.VISIBLE);
+                selectSchoolAdapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mProvince = getIntent().getStringExtra(PROVINCE);
+        mCity = getIntent().getStringExtra(CITY);
+        mArea = getIntent().getStringExtra(AREA);
+
+        getSchoolData();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == 67){
+            et_school_name.setText("");
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void getSchoolData() {
+        MineServer.getSchoolDatas(mProvince, mCity, mArea, new XLTResponseCallback<ReqSchoolData>() {
+            @Override
+            public void onResponse(ReqSchoolData data, XLTError error) {
+                if (error == null && data != null && data.list != null) {
+                    selectSchoolAdapter.addAll(data.list);
+                    selectSchoolAdapter.notifyDataSetChanged();
+                }else {
+                    showShortToast(error.getMesssage());
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        if (item.getItemId() == R.id.menu_main_ok){
+            if (selectSchoolData == null){
+                showShortToast("未选择学校");
+                return;
+            }
+            EventBus.getDefault().post(new SelectSchoolEvent(selectSchoolData));
+            finish();
+        }
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_main_ok;
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.mine_text_school;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        SchoolData schoolData = selectSchoolAdapter.getItem(position);
+        if (schoolData != null){
+            selectSchoolData = schoolData;
+            et_school_name.setText(selectSchoolData.name);
+            et_school_name.setSelection(et_school_name.length());
+            mListView.setVisibility(View.GONE);
+        }
+    }
+}

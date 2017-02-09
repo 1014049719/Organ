@@ -1,0 +1,76 @@
+package com.talenton.organ.ui;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.webkit.WebSettings;
+
+import com.talenton.organ.BaseWebViewActivity;
+import com.talenton.organ.R;
+import com.talenton.base.AppConfig;
+import com.talenton.organ.server.bean.feed.PostToParam;
+
+
+public class WebViewActivity extends BaseWebViewActivity {
+
+    public static final String LOAD_URL = "load_url";
+    public static final String IS_NEED_PREFIX = "is_need_prefix";
+    public static final String POST_PARAM = "post_param";
+
+    private PostToParam mPostParam;
+
+    public static void startWebViewActivity(Context context, String url, boolean isNeedPrefix) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(LOAD_URL, url);
+        intent.putExtra(IS_NEED_PREFIX, isNeedPrefix);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(intent);
+    }
+
+    public static void startWebViewActivity(Context context, String url, PostToParam param){
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(LOAD_URL, url);
+        intent.putExtra(POST_PARAM, param);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_web_view2);
+
+        WebSettings webSetting = webView.getSettings();
+        //扩大比例的缩放
+        webSetting.setUseWideViewPort(true);
+        //自适应屏幕
+        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSetting.setLoadWithOverviewMode(true);
+        loadUrl();
+    }
+
+    protected void loadUrl() {
+        isNeedPrefix = getIntent().getBooleanExtra(IS_NEED_PREFIX, false);
+        url = getIntent().getStringExtra(LOAD_URL);
+        if (isNeedPrefix) {
+            url = AppConfig.HOME_URL + url;
+        }
+        if (!url.startsWith("http")){
+            url = AppConfig.HOME_URL + url;
+        }
+         Parcelable obj = getIntent().getParcelableExtra(POST_PARAM);
+        if (obj != null && obj instanceof PostToParam){
+            mPostParam = (PostToParam) obj;
+            if (mPostParam != null && mJSObj != null){
+                mJSObj.setJSClickListener(new JavaScriptLocalObj.OnJSClickListener() {
+                    @Override
+                    public PostToParam getJSClickParam() {
+                        return mPostParam;
+                    }
+                });
+            }
+        }
+        synCookies(WebViewActivity.this, url);
+        webView.loadUrl(url);
+    }
+}

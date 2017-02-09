@@ -1,0 +1,47 @@
+package com.talenton.organ.server.bean.user;
+
+import android.text.TextUtils;
+
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.school.IBaseReq;
+
+/**
+ * @author zjh
+ * @date 2016/5/16
+ */
+public class ReqMySendTopic implements IBaseReq {
+    private final String TOPIC_URL = "topic.php?mod=mytopics&cmdcode=85";
+    private String query_orderby;
+    private int query_pager;
+
+    @Override
+    public String getReqParams() {
+        JsonObjUtil jsonObjUtil = JsonObjUtil.getInstance();
+        if (query_orderby != null && !TextUtils.isEmpty(query_orderby)){
+            jsonObjUtil.addParam("query_orderby", query_orderby);
+        }
+        jsonObjUtil.addParam("query_pager", query_pager);
+        return jsonObjUtil.toJsonString();
+    }
+
+    @Override
+    public String getReqUrl() {
+        return TOPIC_URL;
+    }
+
+    public int getQuery_pager() {
+        return query_pager;
+    }
+
+    public void setQuery_pager(int query_pager) {
+        this.query_pager = query_pager;
+    }
+
+    public String getQuery_orderby() {
+        return query_orderby;
+    }
+
+    public void setQuery_orderby(String query_orderby) {
+        this.query_orderby = query_orderby;
+    }
+}

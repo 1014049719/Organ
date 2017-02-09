@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#3983cc"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/guize_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/guize_icon"
+        android:layout_gravity="end"
+        android:layout_marginRight="@dimen/space_20_0"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="当前积分"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/text_30"
+        android:layout_marginTop="@dimen/space_10_0"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/space_2_0">
+        <TextView
+            android:id="@+id/pointscount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:text="0"
+            android:textColor="#ffffff"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_10"
+            android:layout_alignBottom="@+id/pointscount_tv"
+            android:layout_toRightOf="@+id/pointscount_tv"
+            android:layout_marginBottom="@dimen/space_5_0"
+            android:text="分"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/exchangeBT"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:text="积分兑换"
+        android:textSize="@dimen/text_32"
+        android:textColor="#ffffff"
+        android:background="@drawable/btn_points_duihua" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_40"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_20_0"
+            android:text="积分详情"
+            android:textColor="#333333"
+            android:textSize="@dimen/text_36"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f5f5f5"/>
+
+</LinearLayout>

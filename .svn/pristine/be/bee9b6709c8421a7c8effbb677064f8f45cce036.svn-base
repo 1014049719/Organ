@@ -1,0 +1,135 @@
+package com.talenton.organ.ui.user;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.widget.EditText;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqBabayData;
+import com.talenton.organ.server.bean.user.ReqModifyUserInfo;
+import com.talenton.organ.server.bean.user.event.ModifyUserNameEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
+
+public class ModifyNameActivity extends BaseCompatActivity {
+    private EditText et_name;
+    public final static String NAME = "name";
+    public final static String BABY_ID = "baby_id";
+    private long babyId;
+
+    /**
+     * 修改宝宝名字
+     * @param activity
+     * @param name
+     * @param babyId
+     * @param requestCode
+     */
+    public static void startModifyNameActivity(Activity activity,String name,long babyId,int requestCode){
+        Intent intent = new Intent(activity,ModifyNameActivity.class);
+        intent.putExtra(NAME,name);
+        intent.putExtra(BABY_ID,babyId);
+        activity.startActivityForResult(intent,requestCode);
+    }
+
+    /**
+     * 修改用户名
+     * @param activity
+     * @param name
+     * @param requestCode
+     */
+    public static void startModifyNameActivity(Activity activity,String name,int requestCode){
+        Intent intent = new Intent(activity,ModifyNameActivity.class);
+        intent.putExtra(NAME,name);
+        activity.startActivityForResult(intent,requestCode);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_modify_name);
+
+        et_name = (EditText) findViewById(R.id.et_name);
+        babyId = getIntent().getLongExtra(BABY_ID, 0);
+        String hintName = getIntent().getStringExtra(NAME);
+        if (hintName != null){
+            et_name.setHint(hintName);
+        }
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item) {
+        if (item.getItemId() == R.id.menu_main_ok){
+            final String name = et_name.getText().toString();
+            if (TextUtils.isEmpty(name)){
+                showShortToast("姓名不能为空");
+                return;
+            }
+            showProgress("正在提交数据中...");
+            if (babyId != 0){
+                modifyBabyName(name);
+            }else {
+                modifyUserName(name);
+            }
+
+        }
+    }
+
+    private void modifyUserName(final String name) {
+        MineServer.modifyUserInfo(new ReqModifyUserInfo(name), new XLTResponseCallback<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject data, XLTError error) {
+                if (error == null) {
+                    UserServer.getCurrentUser().realname = name;
+                    UserServer.setRspLogin(UserServer.getRspLogin());
+                    EventBus.getDefault().post(new ModifyUserNameEvent(name));
+                    Intent resultData = new Intent();
+                    resultData.putExtra(NAME, name);
+                    setResult(RESULT_OK, resultData);
+                    finish();
+                    showShortToast("数据提交成功");
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    private void modifyBabyName(final String name) {
+        MineServer.modifyBabyInfo(new ReqBabayData(babyId, name, 0, null), new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+                if (error == null) {
+                    Intent resultData = new Intent();
+                    resultData.putExtra(NAME, name);
+                    setResult(RESULT_OK, resultData);
+                    finish();
+                    showShortToast("数据提交成功");
+                } else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+            }
+        });
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.mine_text_user_name;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_main_ok;
+    }
+}

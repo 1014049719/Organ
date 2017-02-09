@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/shop_search_hot_tv"
+        android:layout_width="@dimen/width_108"
+        android:layout_height="@dimen/height_34"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_bg_corner_gray_stroke"
+        android:textSize="@dimen/text_28"
+        android:gravity="center" />
+
+
+</LinearLayout>

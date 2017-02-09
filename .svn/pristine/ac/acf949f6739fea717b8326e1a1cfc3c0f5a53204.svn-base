@@ -1,0 +1,180 @@
+package com.talenton.organ.ui.message;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.BaseEmptyActivity;
+import com.talenton.organ.BaseListActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.organ.event.OpenMsgEvent;
+import com.talenton.organ.server.MsgServer;
+import com.talenton.organ.server.bean.message.CustomMessageData;
+import com.talenton.organ.server.bean.message.MsgData;
+import com.talenton.organ.server.bean.message.ReqMsg;
+import com.talenton.organ.server.bean.message.RspMsgList;
+import com.talenton.organ.server.bean.school.BaseRspList;
+import com.talenton.organ.ui.AppInitController;
+import com.talenton.organ.ui.message.adapter.MsgAdapter;
+import com.talenton.organ.util.UIHelper;
+import com.talenton.organ.widget.SplashDialog;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MsgActivity extends BaseEmptyActivity implements AdapterView.OnItemClickListener {
+    private List<MsgData> msgDatas;
+    private PullToRefreshListView mPullRefreshListView;
+    private ReqMsg reqMsg = new ReqMsg();
+    private MsgAdapter msgAdapter;
+    private boolean isFirstLoad;
+
+
+    public static void startMsgActvity(Context context){
+        Intent intent = new Intent(context,MsgActivity.class);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_msg);
+        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.list);
+        mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                loadData(ReqMsg.TYPE_LAST,0);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                if (msgDatas != null && !msgDatas.isEmpty()){
+                    loadData(ReqMsg.TYPE_LT,msgDatas.get(msgDatas.size() - 1).getDateline());
+                }
+            }
+        });
+        mPullRefreshListView.getRefreshableView().setOnItemClickListener(this);
+        addEmptyViewToContain(mPullRefreshListView);
+        fillData();
+    }
+
+    private void fillData() {
+        isFirstLoad = true;
+        msgDatas = new ArrayList<>();
+        msgAdapter = new MsgAdapter(this,msgDatas);
+        mPullRefreshListView.getRefreshableView().setAdapter(msgAdapter);
+        showLoadingView();
+        loadData(ReqMsg.TYPE_LAST, 0);
+    }
+
+    public void loadData(final int type,long time){
+        reqMsg.setType(type);
+        if (time != 0){
+            reqMsg.setDateline(time);
+        }
+        MsgServer.getMsgList(MsgActivity.this,reqMsg, new XLTResponseListener<RspMsgList>() {
+            @Override
+            public void onResponse(RspMsgList responseData, XLTError errorData) {
+                if (errorData == null && responseData != null && responseData.getArr() != null) {
+                    if (type == ReqMsg.TYPE_LAST) { //第一次加载或下拉刷新
+                        if (responseData.getArr().isEmpty()){
+                            mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                        }else {
+                            mPullRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+                        }
+                        EventBus.getDefault().post(new OpenMsgEvent());
+                        msgDatas.clear();
+                    }
+                    if (responseData.getArr().isEmpty() && type == ReqMsg.TYPE_LAST){
+                        msgDatas.add(MsgData.getTipsMsgData(MsgActivity.this));
+                    }else {
+                        msgDatas.addAll(responseData.getArr());
+                    }
+                    msgAdapter.notifyDataSetChanged();
+                    if (type == ReqMsg.TYPE_LT){
+                        if (responseData.getArr() == null || responseData.getArr().isEmpty()){
+                            hideLoadMoreView(true);
+                        }
+                    }
+                    showData();
+                    if (!isFirstLoad){
+                        onRefreshComplete();
+                    }
+                    isFirstLoad = false;
+                } else {
+                    if (isFirstLoad) {
+                        showLoadErrorView();
+                    }else {
+                        onRefreshComplete();
+                    }
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 设置listview不允许加载更多
+     */
+    private void hideLoadMoreView(boolean isShowTips) {
+        if (isShowTips) {
+            showShortToast(getString(R.string.toast_text_no_data));
+        }
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        mPullRefreshListView.getFooterLoadingView().setVisibility(View.GONE);
+    }
+
+    private void onRefreshComplete() {
+        mPullRefreshListView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPullRefreshListView.onRefreshComplete();
+            }
+        }, 1000);
+    }
+
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.message_text_titile;
+    }
+
+    @Override
+    public void onReload(View v) {
+        loadData(ReqMsg.TYPE_LAST,0);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        position = position - mPullRefreshListView.getRefreshableView().getHeaderViewsCount();
+        MsgData msgData = msgAdapter.getItem(position);
+        if (msgData.getMsgType() == MsgData.TYPE_OPEN_NO){
+            return;
+        }
+        if (msgData.isTips()){
+            DialogFragment fr = SplashDialog.newInstance();
+            UIHelper.showDialog(this, fr, "SplashDialog");
+        }else {
+            CustomMessageData customMessageData = new CustomMessageData();
+            customMessageData.op = msgData.getOmode();
+            customMessageData.url = msgData.getUrl();
+            customMessageData.opAction(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+}

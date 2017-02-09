@@ -1,0 +1,71 @@
+package com.talenton.organ.server.bean.school;
+
+/**
+ * @author zjh
+ * @date 2016/4/28
+ */
+public class RspClassJoin {
+    private int result; //1-参加成功、2-付费课程，转到支付页面
+    private String orderid; //订单号
+    private ChargeData charge; //票据(字典)
+    private long ordertime; //订单时间(整形)
+    private double price; //订单价格
+    private int num; //购买数量
+    private int ordertype; //1-购买课程
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public String getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(String orderid) {
+        this.orderid = orderid;
+    }
+
+    public long getOrdertime() {
+        return ordertime;
+    }
+
+    public void setOrdertime(long ordertime) {
+        this.ordertime = ordertime;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public int getOrdertype() {
+        return ordertype;
+    }
+
+    public void setOrdertype(int ordertype) {
+        this.ordertype = ordertype;
+    }
+
+    public ChargeData getCharge() {
+        return charge;
+    }
+
+    public void setCharge(ChargeData charge) {
+        this.charge = charge;
+    }
+}

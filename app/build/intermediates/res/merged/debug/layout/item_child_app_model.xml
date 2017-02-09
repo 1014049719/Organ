@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_child_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/cb_child_select"
+        android:text="学堂" />
+
+    <TextView
+        android:id="@+id/tv_child_content"
+        android:layout_below="@+id/tv_child_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/cb_child_select"
+        android:text="记录学生" />
+
+
+    <CheckBox
+        android:id="@+id/cb_child_select"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

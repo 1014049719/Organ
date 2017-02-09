@@ -1,0 +1,11 @@
+package com.talenton.organ.server.bean.feed;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/4/21.
+ */
+public class RspCircleList {
+    public int count;
+    public LinkedList<CircleListData> list;
+}

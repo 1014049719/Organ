@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.school.MyClassroomActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        layout="@layout/global_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 播放器 -->
+            <FrameLayout
+                android:id="@+id/fl_player_container"
+                android:layout_width="match_parent"
+                android:background="@color/gray"
+                android:layout_height="@dimen/height_160">
+
+                <!--默认显示图片 -->
+                <RelativeLayout
+                    android:id="@+id/rl_default_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_class"
+                        android:scaleType="centerCrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/tv_join_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_30"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/transparent_6"
+                        android:gravity="center"
+                        android:textColor="@color/white" />
+
+                </RelativeLayout>
+
+
+                <!--打开pdf后显示的图片-->
+                <ImageView
+                    android:id="@+id/iv_pdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <!--打开图片集后显示的图片-->
+                <ImageView
+                    android:id="@+id/iv_imgs"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher"
+                    android:visibility="gone" />
+
+                <include
+                    layout="@layout/giraffe_player"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!--上次播放位置 -->
+                <RelativeLayout
+                    android:id="@+id/rl_last_play_postion"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_40"
+                    android:background="@color/green_3">
+
+                    <TextView
+                        android:id="@+id/tv_last_class"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/space_15_0"
+                        android:gravity="center_vertical"
+                        android:text="@string/school_text_last_class"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_26" />
+
+                    <TextView
+                        android:id="@+id/tv_quote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/tv_last_class"
+                        android:gravity="center_vertical"
+                        android:text="："
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_26" />
+
+                    <TextView
+                        android:id="@+id/tv_last_class_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/tv_quote"
+                        android:gravity="center_vertical"
+                        android:text="第一章01节"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_26" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/space_15_0"
+                        android:src="@mipmap/go_play" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.talenton.base.widget.IndicationViewPager
+                    android:id="@+id/indication_view_pager"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/space_0_5"
+                    android:background="@color/list_div_color" />
+
+                <include layout="@layout/school_class_detaill_bottom" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
+

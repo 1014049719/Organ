@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.talenton.organ.ui.user.LoginActivity"
+    android:orientation="vertical">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        style="@style/common_layout_edit_text"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:hint="@string/login_prompt_phone"
+            android:textColorHint="@color/text_light"
+            android:background="@null"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ems="20"
+            android:numeric="integer"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/common_layout_edit_text"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:hint="@string/login_prompt_password"
+            android:textColorHint="@color/text_light"
+            android:imeActionId="@+id/login"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:background="@null"
+            android:textSize="@dimen/text_34" />
+        <LinearLayout
+            android:id="@+id/layout_eye"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/space_10_0"
+                android:paddingLeft="@dimen/space_10_0"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/eye_close" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_login"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        style="@style/comment_btn_style"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_sign_in"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_34"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_forget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_10_0"
+            android:text="@string/login_forget_password"
+            android:textColor="@color/gray_main"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+</LinearLayout>

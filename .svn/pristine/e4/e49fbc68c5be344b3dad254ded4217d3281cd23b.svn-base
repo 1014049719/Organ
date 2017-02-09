@@ -1,0 +1,36 @@
+package com.talenton.organ.server.bean.user;
+
+/**
+ * @author zjh
+ * @date 2016/6/1
+ */
+public class RspCustomerServiceInfo {
+    private String serviceqq;
+    private String servicetel;
+    private String servicegroup;
+
+
+    public String getServiceqq() {
+        return serviceqq;
+    }
+
+    public void setServiceqq(String serviceqq) {
+        this.serviceqq = serviceqq;
+    }
+
+    public String getServicetel() {
+        return servicetel;
+    }
+
+    public void setServicetel(String servicetel) {
+        this.servicetel = servicetel;
+    }
+
+    public String getServicegroup() {
+        return servicegroup;
+    }
+
+    public void setServicegroup(String servicegroup) {
+        this.servicegroup = servicegroup;
+    }
+}

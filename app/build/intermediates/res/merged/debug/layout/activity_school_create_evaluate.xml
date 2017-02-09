@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.talenton.organ.ui.school.CreateEvaluateActivity">
+
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/space_20_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:layout_marginRight="@dimen/space_15_0"
+            android:background="@drawable/btn_et_gray_corner"
+            android:paddingTop="@dimen/space_10"
+            android:paddingLeft="@dimen/space_10"
+            android:paddingRight="@dimen/space_10"
+            android:paddingBottom="@dimen/space_30_0"
+            android:textSize="@dimen/text_26"
+            android:gravity="top|left"
+            android:maxLength="300"
+            android:textColorHint="@color/text_sub"
+            android:hint="@string/school_hint_evaluate"
+            android:minHeight="@dimen/height_150"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_text_limit_300"
+            android:textColor="@color/text_limit"
+            android:textSize="@dimen/text_24"
+            android:layout_alignBottom="@+id/et_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/space_30_0"
+            android:layout_marginBottom="@dimen/space_15_0" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50">
+
+        <TextView
+            android:id="@+id/tv_good_evaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_26"
+            android:textColor="@color/text_sub"
+            android:text="@string/school_text_good_evaluate"
+            android:gravity="center" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_gravity="center"
+            style="@style/LSGRatingBar"
+            android:numStars="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:layout_marginLeft="@dimen/space_10_0" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

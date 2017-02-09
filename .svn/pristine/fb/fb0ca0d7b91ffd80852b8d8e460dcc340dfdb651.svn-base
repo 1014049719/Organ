@@ -1,0 +1,505 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.emoji.Emojicon;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.task.TaskBase;
+import com.talenton.base.server.task.TaskManager;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.base.widget.ResizeRelativeLayout;
+import com.talenton.organ.event.DeleteCommentEvent;
+import com.talenton.organ.event.FeedsTaskEvent;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CommentInfo;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.server.bean.feed.RspListComment;
+import com.talenton.organ.server.task.TaskFeeds;
+import com.talenton.organ.ui.feed.adapter.CircleFeedsDetailAdapter;
+import com.talenton.organ.ui.feed.adapter.EmojiInputViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+public class CircleFeedsDetailActivity extends BaseCompatActivity implements View.OnClickListener, CircleFeedsDetailAdapter.OnClickComment,
+        EmojiconGridFragment.OnEmojiconClickedListener, FeedsEmojiFragment.OnEmojiconBackspaceClickedListener{
+
+    private CircleFeedsDetailAdapter mAdapter;
+    private PullToRefreshListView mPullRefreshListView;
+    private ListView mListView;
+    private EmojiInputViewHolder mHolder;
+    private Feeds mFeeds;
+    private String mUserName;
+    private View mPopupView;
+    private LoadingViewHolder mLoading;
+    private TaskFeeds mTask;
+    private CommonAlertDialog mAlertDlg;
+    private PostToParam mPostToParam;
+    private View mHolderView;
+    private static final int PAGE_SIZE = 20;
+    private int mCurPage = 1, mSumCount = 0;
+
+    public static void startCircleFeedsDetailActivity(Context context, PostToParam postToParam) {
+        Intent intent = new Intent(context, CircleFeedsDetailActivity.class);
+        intent.putExtra("key_post_to", postToParam);
+        context.startActivity(intent);
+    }
+
+    public static void commentCircleFeedsDetailActivity(Context context, PostToParam postToParam) {
+        Intent intent = new Intent(context, CircleFeedsDetailActivity.class);
+        intent.putExtra("key_post_to", postToParam);
+        intent.putExtra("is_comment", true);
+        context.startActivity(intent);
+    }
+
+    public static void startCircleFeedsDetailActivity(Context context, long taskId) {
+        Intent intent = new Intent(context, CircleFeedsDetailActivity.class);
+        intent.putExtra("task_id", taskId);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_circle_feeds_detail);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            mPostToParam = (PostToParam) intent.getParcelableExtra("key_post_to");
+        }
+        if(mPostToParam == null){
+            mPostToParam = new PostToParam(0, 0, "");
+        }
+
+        Long taskId = getIntent().getLongExtra("task_id", 0);
+
+        boolean isComment = getIntent().getBooleanExtra("is_comment", false);
+        if (mPostToParam.tid == 0 && taskId == 0) {
+            XLTToast.makeText(OrganApplication.getAppContext(), R.string.feeds_deleted).show();
+            finish();
+            return;
+        }
+
+        // list
+        {
+            mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+            // 取得真实的View
+            mListView = mPullRefreshListView.getRefreshableView();
+            mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2() {
+
+                @Override
+                public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+
+                }
+
+                @Override
+                public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+                    loadOlderData();
+                }
+
+            });
+            mListView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), true, true));
+
+            LinearLayout footerParent = new LinearLayout(CircleFeedsDetailActivity.this);
+            footerParent.setLayoutParams(
+                    new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            footerParent.setGravity(Gravity.CENTER);
+            footerParent.setMinimumHeight(400);
+            View loading = getLayoutInflater().inflate(R.layout.load_fail_view, null);
+            ((ImageView) loading.findViewById(R.id.empty_action)).setImageResource(R.mipmap.main_comment_empty);
+            mLoading = new LoadingViewHolder(null, loading, this, this);
+            mLoading.setEmptyText(0);
+            footerParent.addView(loading);
+            mListView.addFooterView(footerParent);
+            mListView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        }
+        // input
+        {
+            View emojiInputView = findViewById(R.id.root);
+            mHolder = new EmojiInputViewHolder(emojiInputView);
+            mHolder.setOnBackPressListener(new EmojiInputViewHolder.OnBackPressListener() {
+                @Override
+                public void OnBackPress() {
+
+                    mUserName = null;
+                    mHolder.showMenu();
+                    mHolder.mInputEditText.setHint(getResources().getString(R.string.comment));
+                }
+            });
+            if (isComment) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+                        | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                mHolder.showMenuAndSoftInput();
+            } else {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+                        | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+                if (mPostToParam.tid > 0) {
+                    mHolder.showMenu();
+                } else {
+                    mHolder.hideMenu();
+                }
+            }
+            findViewById(R.id.comment).setOnClickListener(this);
+            ((ResizeRelativeLayout) emojiInputView.findViewById(R.id.chat_resize_panel))
+                    .setOnResizeRelativeListener(new ResizeRelativeLayout.OnResizeRelativeListener() {
+
+                        @Override
+                        public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+                            //AppLogger.i(String.format("%d,%d", oldh, h));
+                        }
+                    });
+        }
+        if (mPostToParam.tid > 0) {
+            loadFeeds(mPostToParam.guid, mPostToParam.tid);
+            mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        } else {
+            mPullRefreshListView.setMode(PullToRefreshBase.Mode.DISABLED);
+            loadTask(taskId);
+        }
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedsTaskEvent event) {
+        if (mTask != null && event != null && event.feeds != null && mTask.id == event.feeds.appLocalid) {
+            // 发表动态中
+            Feeds feeds = event.feeds;
+            if (feeds.taskStatus == TaskFeeds.STATUS_SUCCESS) {
+                mTask = null;
+                loadFeeds(feeds.guid, feeds.tid);
+            } else if (feeds.taskStatus == TaskFeeds.STATUS_CANCELED) {
+                finish();
+            } else {
+                mFeeds = feeds;
+                mPostToParam.setPostToParam(feeds);
+                mAdapter = new CircleFeedsDetailAdapter(CircleFeedsDetailActivity.this, mPostToParam);
+                mAdapter.setOnClickComment(CircleFeedsDetailActivity.this);
+                mListView.setAdapter(mAdapter);
+                mAdapter.setFeeds(mFeeds);
+                // mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                mLoading.hideView();
+            }
+        } else if (mFeeds != null && event != null && event.feeds != null && !TextUtils.isEmpty(mFeeds.guid)
+                && mFeeds.guid.equals(event.feeds.guid)) {
+            // 修改动态中
+            loadTask(event.feeds.appLocalid);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DeleteCommentEvent event) {
+        if (mFeeds.commentcount > 0) {
+            mFeeds.commentcount--;
+            mAdapter.notifyDataSetChanged();
+        }
+        if (mAdapter.getCount() == 1) {
+            mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+        }
+    }
+
+    public void loadTask(long taskId) {
+        mTask = (TaskFeeds) TaskManager.getTaskFromDB(taskId);
+        if (mTask == null) {
+            XLTToast.makeText(OrganApplication.getAppContext(), R.string.task_deleted).show();
+            finish();
+            return;
+        }
+        mFeeds = mTask.feeds;
+        mFeeds.taskStatus = mTask.status;
+        mFeeds.taskMessage = mTask.message;
+        mFeeds.from = Feeds.FROM_TASK;
+
+        if (mFeeds == null) {
+            finish();
+        } else {
+            mPostToParam.setPostToParam(mFeeds);
+
+            mAdapter = new CircleFeedsDetailAdapter(CircleFeedsDetailActivity.this, mPostToParam);
+            mAdapter.setOnClickComment(CircleFeedsDetailActivity.this);
+            mListView.setAdapter(mAdapter);
+            mAdapter.setFeeds(mFeeds);
+            // mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+            mLoading.hideView();
+        }
+
+    }
+
+    public void loadFeeds(final String feedsId, long tid) {
+        mFeeds = null;
+        showProgress(R.string.main_loading);
+        FeedServer.getFeeds(tid, feedsId, new XLTResponseCallback<Feeds>() {
+
+            @Override
+            public void onResponse(Feeds data, XLTError error) {
+                hideProgress();
+                if (error == null && TextUtils.isEmpty(data.guid)) {
+                    XLTToast.makeText(CircleFeedsDetailActivity.this, R.string.feeds_deleted).show();
+                    finish();
+                    return;
+                }
+                if (data != null && data.tid > 0 && mFeeds == null) {
+                    mFeeds = data;
+                    mPostToParam.setPostToParam(data);
+                    mAdapter = new CircleFeedsDetailAdapter(CircleFeedsDetailActivity.this, mPostToParam.clone());
+                    mAdapter.setOnClickComment(CircleFeedsDetailActivity.this);
+                    mListView.setAdapter(mAdapter);
+                    mAdapter.setFeeds(data);
+                    loadComment();
+                    if (mFeeds.browsecount > mPostToParam.count) {
+                        //EventBus.getDefault().post(new FeedsAmountEvent(mFeeds.guid, 0, 0, 1));
+                    }
+                } else if (error != null && mFeeds == null) {
+                    showShortToast(error.getMesssage());
+                    finish();
+                }
+            }
+
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        if (mHolder != null && mHolder.isEmojiVisible()) {
+            mHolder.showMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    protected void onLeftClick() {
+        if (mHolder != null) {
+            hideSoftInput(mHolder.mInputEditText);
+        }
+        finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mFeeds == null) {
+            return;
+        }
+        switch (v.getId()){
+            case R.id.empty_action:
+                if (mFeeds != null && mFeeds.from == Feeds.FLAG_NORMAL) {
+                    mHolder.mInputEditText.requestFocus();
+                    showSoftInput(mHolder.mInputEditText);
+                }
+                break;
+            case R.id.btn_reload:
+                loadComment();
+                break;
+            case R.id.comment:
+                String comment = mHolder.mInputEditText.getText().toString();
+                if (comment.trim().length() == 0) {
+                    return;
+                }
+                showProgress(R.string.commenting);
+                FeedServer.comment(new CommentInfo(mPostToParam.tid, mPostToParam.commentUID, comment),new XLTResponseCallback<CommentInfo>() {
+                    @Override
+                    public void onResponse(CommentInfo data, XLTError error) {
+                        // TODO Auto-generated method stub
+                        hideProgress();
+                        if (error == null) {
+                            mPostToParam.commentUID = 0;
+                            mHolder.mInputEditText.setText("");
+                            hideSoftInput(mHolder.mInputEditText);
+                            mHolder.showMenu();
+                            mAdapter.insertComments(data);
+                            mFeeds.commentcount++;
+                            mAdapter.notifyDataSetChanged();
+                            mLoading.hideView();
+                        }
+                    }
+
+                });
+
+                break;
+            case R.id.feeds_delete:
+                int resId = R.string.alter_post_delete;
+                if (mFeeds.from == Feeds.FROM_TASK) {
+                    resId = R.string.alter_post_cancel;
+                }
+                alterDialog(resId, new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        if (mFeeds.from == Feeds.FROM_TASK) {
+                            if (mTask != null) {
+                                mTask.onFinish(TaskBase.STATUS_CANCELED, "");
+                            }
+                        } else {
+                            FeedServer.deleteFeeds(mFeeds.circle_id, mFeeds.guid, mFeeds.tid, null);
+                        }
+                        finish();
+                    }
+
+                });
+                break;
+            case R.id.feeds_edit:
+                mPostToParam.tid = mFeeds.tid;
+                mPostToParam.guid = mFeeds.guid;
+                FeedsPostActivity.startPostFeedsActivity(CircleFeedsDetailActivity.this, mPostToParam);
+                break;
+            case R.id.feeds_like:
+            case R.id.feeds_collect:
+                mAdapter.notifyDataSetChanged();
+                break;
+        }
+
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        // TODO Auto-generated method stub
+        return R.string.feeds_detail_title;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return 0;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item){
+
+    }
+
+    @Override
+    public void onEmojiconBackspaceClicked(View v) {
+        FeedsEmojiFragment.backspace(mHolder.mInputEditText);
+
+    }
+
+    @Override
+    public void onEmojiconClicked(Emojicon emojicon) {
+        FeedsEmojiFragment.input(mHolder.mInputEditText, emojicon);
+
+    }
+
+    @Override
+    public void onClickComment(long tid, long reuid, String renickname, int pos, int height) {
+        if (reuid > 0 && tid == mPostToParam.tid) {
+            mUserName = renickname;
+            mPostToParam.commentUID = reuid;
+            mHolder.mInputEditText.setHint(TextUtils.isEmpty(mUserName) ? getResources().getString(R.string.comment)
+                    : getResources().getString(R.string.comment_comment_hint, mUserName));
+            mHolder.mInputEditText.requestFocus();
+            showSoftInput(mHolder.mInputEditText);
+        }
+    }
+
+    private void alterDialog(int msgResId, View.OnClickListener comfirm) {
+        if (mAlertDlg == null) {
+            mAlertDlg = new CommonAlertDialog(this);
+            mAlertDlg.setTitle(R.string.main_prompt);
+            mAlertDlg.setCancelable(false);
+            mAlertDlg.setNegativeButton(getString(android.R.string.no), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAlertDlg.dismiss();
+                }
+            });
+
+        }
+        mAlertDlg.setMessage(msgResId);
+        mAlertDlg.setPositiveButton(getString(android.R.string.yes), comfirm);
+        mAlertDlg.show();
+    }
+
+    private void loadComment() {
+
+        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+
+        FeedServer.listComment(mPostToParam.tid, "", "", new XLTResponseCallback<RspListComment>() {
+
+            @Override
+            public void onResponse(RspListComment data, XLTError error) {
+                if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else if (data != null) {
+                    mAdapter.setComments(data.list);
+                    mSumCount = data.count;
+                    mCurPage = 1;
+                    // mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                    mLoading.hideView();
+                } else {
+                    mAdapter.setComments(null);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+
+        });
+
+    }
+
+    private void loadOlderData() {
+
+        if (mSumCount <= 0 || (mCurPage * 20) >= mSumCount) {
+
+            showShortToast(getString(R.string.toast_text_no_data));
+            mPullRefreshListView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPullRefreshListView.onRefreshComplete();
+                }
+            }, 1000);
+            return;
+        }
+
+        FeedServer.listComment(mPostToParam.tid, "", String.valueOf(mCurPage+1), new XLTResponseCallback<RspListComment>() {
+
+            @Override
+            public void onResponse(RspListComment data, XLTError error) {
+                if (error != null) {
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                } else if (data != null) {
+                    mCurPage++;
+                    mAdapter.setComments(data.list);
+                    mSumCount = data.count;
+                    // mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                    mLoading.hideView();
+                } else {
+                    mAdapter.setComments(null);
+                    mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                }
+            }
+
+        });
+    }
+}

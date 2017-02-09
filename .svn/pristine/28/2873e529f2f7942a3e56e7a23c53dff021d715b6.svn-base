@@ -1,0 +1,194 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.SchoolData;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqSchoolData;
+
+import java.util.LinkedList;
+
+public class SelectSchoolActivity extends BaseCompatActivity {
+
+    private PagerAdapter mAdapter;
+    private EditText mQuery;
+    private RecyclerView mSchoolView;
+    LinkedList<SchoolData> mSchoolDatas = new LinkedList<SchoolData>();
+    LinkedList<SchoolData> mQuerySchoolDatas = new LinkedList<SchoolData>();
+    long mSchoolid = 0L;
+    private String mProvince = "", mCity = "", mArea = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_school);
+
+        mQuery = (EditText)findViewById(R.id.query);
+        mSchoolView = (RecyclerView)findViewById(R.id.rlv_school);
+
+        mSchoolView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mSchoolView.setLayoutManager(layoutManager);
+        mAdapter = new PagerAdapter(this);
+        mSchoolView.setAdapter(mAdapter);
+
+        Intent intent = this.getIntent();
+        if (intent != null){
+            mProvince = intent.getStringExtra("province");
+            mCity = intent.getStringExtra("city");
+            mArea = intent.getStringExtra("area");
+        }
+
+        initDatas();
+    }
+
+    private void initDatas(){
+
+        MineServer.getSchoolDatas(mProvince, mCity, mArea, new XLTResponseCallback<ReqSchoolData>() {
+            @Override
+            public void onResponse(ReqSchoolData data, XLTError error) {
+                if (error == null && data != null && data.list != null) {
+                    mSchoolDatas = data.list;
+                    mAdapter.setSchoolDatas(data.list);
+                }
+            }
+        });
+
+        mQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mQuerySchoolDatas.clear();
+                if (mQuery.getText() != null && mSchoolDatas.size() > 0) {
+                    String name = mQuery.getText().toString();
+                    for (SchoolData d : mSchoolDatas) {
+                        if (d.name.contains(name)) {
+                            mQuerySchoolDatas.add(d);
+                        }
+                    }
+                    mAdapter.setSchoolDatas(mQuerySchoolDatas);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.user_select_school;
+    }
+
+    @Override
+    protected int getMenuResourceId() {
+        return R.menu.menu_main_ok;
+    }
+
+    @Override
+    protected void onRightClick(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menu_main_ok:
+                String schoolname = mQuery.getText().toString().trim();
+                Intent intent = new Intent();
+                intent.putExtra("schoolname", schoolname);
+                intent.putExtra("schoolid", mSchoolid);
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+        }
+    }
+
+    private class PagerAdapter extends RecyclerView.Adapter<PagerVewHodler>{
+
+
+        private LayoutInflater mInflater;
+        LinkedList<SchoolData> mDatas;
+
+        public PagerAdapter(Context context){
+            super();
+            mDatas = new LinkedList<SchoolData>();
+            mInflater = LayoutInflater.from(context);
+        }
+
+        public void setSchoolDatas(LinkedList<SchoolData> datas){
+            if (datas == null) return;
+
+            mDatas.clear();
+            mDatas.addAll(datas);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public PagerVewHodler onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.item_select_school, parent, false);
+            final PagerVewHodler holder = new PagerVewHodler(view);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    if (position != -1 && position < mDatas.size()){
+                        SchoolData data = mDatas.get(position);
+                        if (data != null){
+                            mQuery.setText(data.name);
+                            mSchoolid = data.schoolid;
+                        }
+                    }
+                }
+            });
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(PagerVewHodler holder, int position) {
+            SchoolData data = mDatas.get(position);
+            holder.mSchoolName.setText(data.name);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas.size();
+        }
+    }
+
+    private class PagerVewHodler extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        public TextView mSchoolName;
+
+        public PagerVewHodler(View itemView) {
+            super(itemView);
+            mSchoolName = (TextView)itemView.findViewById(R.id.item_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+}

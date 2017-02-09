@@ -1,0 +1,260 @@
+package com.talenton.organ.ui.user;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.AppLogger;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.ShopServer;
+import com.talenton.organ.server.bean.shop.AdressInfo;
+import com.talenton.organ.server.bean.shop.RecvListAdressData;
+import com.talenton.organ.server.bean.shop.SendListAdressData;
+import com.talenton.organ.server.bean.user.DuihuanParam;
+import com.talenton.organ.server.bean.user.ShopPoints;
+import com.talenton.organ.ui.shop.AddNewAdressActivity;
+import com.talenton.organ.ui.shop.SelectAddressActivity;
+
+import java.util.ArrayList;
+
+public class ConfirmPointActivity extends BaseCompatActivity implements View.OnClickListener {
+
+    private Button mButton;
+    private LinearLayout address_LinearLayout;
+    private ArrayList<AdressInfo> mAdressInfoList;
+    private AdressInfo mDefautAdress;
+    private TextView addressName;
+    private TextView addressNumber;
+    private TextView addressDetail;
+    //用intent序列化传的对象
+    private ShopPoints shopPoints;
+
+    private final int Request_CODE_AddNewAddress=1;
+    private final int Request_CODE_SelectAddress=2;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_confirm_point);
+
+        initView();
+        //获取地址信息
+        getAdressList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    //初始化View
+    private void initView() {
+
+        //拿到传过来的对象
+        shopPoints = getIntent().getParcelableExtra("shopPoints");
+
+        //积分商品图片
+        ImageView imageView = (ImageView) findViewById(R.id.points_goods_imageview);
+        ImageLoader.getInstance().displayImage(shopPoints.imgurl, imageView);
+        //名称 信息
+        TextView nameTextView = (TextView) findViewById(R.id.shopPoint_name_tv);
+        nameTextView.setText(shopPoints.giftname);
+        TextView jifen1TV = (TextView) findViewById(R.id.jifen1_tv);
+        TextView jifen2TV = (TextView) findViewById(R.id.jifen2_tv);
+        TextView jifen3TV = (TextView) findViewById(R.id.jifen3_tv);
+        jifen1TV.setText(shopPoints.points + "积分");
+        jifen2TV.setText(shopPoints.points + "积分");
+        jifen3TV.setText(shopPoints.points + "积分");
+
+        //按钮
+        mButton = (Button) findViewById(R.id.duihuan_btn);
+        mButton.setOnClickListener(this);
+        address_LinearLayout = (LinearLayout) findViewById(R.id.address_LinearLayout);
+        address_LinearLayout.setOnClickListener(this);
+        mAdressInfoList = new ArrayList<AdressInfo>();
+        mDefautAdress = new AdressInfo();
+
+        addressName = (TextView) findViewById(R.id.address_name);
+        addressNumber = (TextView) findViewById(R.id.address_number);
+        addressDetail = (TextView) findViewById(R.id.address_detail);
+
+    }
+
+    //获取地址信息
+    private void getAdressList() {
+        SendListAdressData mSendListAdressData = new SendListAdressData();
+        ShopServer.getAdressListData(mSendListAdressData,
+                new XLTResponseCallback<RecvListAdressData>() {
+
+                    @Override
+                    public void onResponse(RecvListAdressData data, XLTError error) {
+
+                        // TODO Auto-generated method stub
+
+                        if (data != null) {
+
+                            mAdressInfoList = data.list;
+                            if (findDefaultAddress(mAdressInfoList)) {
+
+                            } else {
+                                //跳进添加新地址
+                                addNewAddress();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), error.getMesssage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private boolean findDefaultAddress(ArrayList<AdressInfo> mAdressInfoList) {
+
+        for (int i = 0; i < mAdressInfoList.size(); i++) {
+            if (mAdressInfoList.get(i).is_default == 1) {
+                mDefautAdress = mAdressInfoList.get(i);
+                addressName.setText(mDefautAdress.consignee);
+                addressNumber.setText(mDefautAdress.mobile);
+                addressDetail.setText(mDefautAdress.area + mDefautAdress.address);
+                return true;
+            }
+        }
+        if (mAdressInfoList.size() > 0) {
+            mDefautAdress = mAdressInfoList.get(0);
+            addressName.setText(mDefautAdress.consignee);
+            addressNumber.setText(mDefautAdress.mobile);
+            addressDetail.setText(mDefautAdress.area + mDefautAdress.address);
+            return true;
+        } else {
+            addressName.setText("");
+            addressNumber.setText("");
+            addressDetail.setText("");
+            return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode==Request_CODE_AddNewAddress){
+            if (resultCode == Activity.RESULT_OK) {
+
+                AppLogger.d("===========收货地址信息添加成功，开始重新请求");
+                //获取地址信息
+                getAdressList();
+            }
+        }
+
+        if (requestCode==Request_CODE_SelectAddress){
+            if (resultCode==Activity.RESULT_OK){
+                mDefautAdress= (AdressInfo) data.getSerializableExtra("mSelected");
+                AppLogger.d("===========收货地址信息选择完成，新的地址："+mDefautAdress.address);
+                addressName.setText(mDefautAdress.consignee);
+                addressNumber.setText(mDefautAdress.mobile);
+                addressDetail.setText(mDefautAdress.area + mDefautAdress.address);
+            }else {
+                //获取地址信息
+                getAdressList();
+            }
+        }
+
+    }
+
+    //兑换请求
+    protected void getDuihuanData() {
+
+        DuihuanParam duihuanParam = new DuihuanParam();
+        duihuanParam.gid = Integer.parseInt(shopPoints.gid);
+        duihuanParam.giftnum = 1;
+        duihuanParam.consignee = mDefautAdress.consignee;
+        duihuanParam.address=mDefautAdress.address;
+        duihuanParam.area=mDefautAdress.area;
+        duihuanParam.mobile=mDefautAdress.mobile;
+        duihuanParam.zipcode=mDefautAdress.zipcode;
+
+        MineServer.getDuihuanData(duihuanParam, new XLTResponseCallback<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode data, XLTError error) {
+
+                //隐藏转圈
+                hideProgress();
+                if (data != null) {
+
+                    if (data.res == 1) {
+
+                        showShortToast(data.msg);
+                        //跳转到兑换成功界面
+                        Intent intent = new Intent(OrganApplication.getAppContext(), PointSucceedActivity.class);
+                        intent.putExtra("mDefautAdress",mDefautAdress);
+                        startActivity(intent);
+                    } else {
+                        showShortToast(data.msg);
+                    }
+                } else {
+
+                    showShortToast(error.getMesssage());
+                }
+            }
+        });
+    }
+
+
+    //点击事件
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        switch (v.getId()) {
+            case R.id.duihuan_btn: {
+
+                AppLogger.d("====================用户地址信息：" + mAdressInfoList.size());
+
+                if (mAdressInfoList.size() > 0) {
+                    //兑换
+                    getDuihuanData();
+                    //显示转圈
+                    showProgress(R.string.main_processing);
+                }
+                else {
+                    //添加地址
+                    addNewAddress();
+                }
+            }
+            break;
+            case R.id.address_LinearLayout: {
+                intent.setClass(OrganApplication.getAppContext(), SelectAddressActivity.class);
+                intent.putExtra("mDefautAdress",mDefautAdress);
+                startActivityForResult(intent, Request_CODE_SelectAddress);
+            }
+            break;
+        }
+    }
+
+    //跳进添加新地址
+    protected void addNewAddress() {
+
+        Toast.makeText(getApplicationContext(), "你还没有填写收货地址", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(OrganApplication.getAppContext(), AddNewAdressActivity.class);
+        startActivityForResult(intent, Request_CODE_AddNewAddress);
+    }
+
+    //导航
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.duihuanpoint_title;
+    }
+}

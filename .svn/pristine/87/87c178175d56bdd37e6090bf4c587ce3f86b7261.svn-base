@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingTop="@dimen/space_10_0"
+        android:paddingBottom="@dimen/space_10_0"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="@dimen/height_70"
+            android:layout_height="@dimen/height_70"
+            android:src="@mipmap/user_photo"
+            android:scaleType="centerCrop"
+            lsg:civ_border_color="@color/white"
+            lsg:civ_border_width="2dp" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_30"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:text="test"/>
+    </LinearLayout>
+</LinearLayout>

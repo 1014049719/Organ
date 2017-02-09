@@ -1,0 +1,157 @@
+package com.talenton.organ.ui.shop;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+
+import android.view.View;
+
+import android.widget.ListView;
+import android.widget.TextView;
+
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.server.ShopServer;
+
+import com.talenton.organ.server.bean.shop.LogisticsQuery;
+import com.talenton.organ.server.bean.shop.LogisticsQueryInfo;
+import com.talenton.organ.server.bean.shop.RecvLogisticsQueryData;
+import com.talenton.organ.server.bean.shop.SendLogisticsData;
+import com.talenton.organ.ui.shop.adapter.LogisticsAdapter;
+
+import java.util.ArrayList;
+
+
+/**
+ * Created by xiaoxiang on 2016/5/30.
+ */
+
+public class LogisticsQueryActivity extends BaseCompatActivity implements View.OnClickListener{
+
+
+    private ListView mListView;
+    private LogisticsAdapter mAdapter;
+    private LoadingViewHolder mLoading;
+    private LogisticsQueryInfo mLogisticsQuery;
+    private final static String key="115a16081283fffcb79b47bc5f9b2851";
+    private TextView logistics_name;
+    private TextView logistics_sn;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        setContentView(R.layout.activity_shop_logistics_query);
+        super.onCreate(savedInstanceState);
+        mLogisticsQuery = new LogisticsQueryInfo();
+        mLogisticsQuery = (LogisticsQueryInfo) getIntent().getExtras().getSerializable("LogisticsQuery");
+        initView();
+        getAdressList();
+
+    }
+
+    public static void startLogisticsQueryActivity(Context context,LogisticsQueryInfo mLogisticsQueryInfo){
+        Intent intent=new Intent();
+        Bundle bundle = new Bundle();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        bundle.putSerializable("LogisticsQuery", mLogisticsQueryInfo);
+        intent.putExtras(bundle);
+        intent.setClass(context, LogisticsQueryActivity.class);
+        context.startActivity(intent);
+    }
+    /**
+     * 初始化view
+     * @param
+     */
+    private void initView() {
+        mListView=(ListView)findViewById(R.id.shop_logistics_query_list_view);
+        mListView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        mAdapter = new LogisticsAdapter(this);
+        mListView.setAdapter(mAdapter);
+        View loading = findViewById(R.id.shop_logistics_loading_container);
+        mLoading = new LoadingViewHolder(mListView, loading, this, this);
+
+        logistics_sn=(TextView)findViewById(R.id.logistics_sn);
+        logistics_name=(TextView)findViewById(R.id.logistics_name);
+        if(mLogisticsQuery.com.equals("yt")){
+            logistics_name.setText("圆通快递");
+        }
+        else if(mLogisticsQuery.com.equals("sto")){
+            logistics_name.setText("申通快递");
+        }
+        else if(mLogisticsQuery.com.equals("sf")){
+            logistics_name.setText("顺丰快递");
+        }
+        else if(mLogisticsQuery.com.equals("zto")){
+            logistics_name.setText("中通快递");
+        }
+        else if(mLogisticsQuery.com.equals("yd")){
+            logistics_name.setText("韵达快递");
+        }
+        else if(mLogisticsQuery.com.equals("tt")){
+            logistics_name.setText("天天快递");
+        }
+        else if(mLogisticsQuery.com.equals("ems")){
+            logistics_name.setText("EMS快递");
+        }
+        logistics_sn.setText(mLogisticsQuery.no);
+    }
+
+
+
+
+    private  void getAdressList(){
+        SendLogisticsData mSendLogisticsData= new SendLogisticsData(key,mLogisticsQuery.com,mLogisticsQuery.no);
+        ShopServer.getLogistics(mSendLogisticsData,
+                new XLTResponseCallback<RecvLogisticsQueryData>() {
+
+                    @Override
+                    public void onResponse(RecvLogisticsQueryData data, XLTError error) {
+                        mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+                        // TODO Auto-generated method stub
+
+                        if ((error == null) && (data != null)) {
+                            mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                            ArrayList<LogisticsQuery> listTemp=new ArrayList<LogisticsQuery>();
+                           for(int i=data.list.size()-1;i>0;i--){
+                               listTemp.add(data.list.get(i));
+                           }
+                            mAdapter.setData(listTemp);
+
+                        } else if (error != null) {
+                            mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                        } else {
+                            mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                        }
+
+                    }
+
+
+                });
+    }
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.shop_text_logistics_query;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        switch (v.getId()) {
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                getAdressList();
+                break;
+
+
+        }
+    }
+
+
+
+}
+

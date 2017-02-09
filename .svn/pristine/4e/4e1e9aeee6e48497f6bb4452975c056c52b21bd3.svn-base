@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_white_bg_selector"
+    android:gravity="top|left"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/space_7_5"
+    android:paddingLeft="@dimen/space_15_0"
+    android:paddingRight="@dimen/space_15_0"
+    android:paddingTop="@dimen/space_7_5" >
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/user_logo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"
+        bbg:civ_border_color="@color/transparent"
+        bbg:civ_border_width="0.5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/replyer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="回复者"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_28" />
+
+            <TextView
+                android:id="@+id/comment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="回复时间"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_28" />
+
+            <ImageView
+                android:id="@+id/feeds_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/feeds_list_operator"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <com.talenton.base.widget.CommentTextView
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.3"
+            android:text="replycontent"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_28"
+            emojicon:emojiconSize="@dimen/text_32" />
+    </LinearLayout>
+</LinearLayout>

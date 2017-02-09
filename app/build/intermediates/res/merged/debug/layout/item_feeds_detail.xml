@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="top|left"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingTop="@dimen/space_7_5"
+        android:paddingBottom="@dimen/space_7_5" >
+
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/user_logo"
+            android:layout_width="@dimen/height_40"
+            android:layout_height="@dimen/height_40"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            bbg:civ_border_color="@color/transparent"
+            bbg:civ_border_width="0.5dp" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_7_5"
+            android:layout_weight="1"
+            android:gravity="center|left"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_32" />
+
+            <TextView
+                android:id="@+id/nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_name"
+                android:layout_marginTop="@dimen/space_5_0"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_24" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/publish_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_24" />
+
+        <TextView
+            android:id="@+id/feeds_send_failed_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_7_5"
+            android:drawablePadding="2dp"
+            android:drawableRight="@mipmap/post_feed_failed"
+            android:ellipsize="end"
+            android:gravity="right|center"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_20" />
+
+        <ProgressBar
+            android:id="@+id/feeds_send_progressbar"
+            style="@android:style/Widget.ProgressBar.Small.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+        </ProgressBar>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/list_div_color" />
+
+    <LinearLayout
+        android:id="@+id/feeds_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center|start"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:paddingTop="@dimen/space_7_5"
+        android:paddingBottom="@dimen/space_7_5" >
+
+        <com.talenton.base.widget.CommentTextView
+            android:id="@+id/collect_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_7_5"
+            android:gravity="center|start"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_28"
+            android:visibility="gone"/>
+
+        <com.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/feeds_text_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_7_5"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_28"
+            emojicon:emojiconSize="@dimen/text_32" />
+
+        <com.talenton.base.widget.OptimizeGridView
+            android:id="@+id/feeds_content_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:gravity="start"
+            android:horizontalSpacing="@dimen/space_5_0"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="3"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/space_5_0"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_40"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <FrameLayout
+                android:id="@+id/feeds_share"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/height_40"
+                android:background="@drawable/btn_white_bg_selector">
+                <ImageView
+                    android:layout_width="@dimen/space_16_0"
+                    android:layout_height="@dimen/space_16_0"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_white_bg_selector"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/feeds_share" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/feeds_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/height_40"
+                android:background="@drawable/btn_white_bg_selector">
+
+                <ImageView
+                    android:layout_width="@dimen/space_16_0"
+                    android:layout_height="@dimen/space_16_0"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_white_bg_selector"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/feeds_edit" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@+id/feeds_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="@dimen/height_40"
+                android:background="@drawable/btn_white_bg_selector">
+
+                <ImageView
+                    android:layout_width="@dimen/space_16_0"
+                    android:layout_height="@dimen/space_16_0"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_white_bg_selector"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/feeds_delete" />
+            </FrameLayout>
+            <TextView
+                android:id="@+id/images_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/feeds_image_time"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_24"
+                android:visibility="invisible"/>
+            <FrameLayout
+                android:id="@+id/feeds_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/space_10"
+                android:background="@drawable/btn_white_bg_selector" >
+                <TextView
+                    android:id="@+id/feeds_view_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|right"
+                    android:layout_marginLeft="4dip"
+                    android:layout_marginStart="4dip"
+                    android:gravity="center"
+                    android:textColor="@color/text_sub"
+                    android:textSize="@dimen/text_24" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</LinearLayout>

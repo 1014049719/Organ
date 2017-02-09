@@ -1,0 +1,284 @@
+package com.talenton.organ.ui;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.IntentUtil;
+import com.talenton.base.util.XLTToast;
+import com.talenton.organ.widget.HackyViewPager;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import uk.co.senab.photoview.PhotoView;
+
+public class ImageDetailViewerActivity extends BaseCompatActivity
+        implements OnClickListener, OnPageChangeListener, OnLongClickListener {
+    private static final String ISLOCKED_ARG = "isLocked";
+    public static final String EXTRA_IMAGE_LIST = "imagelist";
+    public static final String EXTRA_CURRENT_IMAGE = "currentimage";
+    public static final String EXTRA_IS_HIDE_TOOL_BAR = "is_hide_tool_bar";
+    private ViewPager mPager;
+    private ImageAdapter mAdapter;
+    private TextView mPagerInfo;
+    private ProgressBar pb;
+
+
+    public static void startViewImage(Context context, ArrayList<String> images, int position) {
+        Intent intent = new Intent(context, ImageDetailViewerActivity.class);
+        intent.putStringArrayListExtra(EXTRA_IMAGE_LIST, images);
+        intent.putExtra(EXTRA_CURRENT_IMAGE, position);
+        context.startActivity(intent);
+    }
+
+    public static void startViewImage(Context context, ArrayList<String> images, int position, boolean isHideToolBar) {
+        Intent intent = new Intent(context, ImageDetailViewerActivity.class);
+        intent.putStringArrayListExtra(EXTRA_IMAGE_LIST, images);
+        intent.putExtra(EXTRA_CURRENT_IMAGE, position);
+        intent.putExtra(EXTRA_IS_HIDE_TOOL_BAR, isHideToolBar);
+        context.startActivity(intent);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_image_detail_viewer);
+        pb = (ProgressBar) findViewById(R.id.pb);
+        List<String> dataList = (List<String>) getIntent().getSerializableExtra(EXTRA_IMAGE_LIST);
+        int pos = getIntent().getIntExtra(EXTRA_CURRENT_IMAGE, 0);
+        boolean isHideToolBar = getIntent().getBooleanExtra(EXTRA_IS_HIDE_TOOL_BAR, false);
+        if (isHideToolBar) {
+            findViewById(R.id.download).setVisibility(View.INVISIBLE);
+            findViewById(R.id.tv_picture_preview_title).setVisibility(View.INVISIBLE);
+        }
+
+        mPagerInfo = (TextView) findViewById(R.id.tv_picture_preview_title);
+        findViewById(R.id.iv_picture_preview_back).setOnClickListener(this);
+        findViewById(R.id.download).setOnClickListener(this);
+        mPager = (HackyViewPager) findViewById(R.id.pager);
+        mPager.setOnPageChangeListener(this);
+        DisplayMetrics dm = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        ArrayList<ImageView> views = new ArrayList<>(dataList.size());
+        int index = 0;
+        for (String url : dataList) {
+            PhotoView image = new PhotoView(this);
+            image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            image.setMaxWidth(dm.widthPixels);
+            image.setMaxHeight(dm.heightPixels);
+            image.setId(++index * -1);
+            image.setOnClickListener(this);
+            image.setOnLongClickListener(this);
+            image.setTag(url);
+            views.add(image);
+        }
+        mAdapter = new ImageAdapter(views);
+        mPager.setAdapter(mAdapter);
+        mPager.setCurrentItem(pos);
+        mPagerInfo.setText(String.format("%d/%d", pos + 1, mAdapter.getCount()));
+        if (savedInstanceState != null) {
+            boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG, false);
+            ((HackyViewPager) mPager).setLocked(isLocked);
+        }
+
+    }
+
+    private boolean isViewPagerActive() {
+        return (mPager != null && mPager instanceof HackyViewPager);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        if (isViewPagerActive()) {
+            outState.putBoolean(ISLOCKED_ARG, ((HackyViewPager) mPager).isLocked());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    public class ImageAdapter extends PagerAdapter {
+        private ArrayList<ImageView> Views;// 存放View的ArrayList
+
+        /*
+         * ViewAdapter构造函数
+         *
+         * @author：Robin
+         */
+        public ImageAdapter(ArrayList<ImageView> Views) {
+            this.Views = Views;
+        }
+
+        /*
+         * 返回View的个数
+         */
+        @Override
+        public int getCount() {
+            if (Views != null) {
+                return Views.size();
+            }
+            return 0;
+        }
+
+        /*
+         * 销毁View
+         */
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ImageView v = Views.get(position);
+            v.setImageDrawable(null);
+            ImageLoader.getInstance().cancelDisplayTask(v);
+            ((ViewPager) container).removeView(Views.get(position));
+        }
+
+        /*
+         * 初始化
+         */
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            ImageView v = Views.get(position);
+            ((ViewPager) container).addView(v, 0);
+            String url = (String) v.getTag();
+            ImageLoader.getInstance().displayImage(url, v, ImageLoaderManager.BIG_IMAGE_DISPLAYER, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    pb.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    pb.setVisibility(View.GONE);
+                    showShortToast("图片加载失败");
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    pb.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    pb.setVisibility(View.GONE);
+                }
+            });
+            return v;
+
+        }
+
+        /*
+         * 判断View是否来自Object
+         */
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return (view == object);
+        }
+
+        public String getUrl(int position) {
+            if (position >= 0 && Views != null && Views.size() > position) {
+                return (String) Views.get(position).getTag();
+            }
+            return "";
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_picture_preview_back || v.getId() < 0) {
+            finish();
+        } else if (v.getId() == R.id.download) {
+            String url = mAdapter.getUrl(mPager.getCurrentItem());
+            File src = ImageLoaderManager.getInstance().getCache(url);
+            if (src != null && src.exists()) {
+                File dst = IntentUtil.getOutputImageFile();
+                if (FileUtil.copyFile(src, dst)) {
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(dst)));
+                    XLTToast.makeText(ImageDetailViewerActivity.this,
+                            getString(R.string.images_download_success, dst.getAbsolutePath()), Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onPageSelected(int arg0) {
+        mPagerInfo.setText(String.format("%d/%d", arg0 + 1, mAdapter.getCount()));
+
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        final String url = (String) v.getTag();
+        if (v.getId() < 0 && !TextUtils.isEmpty(url)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("操作");
+            builder.setItems(new String[]{"保存图片", "取消"}, new DialogInterface.OnClickListener() {
+                @Override
+
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case 0:
+                            File src = ImageLoaderManager.getInstance().getCache(url);
+                            if (src != null && src.exists()) {
+                                File dst = IntentUtil.getOutputImageFile();
+                                if (FileUtil.copyFile(src, dst)) {
+                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(dst)));
+                                    XLTToast.makeText(ImageDetailViewerActivity.this,
+                                            getString(R.string.images_download_success, dst.getAbsolutePath()),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            break;
+                        case 1:
+                            break;
+                    }
+                }
+
+            });
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.show();
+
+        }
+        return false;
+    }
+}

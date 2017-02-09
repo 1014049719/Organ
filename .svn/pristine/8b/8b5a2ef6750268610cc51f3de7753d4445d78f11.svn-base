@@ -1,0 +1,11 @@
+package com.talenton.organ.server.bean.user;
+import com.talenton.base.server.bean.AppData;
+
+import java.util.List;
+/**
+ * @author zjh
+ * @date 2016/7/14
+ */
+public class RspMyFollowAppListData {
+    public List<AppData> applist;
+}

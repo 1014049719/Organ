@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_300"
+        android:background="@mipmap/about_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/about_logo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_check_version"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:layout_marginTop="@dimen/space_1_0"
+        android:background="@drawable/btn_white_bg_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_weight="1"
+            android:text="检查版本更新"
+            android:textSize="@dimen/text_28" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_10"
+            android:textSize="@dimen/text_28" />
+
+        <ImageView
+            android:layout_width="@dimen/space_20_0"
+            android:layout_height="@dimen/space_20_0"
+            android:layout_marginRight="@dimen/space_10"
+            android:src="@mipmap/xy_icon" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_10"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_20_0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="免责说明与版权说明"
+            android:textSize="@dimen/text_28" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Copyright @ 2015 gzxlt.com.cn all rights reserved"
+            android:textSize="@dimen/text_28" />
+    </LinearLayout>
+</LinearLayout>

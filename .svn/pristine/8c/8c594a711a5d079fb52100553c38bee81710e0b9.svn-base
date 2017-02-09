@@ -1,0 +1,274 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/15
+ */
+public class CatalogData implements Parcelable {
+    public final static int CTYPE_CATALOG = 0;
+    public final static int CTYPE_IMGS = 1;
+    public final static int CTYPE_VIDEO = 2;
+    public final static int CTYPE_DOC = 3;
+
+    private long catalogid; //目录ID
+    private long aid; //文章ID
+    private String name; //目录名称
+    private long pid; //上级目录ID
+    private int playcount; //播放次数
+    private List<SourcePathData> sourcepath; //源文件地址
+//    private String adpath; //广告地址
+    private int downloadcount; //下载次数
+    private int collectioncount; //收藏次数
+    private int sharecount; //分享
+    private int changeflag; //是否有变化
+    private int ctype; //目录类型 0-目录、1-图片集、2-视频、3-文档
+    private int size; //课件大小
+    private int longtime; //课件时长（秒）
+    private int creuid; //创建人
+    private long dateline; //创建时间
+    private int trailers; //是否可以试看
+
+    public static class SourcePathData implements Parcelable {
+        public String filepath;
+        public String imgname;
+        public String ctype2;
+        public long size;
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.filepath);
+            dest.writeString(this.imgname);
+            dest.writeString(this.ctype2);
+            dest.writeLong(this.size);
+        }
+
+        public SourcePathData() {
+        }
+
+        protected SourcePathData(Parcel in) {
+            this.filepath = in.readString();
+            this.imgname = in.readString();
+            this.ctype2 = in.readString();
+            this.size = in.readLong();
+        }
+
+        public static final Creator<SourcePathData> CREATOR = new Creator<SourcePathData>() {
+            @Override
+            public SourcePathData createFromParcel(Parcel source) {
+                return new SourcePathData(source);
+            }
+
+            @Override
+            public SourcePathData[] newArray(int size) {
+                return new SourcePathData[size];
+            }
+        };
+    }
+
+    public long getCatalogid() {
+        return catalogid;
+    }
+
+    public void setCatalogid(long catalogid) {
+        this.catalogid = catalogid;
+    }
+
+    public long getAid() {
+        return aid;
+    }
+
+    public void setAid(long aid) {
+        this.aid = aid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
+
+    public int getPlaycount() {
+        return playcount;
+    }
+
+    public void setPlaycount(int playcount) {
+        this.playcount = playcount;
+    }
+
+    public List<SourcePathData> getSourcepath() {
+        return sourcepath;
+    }
+
+    public void setSourcepath(List<SourcePathData> sourcepath) {
+        this.sourcepath = sourcepath;
+    }
+
+//    public String getAdpath() {
+//        return adpath;
+//    }
+//
+//    public void setAdpath(String adpath) {
+//        this.adpath = adpath;
+//    }
+
+    public int getDownloadcount() {
+        return downloadcount;
+    }
+
+    public void setDownloadcount(int downloadcount) {
+        this.downloadcount = downloadcount;
+    }
+
+    public int getCollectioncount() {
+        return collectioncount;
+    }
+
+    public void setCollectioncount(int collectioncount) {
+        this.collectioncount = collectioncount;
+    }
+
+    public int getSharecount() {
+        return sharecount;
+    }
+
+    public void setSharecount(int sharecount) {
+        this.sharecount = sharecount;
+    }
+
+    public int getChangeflag() {
+        return changeflag;
+    }
+
+    public void setChangeflag(int changeflag) {
+        this.changeflag = changeflag;
+    }
+
+    public int getCtype() {
+        return ctype;
+    }
+
+    public void setCtype(int ctype) {
+        this.ctype = ctype;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getLongtime() {
+        return longtime;
+    }
+
+    public void setLongtime(int longtime) {
+        this.longtime = longtime;
+    }
+
+    public int getCreuid() {
+        return creuid;
+    }
+
+    public void setCreuid(int creuid) {
+        this.creuid = creuid;
+    }
+
+    public long getDateline() {
+        return dateline;
+    }
+
+    public void setDateline(long dateline) {
+        this.dateline = dateline;
+    }
+
+    public int getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(int trailers) {
+        this.trailers = trailers;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.catalogid);
+        dest.writeLong(this.aid);
+        dest.writeString(this.name);
+        dest.writeLong(this.pid);
+        dest.writeInt(this.playcount);
+        dest.writeTypedList(sourcepath);
+        dest.writeInt(this.downloadcount);
+        dest.writeInt(this.collectioncount);
+        dest.writeInt(this.sharecount);
+        dest.writeInt(this.changeflag);
+        dest.writeInt(this.ctype);
+        dest.writeInt(this.size);
+        dest.writeInt(this.longtime);
+        dest.writeInt(this.creuid);
+        dest.writeLong(this.dateline);
+        dest.writeInt(this.trailers);
+    }
+
+    public CatalogData() {
+    }
+
+    protected CatalogData(Parcel in) {
+        this.catalogid = in.readLong();
+        this.aid = in.readLong();
+        this.name = in.readString();
+        this.pid = in.readLong();
+        this.playcount = in.readInt();
+        this.sourcepath = in.createTypedArrayList(SourcePathData.CREATOR);
+        this.downloadcount = in.readInt();
+        this.collectioncount = in.readInt();
+        this.sharecount = in.readInt();
+        this.changeflag = in.readInt();
+        this.ctype = in.readInt();
+        this.size = in.readInt();
+        this.longtime = in.readInt();
+        this.creuid = in.readInt();
+        this.dateline = in.readLong();
+        this.trailers = in.readInt();
+    }
+
+    public static final Creator<CatalogData> CREATOR = new Creator<CatalogData>() {
+        @Override
+        public CatalogData createFromParcel(Parcel source) {
+            return new CatalogData(source);
+        }
+
+        @Override
+        public CatalogData[] newArray(int size) {
+            return new CatalogData[size];
+        }
+    };
+}

@@ -1,0 +1,186 @@
+package com.talenton.base.server;
+
+import java.util.List;
+
+import com.talenton.base.dao.DaoMaster;
+import com.talenton.base.dao.DaoMaster.OpenHelper;
+import com.talenton.base.dao.DaoSession;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.SparseArray;
+import de.greenrobot.dao.AbstractDao;
+import de.greenrobot.dao.async.AsyncOperation;
+import de.greenrobot.dao.async.AsyncOperationListener;
+import de.greenrobot.dao.async.AsyncSession;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
+
+public class DBHelper implements AsyncOperationListener {
+	public final static int DAO_FEEDS = 1;
+	public final static int DAO_TASK = 2;
+	public final static int DAO_NOTICE = 3;
+	public final static int DAO_PHOTO = 4;
+	public final static int DAO_PLAZA = 5;
+	public final static int DAO_HTTP_CACHE = 6;
+	public final static int DAO_SEARCH_CACHE = 7;
+
+	private volatile static DBHelper instance;
+	private long uuid;
+	private DaoMaster daoMaster;
+	private DaoSession daoSession;
+	private AsyncSession asyncSession;
+//	private FeedsBeanDao feedsDao;
+//	private TaskBeanDao taskDao;
+//	private NoticeBeanDao noticeDao;
+//	private PhotoPathBeanDao photoPathDao;
+	private SparseArray<AbstractDao> daoMap;
+
+	protected DBHelper(Context context, long uuid) {
+		if (context == null) {
+			this.uuid = uuid;
+			return;
+		}
+		this.uuid = uuid;
+		OpenHelper helper = new DaoMaster.DevOpenHelper(context, String.format("xltbb%d", uuid), null);
+		daoMaster = new DaoMaster(helper.getWritableDatabase());
+		daoSession = daoMaster.newSession();
+		asyncSession = daoSession.startAsyncSession();
+		asyncSession.setListener(this);
+
+//		feedsDao = daoSession.getFeedsBeanDao();
+//		taskDao = daoSession.getTaskBeanDao();
+//		noticeDao = daoSession.getNoticeBeanDao();
+//		photoPathDao = daoSession.getPhotoPathBeanDao();
+		daoMap = new SparseArray<AbstractDao>();
+		daoMap.put(DAO_FEEDS, daoSession.getFeedsBeanDao());
+		daoMap.put(DAO_TASK, daoSession.getTaskBeanDao());
+		daoMap.put(DAO_NOTICE, daoSession.getNoticeBeanDao());
+		daoMap.put(DAO_PHOTO, daoSession.getPhotoPathBeanDao());
+		daoMap.put(DAO_PLAZA, daoSession.getPlazaFeedsBeanDao());
+		daoMap.put(DAO_HTTP_CACHE,daoSession.getHttpCacheDao());
+		daoMap.put(DAO_SEARCH_CACHE,daoSession.getSearchCacheDao());
+	}
+
+	/** 注意，如果当前用户id为0，会返回Null */
+	public static DBHelper getInstance() {
+		if (instance == null) {
+			instance = new DBHelperNull();
+		}
+		return instance;
+	}
+
+	public static void init(Context context, long uid) {
+	if (uid < 0) {
+			clear();
+			return;
+		}
+		synchronized (DBHelper.class) {
+			if (uid >= 0 && (instance == null || instance.uuid != uid)) {
+				instance = new DBHelper(context, uid);
+			}
+		}
+	}
+
+	static void clear() {
+		synchronized (DBHelper.class) {
+			if (instance != null) {
+				instance.daoSession.clear();
+				instance = null;
+			}
+		}
+	}
+
+	public List list(String queryStr, int daoType) {
+		AbstractDao dao = daoMap.get(daoType);
+		List res = null;
+		if (dao != null) {
+			if (TextUtils.isEmpty(queryStr)) {
+				res = dao.loadAll();
+			} else {
+				Query q = dao.queryRawCreate(queryStr);
+				res = q.list();
+			}
+		}
+		return res;
+	}
+
+	public void insertOrReplace(int daoType, Object o, boolean isAsync) {
+		if (isAsync) {
+			asyncSession.insertOrReplace(o);
+		} else {
+			AbstractDao dao = daoMap.get(daoType);
+			if (dao != null) {
+				dao.insertOrReplace(o);
+			}
+		}
+	}
+
+	public void delete(int daoType, Object o, boolean isAsync) {
+		if (isAsync) {
+			asyncSession.delete(o);
+		} else {
+			AbstractDao dao = daoMap.get(daoType);
+			if (dao != null) {
+				dao.delete(o);
+			}
+		}
+	}
+	
+	public Object load(int daoType, Object key) {
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null) {
+			return dao.load(key);
+		}
+		return null;
+	}
+
+	public QueryBuilder getQueryBuilder(int daoType) {
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null) {
+			return dao.queryBuilder();
+		}
+		return null;
+	}
+
+	public QueryBuilder getQueryBuilder(String queryStr,int daoType) {
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null) {
+			if (queryStr == null || TextUtils.isEmpty(queryStr)){
+				return dao.queryBuilder();
+			}else {
+				dao.queryRaw(queryStr);
+				return dao.queryBuilder();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void onAsyncOperationCompleted(AsyncOperation operation) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void execSql(int daoType, String sql){
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null){
+			dao.getDatabase().execSQL(sql);
+		}
+	}
+
+	public void deleteAll(int daoType){
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null){
+			dao.deleteAll();
+		}
+	}
+
+	public String getTableName(int daoType){
+		AbstractDao dao = daoMap.get(daoType);
+		if (dao != null){
+			return dao.getTablename();
+		}
+		return "";
+	}
+}

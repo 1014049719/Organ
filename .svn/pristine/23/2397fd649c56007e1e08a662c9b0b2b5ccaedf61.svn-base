@@ -1,0 +1,85 @@
+package com.talenton.organ.ui.feed.image;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.talenton.organ.server.bean.feed.MediaBean;
+
+import java.util.ArrayList;
+
+public class AlbumBean implements Parcelable {
+	private String mFirstImagePath;
+	private String mAlbumName;
+
+	private long mModified;
+
+	private ArrayList<MediaBean> mImageBeans = new ArrayList<MediaBean>();
+
+	public String getFirstImagePath() {
+		return mFirstImagePath;
+	}
+
+	public void setFirstImagePath(String mFirstImagePath) {
+		this.mFirstImagePath = mFirstImagePath;
+	}
+
+	public String getAlbumName() {
+		return mAlbumName;
+	}
+
+	public void setAlbumName(String mAlbumName) {
+		this.mAlbumName = mAlbumName;
+	}
+
+	public ArrayList<MediaBean> getImageBeans() {
+		return mImageBeans;
+	}
+
+	public void setImageBeans(ArrayList<MediaBean> mImageBeans) {
+		this.mImageBeans = mImageBeans;
+	}
+
+	public long getModified() {
+		return mModified;
+	}
+
+	public void setModified(long mModified) {
+		this.mModified = mModified;
+	}
+
+	public AlbumBean(Parcel parcel) {
+		mFirstImagePath = parcel.readString();
+		mAlbumName = parcel.readString();
+		mModified = parcel.readLong();
+		mImageBeans = parcel.readArrayList(AlbumBean.class.getClassLoader());
+	}
+
+	public AlbumBean() {
+	}
+
+	public static final Creator<AlbumBean> CREATOR = new Parcelable.Creator<AlbumBean>() {
+
+		@Override
+		public AlbumBean createFromParcel(Parcel parcel) {
+			return new AlbumBean(parcel);
+		}
+
+		@Override
+		public AlbumBean[] newArray(int i) {
+			return new AlbumBean[i];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int i) {
+		parcel.writeString(mFirstImagePath);
+		parcel.writeString(mAlbumName);
+		parcel.writeLong(mModified);
+		parcel.writeList(mImageBeans);
+	}
+}

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/activity_bg"
+    android:gravity="center" >
+
+    <LinearLayout
+        android:id="@+id/content_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/empty_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/main_empty" />
+
+        <TextView
+            android:id="@+id/empty_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_sub"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content_empty_view_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty_action_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_shop_cart_empty" />
+
+        <TextView
+            android:id="@+id/empty_hint_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_sub"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="购物车空空的"/>
+        <TextView
+            android:id="@+id/empty_hint_no_data1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_sub"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="去挑几件中意的商品吧"/>
+        <Button
+            android:id="@+id/btn_reload_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:background="@color/background_tab_pressed"
+            android:padding="8dp"
+            android:text="去逛逛"
+            android:textColor="@color/text_main"
+            android:textSize="12sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/load_fail_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/main_error" />
+
+        <Button
+            android:id="@+id/btn_reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:background="@mipmap/btn_gray"
+            android:padding="8dp"
+            android:text="@string/global_empty_reload"
+            android:textColor="@color/text_main"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="false" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dip"
+            android:text="@string/global_list_loading"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</FrameLayout>

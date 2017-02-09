@@ -1,0 +1,206 @@
+package com.talenton.organ.ui.school;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Canvas;
+import android.os.Bundle;
+import android.view.View;
+
+import com.joanzapata.pdfview.PDFView;
+import com.joanzapata.pdfview.listener.OnDrawListener;
+import com.joanzapata.pdfview.listener.OnErrorListener;
+import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
+import com.joanzapata.pdfview.listener.OnPageChangeListener;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.AppConfig;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.okhttp.callback.FileCallBack;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.util.FileUtil;
+import com.talenton.organ.widget.dialog.PDFJumpDialog;
+
+import org.vudroid.core.utils.MD5StringUtil;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
+import okhttp3.Call;
+
+public class PDFActivity extends BaseCompatActivity implements OnPageChangeListener, OnLoadCompleteListener, OnDrawListener, OnErrorListener {
+    private PDFView pdf_view;
+    private File file;
+    private String pdfName;
+    private final static String PATH = "path";
+    private final static String NAME = "name";
+    private ProgressDialog progressDialog;
+    private PDFJumpDialog pdfJumpDialog;
+
+    /**
+     * @param context
+     * @param path    pdf路径
+     * @param pdfName pdf文件名
+     */
+    public static void startPDFActivity(Context context, String path, String pdfName) {
+        Intent intent = new Intent(context, PDFActivity.class);
+        intent.putExtra(PATH, path);
+        intent.putExtra(NAME, pdfName);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pdf);
+
+
+        progressDialog = new ProgressDialog(this);
+        pdf_view = (PDFView) findViewById(R.id.pdf_view);
+        String path = getIntent().getStringExtra(PATH);
+        pdfName = getIntent().getStringExtra(NAME);
+        if (path.startsWith("http")) {
+            openNetWorkFile(path);
+        } else {
+            openLocationFile(path);
+        }
+
+    }
+
+    /**
+     * 本地没有需网络下载文件
+     *
+     * @param path
+     */
+    private void openNetWorkFile(final String path) {
+        final File cacheDir = FileUtil.getExternalPath(this, FileUtil.PICTURE_DOC);
+        File cacheFile = new File(cacheDir, MD5StringUtil.md5StringFor(path));
+        if (cacheFile.exists()) { //缓存中已存在
+            openLocationFile(cacheFile.getAbsolutePath());
+        } else {
+            progressDialog.setMessage("下载中");
+            progressDialog.show();
+            OkHttpClientManager.getInstance().addFileReqeust(path, new FileCallBack(cacheDir.getAbsolutePath(), MD5StringUtil.md5StringFor(path)) {
+
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onResponse(File response, int id) {
+                    progressDialog.dismiss();
+                    openLocationFile(response.getAbsolutePath());
+                }
+
+                @Override
+                public void inProgress(float progress, long total, int id) {
+                    progressDialog.setMessage("已下载" + (int) (progress * 100) + "%");
+                }
+            }, null);
+        }
+
+
+    }
+
+    /**
+     * 打开本地PDF
+     *
+     * @param path
+     */
+    private void openLocationFile(String path) {
+        if (path != null && !path.isEmpty()) {
+            file = new File(path);
+            if (!file.exists()) {
+                openFail();
+                return;
+            } else {
+                openPDF(file);
+            }
+        } else {
+            openFail();
+        }
+    }
+
+    private void openPDF(File file) {
+        pdf_view.fromFile(file)
+                .defaultPage(1)
+                .onPageChange(this)
+                .swipeVertical(false)
+                .enableDoubletap(true)
+                .onDraw(this)
+                .onLoad(this)
+                .onError(this)
+                .load();
+
+    }
+
+    private void openFail() {
+        showShortToast("PDF打开失败");
+        finish();
+    }
+
+    @Override
+    public void onPageChanged(int page, int pageCount) {
+        if (pdfName != null) {
+            setTitle(String.format("%s %s / %s", pdfName, page, pageCount));
+        }
+    }
+
+    @Override
+    public void loadComplete(int nbPages) {
+        mActionBarTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pdfJumpDialog == null) {
+                    pdfJumpDialog = new PDFJumpDialog();
+                    pdfJumpDialog.setOnClickConfirmListener(new PDFJumpDialog.OnClickConfirmListener() {
+                        @Override
+                        public void onClick(View v, String text) {
+                            try {
+                                int page = Integer.valueOf(text);
+                                if (page >= pdf_view.getPageCount()) {
+                                    page = pdf_view.getCurrentPage();
+                                }
+                                if (page <= 0) {
+                                    page = 1;
+                                }
+                                pdf_view.jumpTo(page);
+                            } catch (Exception e) {
+                                showShortToast("无法解析页数");
+                            }
+                        }
+                    });
+                }
+
+                int currentPage;
+                if (pdf_view.getCurrentPage() == 0) {
+                    currentPage = 1;
+                } else {
+                    currentPage = pdf_view.getCurrentPage();
+                }
+                pdfJumpDialog.setTipsPage(String.format("(%s-%s)", currentPage, pdf_view.getPageCount()));
+                pdfJumpDialog.show(getFragmentManager(), "pdf");
+            }
+        });
+    }
+
+    @Override
+    public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
+
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onError() {
+        openFail();
+    }
+}

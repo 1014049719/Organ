@@ -1,0 +1,820 @@
+package com.talenton.organ.ui.school;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseEmptyActivity;
+import com.talenton.organ.R;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.organ.ui.user.JumpType;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.FileUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.util.Preference;
+import com.talenton.base.widget.IndicationViewPager;
+import com.talenton.organ.event.PayCommentEvent;
+import com.talenton.organ.server.SchoolServer;
+import com.talenton.organ.server.bean.school.CatalogData;
+import com.talenton.organ.server.bean.school.ClassBriefData;
+import com.talenton.organ.server.bean.school.ReqClassDetail;
+import com.talenton.organ.server.bean.school.ReqClassJoin;
+import com.talenton.organ.server.bean.school.ReqFavorite;
+import com.talenton.organ.server.bean.school.RspClassDetail;
+import com.talenton.organ.server.bean.school.RspClassJoin;
+import com.talenton.organ.server.bean.school.event.JoinClassEvent;
+import com.talenton.organ.server.bean.school.event.OpenFileEvent;
+import com.talenton.organ.server.bean.shop.ClassOrderInfo;
+import com.talenton.organ.ui.ImageDetailViewerActivity;
+import com.talenton.organ.ui.feed.SocialActivity;
+import com.talenton.organ.ui.school.adapter.FullScreenCatalogAdapter;
+import com.talenton.organ.ui.shop.ConfirmNoDetailOrderActivity;
+import com.talenton.organ.util.QiNiuUtil;
+import com.xlt.library.GiraffePlayer;
+import com.xlt.library.LibHelp;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class ClassDetailActivity extends BaseEmptyActivity implements CatalogFragment.OpenFileCallback, View.OnClickListener {
+    public static final String AID = "aid";
+    public static final String IS_MY_CLASS = "is_my_class";
+    public static final String LIST_CLICK_POSITION = "list_click_position";
+    private IndicationViewPager indication_view_pager;
+    private GiraffePlayer player;
+    private ImageView iv_class; //课程图片
+    private RelativeLayout rl_default_img;
+    private ImageView iv_pdf; //打开pdf后显示的图片
+    private ImageView iv_imgs; //打开图片集后显示的图片
+    private RelativeLayout app_video_box; //播放view
+    private RelativeLayout rl_last_play_postion; //上次播放位置view
+    private TextView tv_last_class_position;
+    private TextView tv_join_number; //已有多少人参加
+    private long aid;
+    private SchoolServer schoolServer;
+    private LinearLayout ll_container;
+    private FrameLayout fl_player_container;
+    private int playerContainerHeight; //播放容器非全屏时高度
+    private TextView tv_selected; //选课按钮
+    private ListView lv_selected_class;
+    private FullScreenCatalogAdapter fullScreenCatalogAdapter; //全屏播放时选课adapter
+    private List<CatalogData> catalogDatas;
+    private ArrayList<String> imgPaths; //当前选中图片集地址
+    private String pdfPath; //pdf地址
+    private String pdfName; //pdf文件名
+
+    private LinearLayout ll_favorite; //未参加课程收藏按钮
+    private LinearLayout ll_join_class; //参加课程
+    private LinearLayout ll_share; //未参加课程分享按钮
+
+    private LinearLayout ll_my_favorite; //已参加课程收藏按钮
+    private LinearLayout ll_my_share; //已参加课程分享按钮
+    private LinearLayout ll_create_evaluate; //评价
+
+    private boolean isJoin; //是否已参加
+    private boolean isFree; //是否为免费课程
+    private boolean isStopPlay; //是否需要停止播放视频
+
+    private RspClassDetail rspClassDetail;
+    private CatalogData lastCatalogData; //上次观看记录
+    private int listClickPostion;
+
+    public static Intent startClassDetailActivity(Context context, long aid,int listClickPostion) {
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra(AID, aid);
+        intent.putExtra(LIST_CLICK_POSITION, listClickPostion);
+        context.startActivity(intent);
+        return intent;
+    }
+
+    public static void startClassDetailActivity(Context context, long aid, boolean isMyClass) {
+        Intent intent = new Intent(context, ClassDetailActivity.class);
+        intent.putExtra(AID, aid);
+        intent.putExtra(IS_MY_CLASS, isMyClass);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_school_class_detail);
+        super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
+        checkLibs();
+        getIntentData();
+        initView();
+        addEmptyViewToContain(ll_container);
+        initGiraffePlayerView();
+        initPreferenceData();
+        getData();
+    }
+
+    private void getIntentData() {
+        listClickPostion = getIntent().getIntExtra(LIST_CLICK_POSITION,-1);
+        aid = getIntent().getLongExtra(AID, 0);
+        isJoin = getIntent().getBooleanExtra(IS_MY_CLASS, false);
+    }
+
+    private void initPreferenceData() {
+        String lastOpenCatalogData = Preference.getInstance().getLastOpenCatalogData(aid);
+        if (lastOpenCatalogData != null && !TextUtils.isEmpty(lastOpenCatalogData)) {
+            lastCatalogData = OkHttpClientManager.getInstance().getmGson().fromJson(lastOpenCatalogData, CatalogData.class);
+        }
+    }
+
+    /**
+     * 从server中获取数据
+     */
+    private void getData() {
+        if (schoolServer == null) {
+            schoolServer = new SchoolServer();
+        }
+        showLoadingView();
+        schoolServer.getClassDetail(new ReqClassDetail(aid), new XLTResponseListener<RspClassDetail>() {
+            @Override
+            public void onResponse(RspClassDetail responseData, XLTError errorData) {
+                if (errorData == null && responseData != null) {
+                    showData();
+                    fillIndicationViewPagerData(responseData);
+                    rspClassDetail = responseData;
+                    setPlayTitle();
+                    ImageLoaderManager.getInstance().displayImage(rspClassDetail.getPic(), iv_class, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_500, null, null);
+                    showLastPlayView();
+                    fullScreenCatalogAdapter.addAll(responseData.getCataloglist());
+                    fullScreenCatalogAdapter.notifyDataSetChanged();
+                    tv_join_number.setText(String.format(getString(R.string.school_class_join_member), responseData.getJoincount()));
+                    if (!isJoin) {
+                        setClassStatus(responseData.getIsjoin());
+                    }
+                    if (responseData.getIspay() == 0) {
+                        isFree = true;
+                    } else {
+                        isFree = false;
+                    }
+                    setCollectionStatus(responseData.getIscollection());
+                } else {
+                    showLoadErrorView();
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置播放标题
+     */
+    private void setPlayTitle() {
+        String adTitle = null;
+        if (rspClassDetail.getAdlist() != null && !rspClassDetail.getAdlist().isEmpty()){
+            adTitle = rspClassDetail.getAdlist().get(0).getAdname();
+        }
+        if (adTitle != null){
+            player.setTitle(adTitle,rspClassDetail.getTitle());
+        }else {
+            player.setTitle(rspClassDetail.getTitle());
+        }
+    }
+
+    /**
+     * 设置课程状态
+     *
+     * @param isjoin
+     */
+    private void setClassStatus(int isjoin) {
+        if (isjoin == 1) {
+            isJoin = true;
+        }
+        setBottomView();
+    }
+
+    /**
+     * 设置收藏状态
+     */
+    private void setCollectionStatus(int status) {
+        if (status == 1) {
+            ll_my_favorite.getChildAt(0).setSelected(true);
+            ll_favorite.getChildAt(0).setSelected(true);
+        }else {
+            ll_my_favorite.getChildAt(0).setSelected(false);
+            ll_favorite.getChildAt(0).setSelected(false);
+        }
+    }
+
+    /**
+     * 初始化播放控件
+     */
+    private void initGiraffePlayerView() {
+        player = new GiraffePlayer(this);
+        player.setToggleScreenListen(new GiraffePlayer.ToggleScreenListen() {
+            @Override
+            public void onScreenLandscape() {
+                if (mActionBar != null) {
+                    mActionBar.setVisibility(View.GONE);
+                }
+                player.setShowNavIcon(true);
+                if (playerContainerHeight == 0) {
+                    playerContainerHeight = fl_player_container.getMeasuredHeight();
+                }
+                ViewGroup.LayoutParams layoutParams = fl_player_container.getLayoutParams();
+                layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                fl_player_container.setLayoutParams(layoutParams);
+            }
+
+            @Override
+            public void onScreenPortrait() {
+                if (mActionBar != null) {
+                    mActionBar.setVisibility(View.VISIBLE);
+                }
+                player.setShowNavIcon(false);
+                ViewGroup.LayoutParams layoutParams = fl_player_container.getLayoutParams();
+                layoutParams.height = playerContainerHeight;
+                fl_player_container.setLayoutParams(layoutParams);
+            }
+        });
+        player.setFullScreenOnly(false);
+        player.setScaleType(GiraffePlayer.SCALETYPE_FITPARENT);
+        player.setShowNavIcon(false);
+        player.onComplete(new Runnable() {
+            @Override
+            public void run() {
+                showShortToast(getString(R.string.player_text_complete_tips));
+            }
+        }).onError(new GiraffePlayer.OnErrorListener() {
+            @Override
+            public void onError(int what, int extra) {
+                showShortToast(getString(R.string.player_text_error_tips));
+            }
+        });
+    }
+
+
+    /**
+     * 最近观看
+     */
+    private void showLastPlayView() {
+        if (lastCatalogData != null) {
+            rl_last_play_postion.setVisibility(View.VISIBLE);
+            tv_last_class_position.setText(lastCatalogData.getName());
+        } else {
+            rl_last_play_postion.setVisibility(View.GONE);
+        }
+        if (rl_last_play_postion.getVisibility() == View.VISIBLE){
+            AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f,0.8f);
+            alphaAnimation.setDuration(2000);
+            alphaAnimation.setInterpolator(new DecelerateInterpolator());
+            alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    rl_last_play_postion.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            rl_last_play_postion.setAnimation(alphaAnimation);
+        }
+    }
+
+
+    /**
+     * 检测所需的库是否存在
+     */
+    private void checkLibs() {
+        if (!LibHelp.getInstance().checkHasLibs(this)) {
+            showShortToast("未初始化插件");
+        }
+    }
+
+    private void fillIndicationViewPagerData(RspClassDetail classDetail) {
+        String[] title = new String[]{getString(R.string.school_text_Introduction), getString(R.string.school_text_catalog)
+                , getString(R.string.school_text_evaluate), getString(R.string.school_text_supporting_aids)};
+        Fragment[] fragments = new Fragment[]{BriefFragment.newInstance(new ClassBriefData(aid, classDetail.getTitle(),
+                classDetail.getStarcount(),
+                classDetail.getIspay(), classDetail.getPrice(),
+                classDetail.getLikecount(),
+                classDetail.getContent(),
+                classDetail.getCommentcount(), classDetail.getIslike(), classDetail.getIscollection())),
+                CatalogFragment.newInstance(classDetail.getCataloglist()),
+                ClassEvaluateFragment.newInstance(aid, classDetail.getCommentlist()),
+                SupportToolFragment.newInstance(classDetail.getAidslist())};
+
+        indication_view_pager.setData(getSupportFragmentManager(), title, fragments);
+    }
+
+
+    private void initView() {
+        indication_view_pager = (IndicationViewPager) findViewById(R.id.indication_view_pager);
+        indication_view_pager.setOffscreenPageLimit(4);
+
+        iv_class = (ImageView) findViewById(R.id.iv_class);
+        iv_pdf = (ImageView) findViewById(R.id.iv_pdf);
+        iv_imgs = (ImageView) findViewById(R.id.iv_imgs);
+        iv_pdf.setOnClickListener(this);
+        iv_imgs.setOnClickListener(this);
+
+
+        ll_favorite = (LinearLayout) findViewById(R.id.ll_favorite);
+        ll_join_class = (LinearLayout) findViewById(R.id.ll_join_class);
+        ll_share = (LinearLayout) findViewById(R.id.ll_share);
+        ll_my_favorite = (LinearLayout) findViewById(R.id.ll_my_favorite);
+        ll_my_share = (LinearLayout) findViewById(R.id.ll_my_share);
+        ll_create_evaluate = (LinearLayout) findViewById(R.id.ll_create_evaluate);
+        tv_join_number = (TextView) findViewById(R.id.tv_join_number);
+        rl_default_img = (RelativeLayout) findViewById(R.id.rl_default_img);
+
+        ll_favorite.setOnClickListener(this);
+        ll_join_class.setOnClickListener(this);
+        ll_share.setOnClickListener(this);
+        ll_my_favorite.setOnClickListener(this);
+        ll_my_share.setOnClickListener(this);
+        ll_create_evaluate.setOnClickListener(this);
+
+        app_video_box = (RelativeLayout) findViewById(R.id.app_video_box);
+        rl_last_play_postion = (RelativeLayout) findViewById(R.id.rl_last_play_postion);
+        rl_last_play_postion.setOnClickListener(this);
+        tv_last_class_position = (TextView) findViewById(R.id.tv_last_class_position);
+        ll_container = (LinearLayout) findViewById(R.id.ll_container);
+        fl_player_container = (FrameLayout) findViewById(R.id.fl_player_container);
+        tv_selected = (TextView) findViewById(R.id.tv_selected);
+        lv_selected_class = (ListView) findViewById(R.id.lv_selected_class);
+        tv_selected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lv_selected_class.getVisibility() != View.GONE) {
+                    lv_selected_class.setVisibility(View.GONE);
+                }
+            }
+        });
+        catalogDatas = new ArrayList<>();
+        fullScreenCatalogAdapter = new FullScreenCatalogAdapter(this, catalogDatas);
+        lv_selected_class.setAdapter(fullScreenCatalogAdapter);
+        lv_selected_class.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lv_selected_class.setVisibility(View.GONE);
+                player.hideAll();
+                CatalogData catalogData = fullScreenCatalogAdapter.getItem(position);
+                if (catalogData.getCtype() != CatalogData.CTYPE_CATALOG) {
+                    fullScreenCatalogAdapter.setLastSelectedPosition(position);
+                    if (catalogData.getCtype() == CatalogData.CTYPE_DOC) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        if (player.isPlaying()) {
+                            player.pause();
+                        }
+                        openPDF(catalogData.getSourcepath().get(0).filepath, catalogData.getName());
+                    } else if (catalogData.getCtype() == CatalogData.CTYPE_IMGS) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        if (player.isPlaying()) {
+                            player.pause();
+                        }
+                        openImgs(catalogData.getSourcepath());
+                    } else if (catalogData.getCtype() == CatalogData.CTYPE_VIDEO) {
+                        if (catalogData.getSourcepath() != null && !catalogData.getSourcepath().isEmpty()) {
+                            openVideo(catalogData.getSourcepath().get(0).filepath,catalogData.getName(),false);
+                        }
+                    }
+                    EventBus.getDefault().post(new OpenFileEvent(catalogData.getCtype(), position));
+                }
+            }
+        });
+        setBottomView();
+    }
+
+    private void setBottomView() {
+        if (isJoin) {
+            findViewById(R.id.ll_my_bottom_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.ll_bottom_container).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.ll_my_bottom_container).setVisibility(View.GONE);
+            findViewById(R.id.ll_bottom_container).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.school_class_detail_title;
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (player != null) {
+            player.onPause();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideProgress();
+        if (player != null && !isStopPlay) {
+            player.onResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (player != null){
+            player.onStop();
+        }
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (player != null) {
+            player.onConfigurationChanged(newConfig);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (player != null && player.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onLeftClick() {
+        if (player != null && player.onBackPressed()) {
+            return;
+        }
+        super.onLeftClick();
+    }
+
+    @Override
+    public void onReload(View v) {
+        getData();
+    }
+
+    /**
+     * 是否可播放 true = 已参加,免费,fale = 收费
+     */
+    public boolean canPlay() {
+        if (isJoin || isFree) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 打开视频
+     *
+     * @param
+     * @param path
+     * @param isSkipAd 是否跳过广告
+     */
+    public void openVideo(String path,String title,boolean isSkipAd) {
+        AppLogger.d("video_path ==>" + path);
+        isStopPlay = false;
+        player.setTitle(title);
+        String adPath = null;
+        if (rspClassDetail.getAdlist() != null){
+            if (!rspClassDetail.getAdlist().isEmpty()){
+                adPath = rspClassDetail.getAdlist().get(0).getAdpath();
+            }
+        }
+        showTopView(CatalogData.CTYPE_VIDEO, null);
+        if (adPath != null && !TextUtils.isEmpty(adPath)) {
+            if (!isSkipAd) {
+                playVideoHasAd(adPath, path);
+            } else {
+                playVideoNoAd(path);
+            }
+        } else {
+            playVideoNoAd(path);
+        }
+    }
+
+    /**
+     * 播放有广告的视频
+     *
+     * @param adPath
+     * @param path
+     */
+    private void playVideoHasAd(String adPath, String path) {
+        if (path != null && !TextUtils.isEmpty(path)) {
+            player.setIsAdVideo(true);
+            player.play(0, adPath, path);
+        } else {
+            showShortToast("播放地址不存在");
+        }
+    }
+
+    /**
+     * 播放唔广告视频
+     *
+     * @param path
+     */
+    private void playVideoNoAd(String path) {
+        if (path != null && !TextUtils.isEmpty(path)) {
+            player.setIsAdVideo(false);
+            player.play(path);
+        } else {
+            showShortToast("播放地址不存在");
+        }
+    }
+
+    /**
+     * 打开pdf文件
+     *
+     * @param path
+     * @param name
+     */
+    public void openPDF(String path, String name) {
+        isStopPlay = true;
+        player.reset();
+        if (path != null && !path.isEmpty()) {
+            pdfPath = path;
+            pdfName = name;
+            showTopView(CatalogData.CTYPE_DOC, rspClassDetail.getPic());
+            PDFActivity.startPDFActivity(this, path, name);
+        }
+    }
+
+    /**
+     * 打开图片集
+     *
+     * @param sourcePathDatas
+     */
+    public void openImgs(List<CatalogData.SourcePathData> sourcePathDatas) {
+        isStopPlay = true;
+        player.reset();
+        if (sourcePathDatas != null && !sourcePathDatas.isEmpty()) {
+            imgPaths = parseImgSourceData(sourcePathDatas);
+            showTopView(CatalogData.CTYPE_IMGS, imgPaths.get(0));
+            ImageDetailViewerActivity.startViewImage(this, imgPaths, 0);
+        }
+    }
+
+    /**
+     * 解析图片地址
+     *
+     * @param sourcePathDatas
+     * @return
+     */
+    private ArrayList<String> parseImgSourceData(List<CatalogData.SourcePathData> sourcePathDatas) {
+        ArrayList<String> imgPaths = null;
+        if (sourcePathDatas != null) {
+            imgPaths = new ArrayList<>();
+            for (CatalogData.SourcePathData sourcePathData : sourcePathDatas) {
+                String imgPath = sourcePathData.filepath;
+                imgPaths.add(imgPath);
+            }
+            return imgPaths;
+        }
+        return imgPaths;
+    }
+
+    /**
+     * 切换顶部图片
+     *
+     * @param type
+     * @param coverPath
+     */
+    public void showTopView(int type, String coverPath) {
+        switch (type) {
+            case CatalogData.CTYPE_VIDEO:
+                iv_imgs.setVisibility(View.GONE);
+                rl_default_img.setVisibility(View.GONE);
+                iv_pdf.setVisibility(View.GONE);
+                app_video_box.setVisibility(View.VISIBLE);
+                break;
+            case CatalogData.CTYPE_IMGS:
+                iv_imgs.setVisibility(View.VISIBLE);
+                rl_default_img.setVisibility(View.GONE);
+                iv_pdf.setVisibility(View.GONE);
+                app_video_box.setVisibility(View.GONE);
+                ImageLoaderManager.getInstance().displayImage(coverPath, iv_imgs, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_500, null, null);
+                break;
+            case CatalogData.CTYPE_DOC:
+                iv_imgs.setVisibility(View.GONE);
+                rl_default_img.setVisibility(View.GONE);
+                iv_pdf.setVisibility(View.VISIBLE);
+                app_video_box.setVisibility(View.GONE);
+                ImageLoaderManager.getInstance().displayImage(coverPath, iv_pdf, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_500, null, null);
+                break;
+            default:
+                iv_imgs.setVisibility(View.GONE);
+                rl_default_img.setVisibility(View.VISIBLE);
+                iv_pdf.setVisibility(View.GONE);
+                app_video_box.setVisibility(View.GONE);
+                ImageLoaderManager.getInstance().displayImage(rspClassDetail.getPic(), iv_class, ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_500, null, null);
+        }
+    }
+
+    @Override
+    public void openVideoCallback(String path,String title,boolean isSkipAd) {
+        openVideo(path,title,isSkipAd);
+    }
+
+    @Override
+    public void openPDFCallback(String path, String pdfName) {
+        openPDF(path, pdfName);
+    }
+
+    @Override
+    public void openImgsCallback(List<CatalogData.SourcePathData> sourcePathDatas) {openImgs(sourcePathDatas);}
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_imgs:
+                if (imgPaths != null && !imgPaths.isEmpty()) {
+                    ImageDetailViewerActivity.startViewImage(this, imgPaths, 0);
+                }
+                break;
+            case R.id.iv_pdf:
+                if (pdfPath != null && !TextUtils.isEmpty(pdfPath)) {
+                    PDFActivity.startPDFActivity(this, pdfPath, pdfName);
+                }
+                break;
+            case R.id.ll_favorite:
+            case R.id.ll_my_favorite:
+                //收藏
+                View imgFavoriteView;
+                if (v.getId() == R.id.ll_favorite) {
+                    imgFavoriteView = ll_favorite.getChildAt(0);
+                } else {
+                    imgFavoriteView = ll_my_favorite.getChildAt(0);
+                }
+                if (imgFavoriteView.isSelected()) {
+                    favoriteClass(imgFavoriteView, aid, false);
+                } else {
+                    favoriteClass(imgFavoriteView, aid, true);
+                }
+                break;
+            case R.id.ll_join_class:
+                //参加课程
+                joinClass();
+                break;
+            case R.id.ll_share:
+            case R.id.ll_my_share:
+                //分享
+                SocialActivity.startSocialActivity(this, rspClassDetail.getTitle(), rspClassDetail.getContent(),
+                        QiNiuUtil.getThumbailUrl(rspClassDetail.getPic(), 250, 250)
+                        , ReqClassDetail.getShareUrl(aid));
+                break;
+            case R.id.ll_create_evaluate:
+                //评价
+                CreateEvaluateActivity.startCreateEvaluateActivity(this, aid);
+                break;
+            case R.id.rl_last_play_postion:
+                //上次播放位置
+                if (lastCatalogData != null) {
+                    openLastFile();
+                }
+                break;
+
+        }
+    }
+
+    /**
+     * 打开上次浏览记录
+     */
+    private void openLastFile() {
+        int ctype = lastCatalogData.getCtype();
+        switch (ctype) {
+            case CatalogData.CTYPE_CATALOG:
+                break;
+            case CatalogData.CTYPE_IMGS: //图片集
+                openImgsCallback(lastCatalogData.getSourcepath());
+                break;
+            case CatalogData.CTYPE_VIDEO: //视频
+                if (lastCatalogData.getSourcepath() != null && !lastCatalogData.getSourcepath().isEmpty()) {
+                    openVideoCallback(lastCatalogData.getSourcepath().get(0).filepath,lastCatalogData.getName(),false);
+                }
+                break;
+            case CatalogData.CTYPE_DOC: //文档
+                if (lastCatalogData.getSourcepath() != null && !lastCatalogData.getSourcepath().isEmpty()) {
+                    openPDFCallback(lastCatalogData.getSourcepath().get(0).filepath, FileUtil.getFileNameWithoutExt(lastCatalogData.getSourcepath().get(0).imgname));
+                }
+                break;
+        }
+        int lastPosition = catalogDatas.indexOf(lastCatalogData);
+        if (lastPosition != -1) {
+            EventBus.getDefault().post(new OpenFileEvent(ctype, lastPosition));
+        }
+    }
+
+    /**
+     * 参加课程
+     */
+    public void joinClass() {
+        showProgress(R.string.main_processing);
+        if (rspClassDetail.getIspay() == RspClassDetail.FREE) {
+            schoolServer.joinClass(new ReqClassJoin(aid, true), new XLTResponseListener<RspClassJoin>() {
+                @Override
+                public void onResponse(RspClassJoin responseData, XLTError errorData) {
+                    hideProgress();
+                    if (errorData == null) {
+                        updateSuccessJoinStatus();
+                    } else {
+                        showShortToast(errorData.getMesssage());
+                    }
+                }
+            });
+        } else {
+            ConfirmNoDetailOrderActivity.startConfirmNoDetailOrderActivity(this, new ClassOrderInfo(aid, rspClassDetail.getPrice(),rspClassDetail.getTitle(),rspClassDetail.getPic()));
+        }
+    }
+
+    /**
+     * 参加课程成功
+     */
+    private void updateSuccessJoinStatus() {
+        tv_join_number.setText(String.format(getString(R.string.school_class_join_member), rspClassDetail.getJoincount()+1));
+        JoinClassEvent joinClassEvent = new JoinClassEvent();
+        joinClassEvent.setPosition(listClickPostion);
+        EventBus.getDefault().post(joinClassEvent);
+        isJoin = true;
+        setBottomView();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PayCommentEvent payCommentEvent) {
+        if (payCommentEvent.getResult()) {
+            //支付成功
+            updateSuccessJoinStatus();
+        }
+        hideProgress();
+    }
+
+    /**
+     * 取消和收藏课程
+     *
+     * @param view
+     * @param aid
+     * @param isFavoriteReq
+     */
+    public void favoriteClass(final View view, long aid, boolean isFavoriteReq) {
+        if (isFavoriteReq) {
+            schoolServer.favoriteClass(new ReqFavorite(aid, true), new XLTResponseListener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject responseData, XLTError errorData) {
+                    if (errorData == null) {
+                        showShortToast("收藏成功");
+                    } else {
+                        view.setSelected(false);
+                        showShortToast(errorData.getMesssage());
+                    }
+                }
+            });
+            updateFavoriteView(view,true);
+        } else {
+            schoolServer.favoriteClass(new ReqFavorite(aid, false), new XLTResponseListener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject responseData, XLTError errorData) {
+                    if (errorData != null) {
+                        view.setSelected(true);
+                        showShortToast(errorData.getMesssage());
+                    }
+                }
+            });
+            updateFavoriteView(view,false);
+        }
+    }
+
+    private void updateFavoriteView(View view,boolean isSelected){
+        view.setSelected(isSelected);
+        if (view.getId() == R.id.iv_default_favorite){
+            findViewById(R.id.iv_favorite).setSelected(isSelected);
+        }else {
+            findViewById(R.id.iv_default_favorite).setSelected(isSelected);
+        }
+    }
+}

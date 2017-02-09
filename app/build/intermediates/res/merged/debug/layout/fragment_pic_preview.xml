@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_bg" >
+
+    <com.talenton.organ.widget.HackyViewPager
+        android:id="@+id/galleryViewPager_image_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/compress_progressbar"
+        style="?android:attr/progressBarStyleSmallInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateOnly="true"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_gravity="top"
+        android:background="@color/black_mark"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/iv_picture_preview_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/space_15_0"
+            android:src="@drawable/image_top_back_selector" />
+
+        <TextView
+            android:id="@+id/tv_picture_preview_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:textColor="@color/text_light"
+            android:textSize="@dimen/text_34" />
+
+        <CheckBox
+            android:id="@+id/cb_picture_preview_select"
+            style="@style/img_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_15_0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_48_0"
+        android:layout_gravity="bottom"
+        android:background="@color/black_mark"
+        android:gravity="center_vertical" >
+
+        <FrameLayout
+            android:id="@+id/preview_relayout_original"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <CheckBox
+                android:id="@+id/preview_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:button="@null"
+                android:checked="false"
+                android:drawableLeft="@drawable/checkbox_picture"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:padding="0dp"
+                android:text="@string/image_send_origin"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/image_selected"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/space_15_0"
+            android:paddingRight="@dimen/space_15_0"
+            android:textColor="@color/menu_main"
+            android:textSize="@dimen/text_34" />
+
+        <Button
+            android:id="@+id/btn_use"
+            style="@style/small_btn_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/space_15_0"
+            android:text="@string/image_send" />
+    </LinearLayout>
+
+</FrameLayout>

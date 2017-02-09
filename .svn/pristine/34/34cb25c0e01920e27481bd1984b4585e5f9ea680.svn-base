@@ -1,0 +1,563 @@
+package com.talenton.base.server;
+
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.gson.JsonObject;
+import com.talenton.base.XltApplication;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.okhttp.callback.StringCallback;
+import com.talenton.base.server.bean.Authority;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.server.bean.ReqLogin;
+import com.talenton.base.server.bean.RspLogin;
+import com.talenton.base.server.bean.UserInfo;
+import com.talenton.base.server.task.TaskManager;
+import com.talenton.base.util.Preference;
+import com.talenton.base.util.XLTToast;
+
+import okhttp3.Call;
+
+/**
+ * Created by ttt on 2016/4/1.
+ */
+public class UserServer{
+
+    private static final int BIND_WX = 1;
+    private static final int BIND_QQ = 2;
+    public static final int SMS_CODE = -1;
+    public static final int SMS_CODE_MODIFIY_PASSWORD = 0;
+    public static final int SMS_CODE_BIND_PHONE = 1;
+
+    // 用户相关的静态变量
+    public static RspLogin sRspLogin = null;
+    // 用户验证信息
+    private static Authority mAuthority = null;
+
+    private static OnReLoginListener mOnReLoginListener;
+
+    public static String APP_ID = "1001";
+    public static String WX_APP_ID = "wxbf5d7bfa4ac5a00d";
+    public static String WX_APP_SECRET = "ad9f8e3dfa5f7bd72e1f2907d596f89b";
+    public static String QQ_APP_ID = "1105391876";
+    public static String QQ_APP_KEY = "bLMXX5VVamUfPdJ2";
+    public static String ANDROID_APP_ID = "560";
+
+
+    // 是否还没有执行过登录动作（不管是否成功登录）
+    public static boolean mNeedLogIn = true;
+    // 是否需要手动登录
+    public static boolean mManuallyLogIn = false;
+    // 是否因为信鸽启动的APP
+    public static boolean mFromXgStart = false;
+
+    public interface OnReLoginListener {
+        void OnReLoginUi();
+
+        void OnSwitchUser();
+    }
+
+    /**
+     * 程序启动时初始化
+     */
+    public static void init() {
+        getRspLogin();
+        getCurrentAuthority();
+        //mNeedLogIn = Preference.getInstance().isNeedGuide("mNeedLogIn", false);
+        mManuallyLogIn = !getCurrentAuthority().isLegal();
+        DBHelper.init(XltApplication.getAppContext(), getCurrentUser().uid);
+        TaskManager.init(getCurrentUser().uid);
+    }
+
+    /**
+     * 检查是否需要执行登录动作
+     *
+     */
+    public static boolean needLogIn() {
+        // 非法的uid,并且不是等待绑定
+        //Log.d("test--needLogIn", ""+mNeedLogIn);
+        return mNeedLogIn;
+    }
+
+    /**
+     * 检查是否需要手动执行登录动作
+     *
+     */
+    public static boolean needManuallyLogIn() {
+        //Log.d("test--needManuallyLogIn", "1:"+mManuallyLogIn+" 2:"+getCurrentUser().uid
+       // +" 3:"+!getCurrentAuthority().isLegal()+ " 4:"+!UserServer.getCurrentUser().checkUserInfo());
+        return mManuallyLogIn || getCurrentUser().uid <= 0 || !getCurrentAuthority().isLegal();
+    }
+
+    /**
+     * 检查是否提醒用户绑定手机
+     *
+     */
+    public static boolean needBindPhone() {
+        return getCurrentAuthority().authtype != Authority.TYPE_LSG && getRspLogin() != null
+                && getRspLogin().getUserInfo().isbind == 0;
+    }
+
+    /**
+     * manually:true 弹出登录框让用户点击登录，false 先尝试自动登录
+     */
+    public static void enfoceManuallyLogIn(boolean manually) {
+        mManuallyLogIn = manually;
+    }
+
+    /**
+     * manually:true 弹出登录框让用户点击登录，false 先尝试自动登录
+     */
+    public static void reLogin(boolean manually) {
+        mNeedLogIn = true;
+        mManuallyLogIn = manually;
+        if (manually) {
+            UserServer.clearRspInfo(); //清楚用户信息
+            OkHttpClientManager.getInstance().removeCookie(); //清除用户cookie信息
+        }
+        if (mOnReLoginListener != null) {
+            mOnReLoginListener.OnReLoginUi();
+        }
+    }
+
+    public static void setReLoginListener(OnReLoginListener onReLoginListener) {
+        mOnReLoginListener = onReLoginListener;
+    }
+
+    /**
+     * 登录，成功则本地持久化，否则读取上一次登录结果
+     *
+     *
+     * @param listener
+     */
+    public static void logIn(String user, String pwd, final XLTResponseCallback<RspLogin> listener) {
+
+        logInImp(false, false, new Authority(user, pwd), listener);
+    }
+
+    /**
+     * 第三方登录，成功则本地持久化，否则读取上一次登录结果
+     *
+     *
+     * @param listener
+     */
+    public static void logIn(int authtype, String openid, String nickname, String avartarurl, String access_token,
+                             XLTResponseCallback<RspLogin> listener) {
+        logInImp(false, false, new Authority(authtype, openid, nickname, avartarurl, access_token), listener);
+    }
+
+    /**
+     * 重新登录（从缓存里拿到用户名密码）
+     *
+     * @param listener
+     * @param isAutoLogin 自动登陆标识
+     */
+    public static void reLogin(boolean isAutoLogin, XLTResponseCallback<RspLogin> listener) {
+        logInImp(isAutoLogin, false, getCurrentAuthority(), listener);
+    }
+
+    public static void registBind(String mobile, String yzcode, XLTResponseCallback<RspLogin> listener) {
+        Authority authority = getCurrentAuthority();
+        authority.mobile = mobile;
+        authority.yzcode = yzcode;
+        logInImp(false, true, authority, listener);
+    }
+
+
+    /*
+     * @param type
+     *
+     * @param listener
+     */
+    public static void unBind(final int type, final XLTResponseCallback<String> listener) {
+        JsonObject jo = new JsonObject();
+        jo.addProperty("authtype", type);
+
+        OkHttpClientManager.getInstance().addGsonRequest("user.php?mod=cancelbind&cmdcode=17", Object.class,
+                new XLTResponseListener<Object>() {
+
+                    @Override
+                    public void onResponse(Object responseData, XLTError errorData) {
+                        if (errorData == null) {
+                            if (type == BIND_WX) {
+                                sRspLogin.getUserInfo().wxbind = 0;
+                            } else if (type == BIND_QQ) {
+                                sRspLogin.getUserInfo().qqbind = 0;
+                            }
+                            setRspLogin(sRspLogin);
+                        }
+                        if (listener != null) {
+                            if (responseData == null) {
+                                listener.onResponse("", errorData);
+                            } else {
+                                listener.onResponse(responseData.toString(), errorData);
+                            }
+                        }
+                    }
+                }, jo.toString());
+    }
+
+    /*
+     * @param type
+     *
+     * @param listener
+     */
+    public static void ChangeBind(String us, String sc, final XLTResponseCallback<ObjectCode> listener) {
+        JsonObject jo = new JsonObject();
+        jo.addProperty("mobile", us);
+        jo.addProperty("yzm", sc);
+        OkHttpClientManager.getInstance().addGsonRequest(ObjectCode.URL_MODIFY_BIND, ObjectCode.class,
+                new XLTResponseListener<ObjectCode>() {
+
+                    @Override
+                    public void onResponse(ObjectCode responseData, XLTError errorData) {
+                        if (listener != null) {
+                            if (responseData == null) {
+                                listener.onResponse(responseData, errorData);
+                            } else {
+                                listener.onResponse(responseData, errorData);
+                            }
+                        }
+                    }
+                }, jo.toString());
+    }
+
+    //
+	/*
+	 * @param type
+	 *
+	 * @param listener
+	 */
+    public static void WXBind(String jo, final XLTResponseCallback<String> listener) {
+        OkHttpClientManager.getInstance().addGsonRequest("user.php?mod=bind&cmdcode=10", Object.class,
+                new XLTResponseListener<Object>() {
+
+                    @Override
+                    public void onResponse(Object responseData, XLTError errorData) {
+                        if (errorData == null) {
+                            sRspLogin.getUserInfo().wxbind = 1;
+                            setRspLogin(sRspLogin);
+                        }
+                        if (listener != null) {
+                            if (responseData == null) {
+                                listener.onResponse("", errorData);
+                            } else {
+                                listener.onResponse(responseData.toString(), errorData);
+                            }
+                        }
+                    }
+                }, jo);// jo.toString()
+    }
+
+    //
+	/*
+	 * @param type
+	 *
+	 * @param listener
+	 */
+    public static void QQBind(String jo, final XLTResponseCallback<String> listener) {
+        OkHttpClientManager.getInstance().addGsonRequest("user.php?mod=bind&cmdcode=10", Object.class,
+                new XLTResponseListener<Object>() {
+
+                    @Override
+                    public void onResponse(Object responseData, XLTError errorData) {
+                        if (errorData == null) {
+                            sRspLogin.getUserInfo().qqbind = 1;
+                            setRspLogin(sRspLogin);
+                        }
+                        if (listener != null) {
+                            if (responseData == null) {
+                                listener.onResponse("", errorData);
+                            } else {
+                                listener.onResponse(responseData.toString(), errorData);
+                            }
+                        }
+                    }
+                }, jo);// jo.toString()
+    }
+
+    //
+    /**
+     * @param authority
+     * @param listener
+     */
+    private static void logInImp(final boolean isAutoLogIn, boolean binding, final Authority authority,
+                                 final XLTResponseCallback<RspLogin> listener) {
+        ReqLogin loginInfo = null;
+        String url = "";
+        if (authority.authtype == Authority.TYPE_LSG) {
+            loginInfo = new ReqLogin(authority.username, authority.passwordEn);
+            url = ReqLogin.URL_LOGIN;
+        } else if (!binding
+                && (authority.authtype == Authority.TYPE_QQ || authority.authtype == Authority.TYPE_WEIXIN)) {
+            loginInfo = new ReqLogin(authority.authtype, authority.openid, authority.nickname, authority.avartarurl,
+                    authority.access_token);
+            url = ReqLogin.URL_LOGIN_OTHER;
+        } else if (binding) {
+            loginInfo = new ReqLogin(authority.authtype, authority.openid, authority.nickname, authority.avartarurl,
+                    authority.access_token);
+            if (!TextUtils.isEmpty(authority.mobile)) {
+                loginInfo.mobile = authority.mobile;
+                loginInfo.yzcode = authority.yzcode;
+                url = ReqLogin.URL_LOGIN_OTHER_BIND;
+            } else {
+                url = ReqLogin.URL_LOGIN_OTHER_NOT_BIND;
+            }
+        } else {
+            return;
+        }
+        //Preference.getInstance().setGuideDone("mNeedLogIn", true);
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspLogin.class, new XLTResponseListener<RspLogin>() {
+
+            @Override
+            public void onResponse(RspLogin responseData, XLTError errorData) {
+                mNeedLogIn = true;
+                mManuallyLogIn = false;
+                if (errorData == null) {
+                    setRspLogin(responseData);
+                    setCurrentAuthority(authority);
+                    DBHelper.init(XltApplication.getAppContext(), getCurrentUser().uid);
+                    TaskManager.init(getCurrentUser().uid);
+                    //Preference.getInstance().saveCookies();
+                    UserServer.synchronizedShopCookie();
+                    if (mOnReLoginListener != null) {
+                        // 库的用户在这里可以清理缓存等
+                        mOnReLoginListener.OnSwitchUser();
+                    }
+                    if (listener != null) {
+                        listener.onResponse(responseData, errorData);
+                    }
+                } else {
+                    if (errorData != null) {
+                        int error = errorData.getCode();
+                        if (error == 501 || error == 502 || error == 503) {
+                            // 网络错误
+                            XLTToast.makeText(XltApplication.getAppContext(), errorData.getMesssage()).show();
+                        } else if (RspLogin.isFatal(error) && isAutoLogIn) {
+                            // 不允许用户看缓存。必须输入密码重新登录
+                            XLTToast.makeText(XltApplication.getAppContext(), errorData.getMesssage()).show();
+                            reLogin(true);
+                            return;
+                        }
+                    }
+                    getRspLogin();
+                    DBHelper.init(XltApplication.getAppContext(), getCurrentUser().uid);
+                    TaskManager.init(getCurrentUser().uid);
+                    if (mOnReLoginListener != null) {
+                        mOnReLoginListener.OnSwitchUser();
+                    }
+                    if (listener != null) {
+                        listener.onResponse(responseData, errorData);
+                    }
+                }
+
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(loginInfo));
+    }
+
+    /* 同步商城Cookie */
+    public static void synchronizedShopCookie(){
+        String url = UserServer.getRspLogin().ec_url;
+        if (TextUtils.isEmpty(url)) return;
+        OkHttpClientManager.getInstance().GetHttpsRequest(url, new StringCallback() {
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+
+            }
+        });
+    }
+
+    /* 获取短信验证码 */
+    public static void getSmscode(String phone, int type, final XLTResponseCallback<ObjectCode> listener) {
+        JsonObject json = new JsonObject();
+        json.addProperty("mobile", phone);
+        if (type > SMS_CODE){
+            json.addProperty("isbind", type);
+        }
+
+        OkHttpClientManager.getInstance().addGsonRequest(ObjectCode.URL_GET_SMS_CODE, ObjectCode.class,
+                new XLTResponseListener<ObjectCode>() {
+
+                    @Override
+                    public void onResponse(ObjectCode responseData, XLTError errorData) {
+                        listener.onResponse(responseData, errorData);
+                    }
+                }, json.toString());
+    }
+
+    /* 注册 */
+    public static void register(final String phone, final String password, String code, final XLTResponseCallback<ObjectCode> listener){
+        JsonObject json = new JsonObject();
+        json.addProperty("username", phone);
+        json.addProperty("password", password);
+        json.addProperty("yzcode", code);
+
+        OkHttpClientManager.getInstance().addGsonRequest(ObjectCode.URL_REGISTER, ObjectCode.class,
+            new XLTResponseListener<ObjectCode>() {
+                @Override
+                public void onResponse(ObjectCode responseData, XLTError errorData) {
+                    if (errorData == null){
+                        UserServer.enfoceManuallyLogIn(false);
+                        UserServer.setCurrentAuthority(new Authority(phone, password));
+                    }
+                    listener.onResponse(responseData, errorData);
+                }
+        }, json.toString());
+    }
+
+    /* 修改密码 */
+    public static void modifyPassword(final String phone, final String password, String code, final int type, final XLTResponseCallback<ObjectCode> listener){
+        JsonObject json = new JsonObject();
+        json.addProperty("mobile", phone);
+        json.addProperty("newpassword", password);
+        json.addProperty("newpassword2", password);
+        json.addProperty("yzcode", code);
+
+        OkHttpClientManager.getInstance().addGsonRequest(ObjectCode.URL_MODIFY_PASSWORD_NEED_SMS, ObjectCode.class,
+                new XLTResponseListener<ObjectCode>() {
+                    @Override
+                    public void onResponse(ObjectCode responseData, XLTError errorData) {
+                        if (errorData == null){
+                            if (type == 1) {
+                                UserServer.enfoceManuallyLogIn(false);
+                            }
+                            UserServer.setCurrentAuthority(new Authority(phone, password));
+                        }
+                        listener.onResponse(responseData, errorData);
+                    }
+                }, json.toString());
+    }
+
+    /* 读取登录数据文件 */
+    public static RspLogin getRspLogin() {
+        if (sRspLogin == null) {
+            sRspLogin = OkHttpClientManager.getInstance().getmGson().fromJson(Preference.getInstance().getRspLoginString(), RspLogin.class);
+        }
+        return sRspLogin;
+    }
+
+    /* 写登录数据文件 */
+    public static void setRspLogin(RspLogin rspLogin) {
+        Preference.getInstance().saveRspLoginString(OkHttpClientManager.getInstance().getmGson().toJson(rspLogin).toString());
+        sRspLogin = null;
+        getRspLogin();
+    }
+
+    public static void clearRspInfo(){
+        Preference.getInstance().removeRspLoginString();
+        sRspLogin = null;
+    }
+
+    /* 获取用户身份 */
+    public static int getUsergroupkey() {
+        if (sRspLogin != null && sRspLogin.member != null)
+            return sRspLogin.member.groupkey;
+        else
+            return 0;
+    }
+
+    /* 获取七牛token */
+    public static String getQntoken() {
+        if (sRspLogin != null && sRspLogin.qntoken != null)
+            return sRspLogin.qntoken;
+        else
+            return "";
+    }
+
+    /* 获取七牛dns */
+    public static String getQndns() {
+        if (sRspLogin != null && sRspLogin.qndns != null)
+            return sRspLogin.qndns;
+        else
+            return "";
+    }
+
+    /* 获取access_token */
+    public static String getAccessToken() {
+        if (sRspLogin != null && sRspLogin.qndns != null)
+            return sRspLogin.access_token;
+        else
+            return "";
+    }
+
+    /* 获取当前用户 */
+    public static UserInfo getCurrentUser() {
+        if (sRspLogin != null && sRspLogin.member != null)
+            return sRspLogin.member;
+        else
+            return UserInfo.EMPTY;
+    }
+
+    /* 获取当前用户登录信息 */
+    public static Authority getCurrentAuthority() {
+        if (mAuthority == null) {
+            mAuthority = OkHttpClientManager.getInstance().getmGson().fromJson(Preference.getInstance().getAuthorityString(),
+                    Authority.class);
+            if (mAuthority == null) {
+                mAuthority = Authority.EMPTY;
+            } else {
+                mAuthority.setPlaint();
+            }
+        }
+        return mAuthority;
+    }
+
+    /* 获取当前用户密码 */
+    public static void setCurrentAuthority(Authority authority) {
+        mAuthority = authority;
+        String plaint = mAuthority.password;
+        mAuthority.password = "";
+        Preference.getInstance()
+                .saveAuthorityString(OkHttpClientManager.getInstance().getmGson().toJson(UserServer.mAuthority).toString());
+        mAuthority.password = plaint;
+    }
+
+    /* 获取当前用户密码 */
+    public static void setCurrentPassword(String pwd) {
+        if (mAuthority != null) {
+            mAuthority.password = pwd;
+        }
+        Preference.getInstance()
+                .saveAuthorityString(OkHttpClientManager.getInstance().getmGson().toJson(UserServer.mAuthority).toString());
+    }
+
+    /* 获取当前用户 */
+    public static int getOpenMTAStatistics() {
+        if (sRspLogin != null && sRspLogin.member != null)
+            return sRspLogin.open_statistics;
+        else
+            return 0;
+    }
+
+    /**
+     * 核查是否创建或关注了APP应用
+     * @return
+     */
+    public static boolean checkHaveApplication(){
+        if (sRspLogin == null) return false;
+        if (sRspLogin.app_cur == null || sRspLogin.app_cur.appboxid == 0) return false;
+        if(sRspLogin.app_cur.flag == 1){
+            XLTToast.makeText(XltApplication.getAppContext(), "该专属应用已被信用").show();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 核查是否创建者或管理员
+     * @return
+     */
+    public static boolean isCreateOrManager(){
+        if (sRspLogin == null) return false;
+        if (sRspLogin.app_cur == null || sRspLogin.app_cur.appboxid == 0) return false;
+        if (sRspLogin.app_cur.iscreater == 0 && sRspLogin.app_cur.ismanager == 0) return false;
+
+        return true;
+    }
+}

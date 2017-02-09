@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    tools:context="com.talenton.organ.ui.user.ModifyNameActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_10"
+        android:paddingRight="@dimen/space_10"
+        android:textColor="@color/text_main"
+        android:textColorHint="@color/text_sub"
+        android:textSize="@dimen/text_32" />
+
+
+</LinearLayout>

@@ -1,0 +1,609 @@
+package com.talenton.base.util;
+
+/**
+ * Created by ttt on 2016/4/18.
+ */
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.talenton.base.R;
+import com.talenton.base.XltApplication;
+
+@SuppressLint("SimpleDateFormat")
+@SuppressWarnings("deprecation")
+public class DateUtil {
+
+    public static final long SECOND_MILLIS = 1000;
+    public static final long MINUTE_MILLIS = SECOND_MILLIS * 60;
+    public static final long HOUR_MILLIS = MINUTE_MILLIS * 60;
+    public static final long DAY_MILLIS = HOUR_MILLIS * 24;
+    public static final long WEEK_MILLIS = DAY_MILLIS * 7;
+    public static final long MONTH_MILLIS = DAY_MILLIS * 30;
+    public static final long YEAR_MILLIS = DAY_MILLIS * 365;
+
+    public final static String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
+    public final static String DEFAULT_TIME_FORMAT = "HH:mm";
+    public final static String DEFAULT_DATETIME_FORMAT = "yyyy/MM/dd HH:mm";
+
+    public final static String DATE_FORMAT_WITH_BAR = "yyyy-MM-dd";
+    private static final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static final SimpleDateFormat mDateFormatThisYear = new SimpleDateFormat("MM-dd HH:mm");
+
+    static private final SimpleDateFormat mDateFormatYMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static private final SimpleDateFormat mDateFormatYMD = new SimpleDateFormat("yyyy-MM-dd");
+    /**
+     * 一分钟的毫秒值，用于判断上次的更新时间
+     */
+    public static final int ONE_MINUTE = 60;
+    /**
+     * 一小时的毫秒值，用于判断上次的更新时间
+     */
+    public static final int ONE_HOUR = 60 * ONE_MINUTE;
+
+    /**
+     * 一天的毫秒值，用于判断上次的更新时间
+     */
+    public static final int ONE_DAY = 24 * ONE_HOUR;
+
+    /**
+     * 一月的毫秒值，用于判断上次的更新时间
+     */
+    public static final int ONE_MONTH = 30 * ONE_DAY;
+
+    /**
+     * 一年的毫秒值，用于判断上次的更新时间
+     */
+    public static final int ONE_YEAR = 12 * ONE_MONTH;
+
+    private DateUtil() {
+    }
+
+    //*************************************************************************
+    // Comparison
+    //*************************************************************************
+
+    public static boolean isSameDate(Date date1, Date date2) {
+        return date1.getYear() == date2.getYear()
+                && date1.getMonth() == date2.getMonth()
+                && date1.getDate() == date2.getDate();
+    }
+
+    public static boolean isNextDate(Date date1, Date date2) {
+        return date1.getYear() == date2.getYear()
+                && date1.getMonth() == date2.getMonth()
+                && Math.abs(date1.getDate() - date2.getDate()) == 1;
+    }
+
+    public static boolean isSameMonth(Date date1, Date date2) {
+        return date1.getYear() == date2.getYear()
+                && date1.getMonth() == date2.getMonth();
+    }
+
+    //*************************************************************************
+    // Format / Parse
+    //*************************************************************************
+
+    public static String formatDate(Date date) {
+        return new SimpleDateFormat(DEFAULT_DATE_FORMAT).format(date);
+    }
+
+    public static String formatDateTime(Date date) {
+        return new SimpleDateFormat(DEFAULT_DATETIME_FORMAT).format(date);
+    }
+
+    public static String formatTime(Date date) {
+        return new SimpleDateFormat(DEFAULT_TIME_FORMAT).format(date);
+    }
+
+    public static String formatDate(Date date, String format) {
+        return new SimpleDateFormat(format).format(date);
+    }
+
+    public static Date parseDate(String dateStr, String format) {
+        try {
+            return new SimpleDateFormat(format).parse(dateStr);
+        } catch (ParseException e) {
+            AppLogger.w("Parse data '%s' with format '%s' failed.", e, dateStr, format);
+            return new Date();
+        }
+    }
+
+    //*************************************************************************
+    // Convert
+    //*************************************************************************
+
+    public static Long getTimeWithoutMillisecond(Date date) {
+        return getTimeWithoutMillisecond(date.getTime());
+    }
+
+    public static Long getTimeWithoutMillisecond(Long date) {
+        String timeStr = Long.toString(date);
+        return (timeStr.length() >= 3)
+                ? Long.parseLong(timeStr.substring(0, timeStr.length() - 3)) : 0;
+    }
+
+    public static int getDateInterval(Date date1, Date date2) {
+        return Math.round((date1.getTime() - date2.getTime()) / DAY_MILLIS);
+    }
+
+    public static final String[] weekDays = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+
+    public static String getDayOfWeek(int i) {
+        return weekDays[i % weekDays.length];
+    }
+
+    //*************************************************************************
+    // Calculation
+    //*************************************************************************
+
+    /**
+     * @return days since the given date. at least 1.
+     */
+    public static int sinceDate(Date date, long currentTimeMillis) {
+        if (date == null
+                || date.getTime() >= currentTimeMillis) return 0;
+        long delta = currentTimeMillis - date.getTime();
+        return ((int) Math.floor(delta / (double) DAY_MILLIS)) + 1;
+    }
+
+    public static int untilDate(Date date, long currentTimeMillis) {
+        if (date == null
+                || date.getTime() <= currentTimeMillis) return 0;
+        long delta = date.getTime() - currentTimeMillis;
+        return ((int) Math.floor(delta / (double) DAY_MILLIS)) + 1;
+    }
+
+    public static int sinceLastAnniversary(Date date, long currentTimeMillis) {
+        if (date == null) return 0;
+        return sinceDate(getLastAnniversary(date, currentTimeMillis), currentTimeMillis);
+    }
+
+    public static int untilNextAnniversary(Date date, long currentTimeMillis) {
+        if (date == null) return 0;
+        return untilDate(getNextAnniversary(date, currentTimeMillis), currentTimeMillis);
+    }
+
+    //*************************************************************************
+    // Operate
+    //*************************************************************************
+
+    public static Date shiftDate(Date date, int days) {
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+
+    public static Date trimDateByDate(Date date) {
+        GregorianCalendar cal = new GregorianCalendar(date.getYear(), date.getMonth(), date.getDate());
+        return cal.getTime();
+    }
+
+    public static Date getLastAnniversary(Date date, long currentTimeMillis) {
+        if (date == null) return null;
+
+        // future date
+        if (date.getTime() > currentTimeMillis) return date;
+
+        // before date, move to last anniversary
+        Date now = trimDateByDate(new Date(currentTimeMillis));
+        Date tmpDate = new Date(date.getTime());
+        tmpDate.setYear(now.getYear());
+        if (tmpDate.getTime() > currentTimeMillis) {
+            tmpDate.setYear(now.getYear() - 1);
+        }
+        return tmpDate;
+    }
+
+    public static Date getNextAnniversary(Date date, long currentTimeMillis) {
+        if (date == null) return null;
+        Date tmpDate = null;
+
+        // future date
+        if (date.getTime() > currentTimeMillis) return date;
+
+        // before date, move to next anniversary
+        Date now = trimDateByDate(new Date(currentTimeMillis));
+        tmpDate = new Date(date.getTime());
+        tmpDate.setYear(now.getYear());
+        if (tmpDate.getTime() < currentTimeMillis) {
+            tmpDate.setYear(now.getYear() + 1);
+        }
+
+        return tmpDate;
+    }
+
+    //*************************************************************************
+    // System
+    //*************************************************************************
+
+    public static boolean is24HourFormat() {
+        boolean is24Hour = true;
+
+        ContentResolver cv = XltApplication.getAppContext().getContentResolver();
+        String strTimeFormat = android.provider.Settings.System.getString(cv,
+                android.provider.Settings.System.TIME_12_24);
+
+        if (null != strTimeFormat && !strTimeFormat.equals("24")) {
+            is24Hour = false;
+        }
+        return is24Hour;
+    }
+
+    //*************************************************************************
+    // Deparecated - Should be replaced by JODA (http://joda-time.sourceforge.net/)
+    //*************************************************************************
+
+    public static boolean isSameDate(Calendar c1, Calendar c2) {
+        return (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
+                && c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public static Integer getDayKey(Calendar date) {
+        return date.get(Calendar.YEAR) * 10000
+                + (date.get(Calendar.MONTH) + 1) * 100
+                + date.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static int compareDate(Calendar first, Calendar second) {
+        return getDatePriority(first) - getDatePriority(second);
+    }
+
+    private static int getDatePriority(Calendar c) {
+        return c.get(Calendar.YEAR) * 10000 + c.get(Calendar.MONTH) * 100 + c.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static int compareAlarm(Calendar first, Calendar second) {
+        return getAlarmPriority(first) - getAlarmPriority(second);
+    }
+
+    private static int getAlarmPriority(Calendar c) {
+        return c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
+    }
+
+    /**
+     * 把某一个时间向后设置一个小时
+     *
+     * @param calendar 需要设置的时间
+     * @return
+     */
+    public static Calendar getNextHour(Calendar calendar) {
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        calendar.add(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+
+    /**
+     * 取得指定毫秒后的时间
+     *
+     * @param calendar
+     * @param timeAfter
+     * @return
+     */
+    public static Calendar getTimeMillisAfter(Calendar calendar, long timeAfter) {
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.setTimeInMillis(calendar.getTimeInMillis() + timeAfter);
+        return newCalendar;
+    }
+
+    public static Calendar getCalendarBefore(Calendar calendar, int beforeDays) {
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+                        - beforeDays, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND));
+        return newCalendar;
+    }
+
+    public static Calendar getCalendarAfter(Calendar calendar, int afterDays) {
+        // Calendar newCalendar = (Calendar)calendar.clone();
+        // newCalendar.add(Calendar.DAY_OF_MONTH, afterDays);
+
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+                        + afterDays, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND));
+        return newCalendar;
+    }
+
+    public static Calendar newCalendarByDay(Calendar calendar) {
+        Calendar newCalendar = (Calendar) calendar.clone();
+        newCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        newCalendar.set(Calendar.MINUTE, 0);
+        newCalendar.set(Calendar.SECOND, 0);
+        newCalendar.set(Calendar.MILLISECOND, 0);
+        return newCalendar;
+    }
+
+    public static Calendar trimCalendarByDay(Calendar calendar) {
+        if (calendar == null) return calendar;
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+
+    public static Calendar trimCalendarByMinute(Calendar calendar) {
+        if (calendar == null) return null;
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+
+    public static Date keepDate(Date d) {
+        d.setTime(d.getTime() - d.getTime() % 1000);
+        d.setHours(0);
+        d.setMinutes(0);
+        d.setSeconds(0);
+        return d;
+    }
+
+    /**
+     * 把时间戳格式化为指定的时间格式
+     *
+     * @param timestamp
+     * @param format
+     * @return
+     */
+    public static String timestampToFormatDate(long timestamp, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
+        Date date = new Date(timestamp);
+        return sdf.format(date);
+    }
+
+    /**
+     * @param time 单位秒
+     * @return
+     */
+    public static String formatDurationToTime(int time) {
+        int hour = 0;
+        int minute = 0;
+        int second = 0;
+        second = time;
+        if (second > 60) {
+            minute = second / 60;
+            second = second % 60;
+        }
+
+        if (minute > 60) {
+            hour = minute / 60;
+            minute = minute % 60;
+        }
+
+        String strtime = "";
+        if (hour != 0) {
+            strtime = (hour >= 10 ? hour : "0" + hour) + ":" + (minute >= 10 ? minute : "0" + minute) + ":"
+                    + (second >= 10 ? second : "0" + second);
+        } else {
+            strtime = (minute >= 10 ? minute : "0" + minute) + ":" + (second >= 10 ? second : "0" + second);
+        }
+        return strtime;
+    }
+
+    /**
+     * 把时间戳转成 字符串
+     *
+     * @param unixtime
+     * @return
+     */
+    public static String timeDistanceString(long unixtime) {
+
+        final long MILLISEC = 1000;
+        final long MILLISEC_MIN = 60 * MILLISEC;
+        final long MILLISEC_HOUR = 60 * MILLISEC_MIN;
+        // final long MILLISEC_DAY = 24 * MILLISEC_HOUR;
+        // final long MILLISEC_MONTH = 30 * MILLISEC_DAY;
+        // final long MILLISEC_YEAR = 12 * MILLISEC_MONTH;
+        long currentTime = System.currentTimeMillis();
+        long timeDifference = Math.abs(currentTime - unixtime);
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), 0, 1, 0, 0, 0);
+        final boolean before_this_year = unixtime < cal.getTimeInMillis();
+
+        if (timeDifference <= 0) {
+            return "刚刚";
+        }
+        /*
+		 * 今年之前
+		 */
+        else if (before_this_year) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+            String dateString = dateFormat.format(new Date(unixtime));
+            return dateString;
+        } else {
+            // cal = Calendar.getInstance();
+            // cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+            // cal.get(Calendar.DAY_OF_MONTH) - 1, 0, 0, 0);
+            // long startTime = cal.getTimeInMillis();
+            cal = Calendar.getInstance();
+            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+            long endTime = cal.getTimeInMillis();
+            // final boolean yesterday = unixtime * 1000 >= startTime &&
+            // unixtime * 1000 < endTime;
+
+            cal = Calendar.getInstance();
+            cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH) + 1, 0, 0, 0);
+            final boolean today = unixtime >= endTime && unixtime < cal.getTimeInMillis();
+
+			/*
+			 * 1天内
+			 */
+            if (today) {
+                if (timeDifference / MILLISEC_MIN < 1) {
+                    return "刚刚";
+                } else if (timeDifference / MILLISEC_HOUR < 1) {
+					/*
+					 * 1小时内
+					 */
+                    return String.format(Locale.US, "%d分钟前", timeDifference / MILLISEC_MIN);
+                } else {
+					/*
+					 * 1天内
+					 */
+                    return String.format(Locale.US, "%d小时前", timeDifference / MILLISEC_HOUR);
+                }
+            }
+            // else if(yesterday){
+            // return "昨天";
+            // }
+            else {
+				/*
+				 * 今年
+				 */
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+                String dateString = dateFormat.format(new Date(unixtime));
+                return dateString;
+            }
+        }
+    }
+
+    public static String parseTime(long createTime) {
+        Date createDate = new Date(createTime * 1000);
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.setTime(new Date());
+        c2.setTime(createDate);
+        if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) {
+            return mDateFormatThisYear.format(createDate);
+        }
+        return mDateFormat.format(createDate);
+    }
+
+    public static String parseTimeToYMD(long time) {
+        Date createDate = new Date(time * 1000);
+        return mDateFormatYMD.format(createDate);
+    }
+
+    public static String parseTimeToYMDHMS(long time) {
+        Date createDate = new Date(time * 1000);
+        return mDateFormatYMDHMS.format(createDate);
+    }
+
+    public static String parseTimeToYMDHMS(Date date) {
+        return mDateFormatYMDHMS.format(date);
+    }
+
+    //转化成刚刚，几分钟，几小时，几个月，几年前
+    public static String parseTime(Context context, long createTime) {
+
+        Resources resources = context.getResources();
+        if (createTime == 0) {
+            return resources.getString(R.string.just_now);
+        }
+        String res = "";
+        long currentTime = System.currentTimeMillis();
+        long timePassed = currentTime / 1000 - createTime;
+        long timeIntoFormat;
+
+        if (timePassed < 0) {
+            res = resources.getString(R.string.just_now);
+        } else if (timePassed < ONE_MINUTE) {
+            res = resources.getString(R.string.just_now);
+        } else if (timePassed < ONE_HOUR) {
+            timeIntoFormat = timePassed / ONE_MINUTE;
+            String value = timeIntoFormat + "分钟";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else if (timePassed < ONE_DAY) {
+            timeIntoFormat = timePassed / ONE_HOUR;
+            String value = timeIntoFormat + "小时";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else if (timePassed < ONE_MONTH) {
+            timeIntoFormat = timePassed / ONE_DAY;
+            String value = timeIntoFormat + "天";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else if (timePassed < ONE_YEAR) {
+            timeIntoFormat = timePassed / ONE_MONTH;
+            String value = timeIntoFormat + "个月";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else {
+            timeIntoFormat = timePassed / ONE_YEAR;
+            String value = timeIntoFormat + "年";
+            res = String.format(resources.getString(R.string.post_at), value);
+        }
+        return res;
+    }
+
+    public static String parseTimeForRefresh(Context context, long createTime) {
+
+        Resources resources = context.getResources();
+        if (createTime == 0) {
+            return resources.getString(R.string.just_now);
+        }
+        String res = "";
+        long currentTime = System.currentTimeMillis();
+        long timePassed = (currentTime - createTime) / 1000;
+        long timeIntoFormat;
+
+        if (timePassed < ONE_HOUR) {
+            timeIntoFormat = timePassed / ONE_MINUTE;
+            if (timeIntoFormat <= 0) {
+                timeIntoFormat = 1; // 至少是1分钟
+            }
+            String value = timeIntoFormat + "分钟";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else if (timePassed < ONE_DAY) {
+            timeIntoFormat = timePassed / ONE_HOUR;
+            String value = timeIntoFormat + "小时";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else if (timePassed < ONE_DAY * 2) {
+            timeIntoFormat = timePassed / ONE_DAY;
+            String value = timeIntoFormat + "天";
+            res = String.format(resources.getString(R.string.post_at), value);
+        } else {
+            res = parseTime((int) (createTime / 1000));
+        }
+        return res;
+    }
+
+    public static final String getWeekString(int value) {
+
+        String s = "";
+        switch (value) {
+            case Calendar.MONDAY: {
+                return "一";
+            }
+            case Calendar.TUESDAY: {
+                return "二";
+            }
+            case Calendar.WEDNESDAY: {
+                return "三";
+            }
+            case Calendar.THURSDAY: {
+                return "四";
+            }
+            case Calendar.FRIDAY: {
+                return "五";
+            }
+            case Calendar.SATURDAY: {
+                return "六";
+            }
+            case Calendar.SUNDAY: {
+                return "日";
+            }
+        }
+        return s;
+    }
+
+    public static boolean isExpire(String time) {
+        Long timeLong = 0L;
+        try {
+            timeLong = Long.parseLong(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        long current = System.currentTimeMillis();
+        return timeLong * 1000 <= current;
+    }
+}

@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.talenton.organ.ui.school.BriefFragment">
+
+   <com.talenton.organ.widget.PinnedSectionListView
+       android:layout_weight="1"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:listSelector="@color/transparent"
+       android:id="@+id/list" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line" />
+
+
+</LinearLayout>

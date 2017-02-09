@@ -1,0 +1,127 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.R;
+import com.talenton.organ.event.ModifyCircleEvent;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.feed.MineCircle;
+
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/4/26.
+ */
+public class CircleHomeAdapter extends BaseAdapter implements View.OnClickListener{
+
+    private LayoutInflater mInflater;
+    private LinkedList<MineCircle> mDatas;
+    private Context mContext;
+
+    public CircleHomeAdapter(Context context){
+        mContext = context;
+        mInflater = LayoutInflater.from(context);
+        mDatas = new LinkedList<>();
+    }
+
+    public void addDatas(LinkedList<MineCircle> data){
+        if (data == null || data.size() == 0) return;
+        mDatas.clear();
+        mDatas.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void updateData(ModifyCircleEvent event){
+        if (mDatas == null || mDatas.size() == 0) return;
+        for (MineCircle data : mDatas){
+            if (data.circle_id == event.circleId){
+                if (!TextUtils.isEmpty(event.description)){
+                    data.getCircleListData().description = event.description;
+                }
+                if (!TextUtils.isEmpty(event.photo)){
+                    data.getCircleListData().circle_photo = event.photo;
+                }
+                notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return mDatas.size();
+    }
+
+    @Override
+    public MineCircle getItem(int position) {
+        return mDatas.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        HolderView holder;
+        if (convertView == null) {
+            holder = new HolderView();
+            convertView = mInflater.inflate(R.layout.item_feed_mine_circle, parent, false);
+            holder.mBottomLine = convertView.findViewById(R.id.bottom_line);
+            holder.mHead = convertView.findViewById(R.id.head);
+            holder.mBottom = convertView.findViewById(R.id.bottom);
+            holder.mHoderView = convertView.findViewById(R.id.view_holder);
+            holder.mUserImage = (ImageView)convertView.findViewById(R.id.user_image);
+            holder.mCircleName = (TextView)convertView.findViewById(R.id.tv_circle_name);
+            holder.mCircleNum = (TextView)convertView.findViewById(R.id.tv_circle_num);
+            holder.mCircleDescription = (TextView)convertView.findViewById(R.id.tv_circle_description);
+            convertView.setTag(holder);
+        }else {
+            holder = (HolderView)convertView.getTag();
+        }
+        MineCircle data = getItem(position);
+        if(position  == 0){
+            holder.mHead.setVisibility(View.VISIBLE);
+            holder.mHoderView.setVisibility(View.VISIBLE);
+        }else{
+            holder.mHead.setVisibility(View.GONE);
+            holder.mHoderView.setVisibility(View.GONE);
+        }
+        if (position == (mDatas.size() - 1)){
+            holder.mBottom.setVisibility(View.VISIBLE);
+            holder.mBottomLine.setVisibility(View.GONE);
+        }else {
+            holder.mBottom.setVisibility(View.GONE);
+        }
+
+        ImageLoader.getInstance().displayImage(data.getCircleListData().circle_photo, holder.mUserImage, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+        holder.mCircleName.setText(data.getCircleListData().circle_name);
+        if(data.getCircleListData().day_topics_count > 0){
+            holder.mCircleNum.setVisibility(View.VISIBLE);
+            holder.mCircleNum.setText(String.format("今日:%d", data.getCircleListData().day_topics_count));
+        } else {
+            holder.mCircleNum.setVisibility(View.GONE);
+        }
+        holder.mCircleDescription.setText(data.getCircleListData().description);
+        return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+    }
+
+    private class HolderView{
+        public View mHoderView,  mHead, mBottom, mBottomLine;
+        public ImageView mUserImage;
+        public TextView mCircleName, mCircleNum, mCircleDescription;
+    }
+}

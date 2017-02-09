@@ -1,0 +1,13 @@
+package com.talenton.organ.server.bean.discovery;
+
+import java.util.LinkedList;
+
+/**
+ * Created by Wang.'''' on 2016/4/26.
+ */
+public class RspShopListType {
+
+    public LinkedList<ShopList> list;
+
+
+}

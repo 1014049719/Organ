@@ -1,0 +1,124 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.ExpandableListView;
+
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.AppModule;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.user.ReqAppInfo;
+import com.talenton.organ.server.bean.user.RspAppData;
+import com.talenton.organ.server.bean.user.WrapperAppData;
+import com.talenton.organ.server.bean.user.event.CreateAppEvent;
+import com.talenton.organ.ui.user.adapter.AppModelAdapter;
+import com.talenton.organ.util.AppManager;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SelectModelActivity extends BaseCompatActivity implements ExpandableListView.OnChildClickListener {
+    private List<WrapperAppData> datas;
+    private int appType;
+    private List<Integer> selectedModelList;
+    private AppModelAdapter appModelAdapter;
+
+    public static void startSelectModelActivity(Context context, ArrayList<WrapperAppData> datas,int appType){
+        Intent intent = new Intent(context,SelectModelActivity.class);
+        intent.putParcelableArrayListExtra("datas",datas);
+        intent.putExtra("appType", appType);
+        context.startActivity(intent);
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_select_model);
+
+        datas = getIntent().getParcelableArrayListExtra("datas");
+        appType = getIntent().getIntExtra("appType", 0);
+        initSelectedModelList();
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.list);
+        expandableListView.setGroupIndicator(null);
+        expandableListView.setChildIndicator(null);
+        expandableListView.setOnChildClickListener(this);
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                return true;
+            }
+        });
+        appModelAdapter = new AppModelAdapter(this, datas);
+        expandableListView.setAdapter(appModelAdapter);
+        expandAllGroup(expandableListView);
+    }
+
+    private void initSelectedModelList() {
+        selectedModelList =  new ArrayList<>();
+        for (WrapperAppData wrapperAppData : datas){
+            if (wrapperAppData.getType() == WrapperAppData.TYPE_DEFAULT){
+                for (AppModule appModule : wrapperAppData.getAppModule()){
+                    selectedModelList.add(appModule.f_id);
+                }
+                break;
+            }
+        }
+    }
+
+    private void expandAllGroup(ExpandableListView expandableListView){
+        for (int i = 0; i < appModelAdapter.getGroupCount(); i++) {
+            expandableListView.expandGroup(i);
+        }
+    }
+
+
+    public void submit(View view){
+        showProgress("提交数据中...");
+        MineServer.createExclusiveApp(new ReqAppInfo(null, appType, null, getModelList()), new XLTResponseCallback<RspAppData>() {
+            @Override
+            public void onResponse(RspAppData data, XLTError error) {
+                if (error == null && data != null && data.app_data != null){
+                    AppManager.getInstance().updateAppInfo(data.app_data);
+                    EventBus.getDefault().post(new CreateAppEvent());
+                }else {
+                    showShortToast(error.getMesssage());
+                }
+                hideProgress();
+                finish();
+            }
+        });
+    }
+
+    private String getModelList() {
+        StringBuilder sb = new StringBuilder();
+        for (int modelId : selectedModelList){
+            sb.append(String.valueOf(modelId));
+            sb.append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        AppModule appModule = (AppModule) appModelAdapter.getChild(groupPosition,childPosition);
+        CheckBox checkBox = (CheckBox) v.findViewById(R.id.cb_child_select);
+        if (checkBox.isChecked()){
+            checkBox.setChecked(false);
+            selectedModelList.remove((Integer)appModule.f_id);
+        }else {
+            checkBox.setChecked(true);
+            selectedModelList.add(appModule.f_id);
+        }
+        return true;
+    }
+}

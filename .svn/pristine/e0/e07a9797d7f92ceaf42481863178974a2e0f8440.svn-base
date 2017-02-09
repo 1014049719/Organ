@@ -1,0 +1,12 @@
+package com.talenton.organ.server.bean.discovery;
+
+/**
+ * Created by Wang.'''' on 2016/5/3.
+ */
+public class ActionParam {
+
+    //活动网络接口
+    public final static String actionURL="discover.php?mod=action&cmdcode=14";
+    //资讯网络接口
+    public final static String messageURL="discover.php?mod=message&cmdcode=18";
+}

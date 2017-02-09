@@ -1,0 +1,252 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import com.talenton.organ.R;
+import com.talenton.base.util.AppLogger;
+import com.talenton.organ.server.bean.feed.CommentInfo;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.server.bean.feed.RspFeedsList;
+import com.talenton.organ.server.task.TaskFeeds;
+import com.talenton.organ.ui.feed.OnFeedsClickListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+/**
+ * Created by ttt on 2016/5/24.
+ */
+public class TopicFeedsAdapter extends BaseAdapter {
+
+    private LinkedList<Feeds> mFeeds = new LinkedList<Feeds>();
+    private Context mContext;
+    private LayoutInflater inflater;
+    private OnFeedsClickListener mOnFeedsClickListener;
+    public String mFirstFeedsId;
+    public long dateline; // 从后端的时间戳
+    public long dbdateline; // 数据库获取更老的分界点
+    public int mType;
+    //public PostToParam mPostToParam;
+
+    public TopicFeedsAdapter(Context context, int type, PostToParam postToParam) {
+        this.mContext = context;
+        inflater = LayoutInflater.from(mContext);
+        mType = type;
+        //mPostToParam = postToParam.clone();
+        mOnFeedsClickListener = new OnFeedsClickListener(context, postToParam.clone());
+    }
+
+    public void reset() {
+        mFeeds.clear();
+        dateline = 0;
+        dbdateline = 0;
+    }
+
+    public void addOldFeeds(RspFeedsList rspFeeds){
+        if (rspFeeds.list != null && rspFeeds.list.size() > 0) {
+            /*
+            for (int i = mFeeds.size() - 1; i >= 0; --i) {
+                // 把数据库缓存的都替换掉
+                if (mFeeds.get(i).from == Feeds.FROM_DB) {
+                    mFeeds.remove(i);
+                } else {
+                    break;
+                }
+            }
+            */
+            // 从网络过来，清掉dateline之后的数据(cache的数据)
+            {
+                Iterator<Feeds> iterator = rspFeeds.list.iterator();
+                long olddateline = dateline;
+                Feeds f = rspFeeds.list.get(rspFeeds.list.size() - 1);
+                dateline = f.modify_time;
+                if (dateline < dbdateline) {
+                    dbdateline = dateline;
+                }
+                while (iterator.hasNext()){
+                    Feeds feed = iterator.next();
+                    if (feed.modify_time < olddateline){
+                        mFeeds.add(feed);
+                    }
+                }
+            }
+            //mFeeds.addAll(rspFeeds.list);
+            notifyDataSetChanged();
+        }
+        else if (rspFeeds.cache != null && rspFeeds.cache.size() > 0) {
+            // 从数据库缓存过来的
+            mFeeds.addAll(rspFeeds.cache);
+            dbdateline = rspFeeds.cache.get(rspFeeds.cache.size() - 1).modify_time;
+            notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 更新上传中的动态状态
+     *
+     * @param feeds
+     * @return 定位的锚点
+     */
+    public int replaceTask(Feeds feeds) {
+        int total = mFeeds.size();
+        if (feeds.taskStatus == TaskFeeds.STATUS_SUCCESS) {
+            feeds.from = Feeds.FROM_DB;
+        }
+        for (int i = 0; i < total; ++i) {
+            if (mFeeds.get(i).appLocalid == feeds.appLocalid
+                    || (!TextUtils.isEmpty(feeds.guid) && feeds.guid.equals(mFeeds.get(i).guid))) {
+                if (feeds.taskStatus == TaskFeeds.STATUS_CANCELED) {
+                    mFeeds.remove(i);
+                } else {
+                    mFeeds.set(i, feeds);
+                }
+                notifyDataSetChanged();
+                return i;
+            } else if (TextUtils.isEmpty(feeds.guid) && mFeeds.get(i).modify_time < feeds.modify_time
+                    && feeds.taskStatus != TaskFeeds.STATUS_CANCELED) {
+                mFeeds.add(i, feeds);
+                notifyDataSetChanged();
+                return i;
+            }
+        }
+        if (feeds.taskStatus != TaskFeeds.STATUS_CANCELED) {
+            mFeeds.add(feeds);
+            notifyDataSetChanged();
+            return mFeeds.size();
+        }
+        return -1;
+    }
+
+    public void setFeeds(RspFeedsList rspFeeds){
+        reset();
+
+        if (rspFeeds.cache != null && rspFeeds.cache.size() > 0) {
+            mFeeds.addAll(rspFeeds.cache);
+            dbdateline = rspFeeds.cache.get(rspFeeds.cache.size() - 1).modify_time;
+
+        } else if (rspFeeds.list != null && rspFeeds.list.size() > 0){
+            mFeeds.addAll(rspFeeds.list);
+            Feeds f = rspFeeds.list.get(rspFeeds.list.size() - 1);
+            dateline = f.modify_time;
+            dbdateline = dateline;
+        }
+        notifyDataSetChanged();
+    }
+
+    public void deleteFeeds(String guid, long tid) {
+        if (TextUtils.isEmpty(guid) && tid <= 0) {
+            return;
+        }
+        Iterator<Feeds> iterator = mFeeds.iterator();
+        while (iterator.hasNext()) {
+            Feeds f = iterator.next();
+            if (f.tid == tid) {
+                iterator.remove();
+                notifyDataSetChanged();
+                return;
+            }
+        }
+    }
+
+    public void addComment(CommentInfo comment) {
+        if (comment == null || comment.tid <= 0) {
+            return;
+        }
+        for (Feeds feeds : mFeeds) {
+            if (comment.tid == feeds.tid) {
+                if (feeds.ext_topic_comments == null) {
+                    feeds.ext_topic_comments = new ArrayList<CommentInfo>();
+                }
+                ArrayList<CommentInfo> replys = feeds.ext_topic_comments;
+                int total = replys.size();
+                for (int i = 0; i < total; ++i) {
+                    CommentInfo dest = replys.get(i);
+                    if (comment.comment_id > 0 && comment.comment_id == dest.comment_id) {
+                        //已存在的正常评论
+                        AppLogger.i("equals " + dest.comment_id + "," + comment.content);
+                        return;
+                    } else if (comment.comment_id > 0 && comment.localid.equals(dest.localid)) {
+                        //替换已存在的发表中的评论
+                        replys.set(i, comment);
+                        notifyDataSetChanged();
+                        return;
+                    }
+                }
+                replys.add(comment);
+                notifyDataSetChanged();
+                return;
+            }
+        }
+
+    }
+
+    public void deleteComment(long tid, long ctid) {
+        if (tid <= 0 || ctid <= 0) {
+            return;
+        }
+        for (Feeds feeds : mFeeds) {
+            if (feeds.tid == tid) {
+                ArrayList<CommentInfo> replys = feeds.ext_topic_comments;
+                for (CommentInfo reply : replys) {
+                    if (reply.comment_id == ctid) {
+                        reply.flag = CommentInfo.COMMENT_DELETEED;
+                        notifyDataSetChanged();
+                        return;
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public int getCount() {
+        return mFeeds.size();
+    }
+
+    @Override
+    public Object getItem(int i) {
+        if (i < 0 || i >= getCount()) {
+            return null;
+        }
+        return mFeeds.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        TopicFeedsItemLayout viewHolder;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.item_topic_feeds,
+                    parent, false);
+            viewHolder = new TopicFeedsItemLayout(mContext, convertView, mOnFeedsClickListener);
+            viewHolder.mType = mType;
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (TopicFeedsItemLayout) convertView.getTag();
+        }
+        fillData(position, viewHolder);
+        return convertView;
+    }
+
+    private void fillData(int position, TopicFeedsItemLayout itemLayout) {
+        // boolean error = mErrorIds.contains(mFeeds.get(position).guid);
+        //Object upFeeds = getItem(position - 1);
+        //String upFeedsPhotoTime = "";
+        //if (upFeeds != null) {
+        //    upFeedsPhotoTime = ((Feeds) upFeeds).getPhotoTime();
+       // }
+        itemLayout.setFeeds((Feeds) getItem(position));
+    }
+}

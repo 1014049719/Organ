@@ -1,0 +1,33 @@
+package com.talenton.base.util;
+
+import android.graphics.Bitmap;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
+
+import com.nostra13.universalimageloader.core.assist.LoadedFrom;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+
+/**
+ * @author zjh
+ * @date 2016/6/2
+ */
+public class ScaleBitmapDisplayer  implements BitmapDisplayer{
+    private long durationMillis = 600;
+
+    @Override
+    public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+        imageAware.setImageBitmap(bitmap);
+
+        animate(imageAware.getWrappedView(), durationMillis);
+    }
+
+    private void animate(View imageView,long durationMillis){
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.5f,1f,0.5f,1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(durationMillis);
+        scaleAnimation.setInterpolator(new DecelerateInterpolator());
+        imageView.startAnimation(scaleAnimation);
+    }
+}

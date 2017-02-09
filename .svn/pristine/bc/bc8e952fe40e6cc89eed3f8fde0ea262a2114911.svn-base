@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.SelectAppActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/haveInviteCode"
+            style="@style/match_btn_style"
+            android:text="@string/user_have_invite_code" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_have_invite_code_hint"
+            android:textSize="@dimen/text_30"
+            android:textColor="@color/text_sub"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:layout_marginTop="@dimen/space_15_0"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/space_0_5"
+            android:layout_weight="1"
+            android:background="@color/list_div_color" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="或"
+            android:textSize="@dimen/text_34"
+            android:textColor="@color/text_main" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/space_0_5"
+            android:layout_weight="1"
+            android:background="@color/list_div_color" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/createPrivateApplication"
+            style="@style/match_btn_style"
+            android:text="@string/user_create_private_application" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_create_private_application_hint"
+            android:textSize="@dimen/text_30"
+            android:textColor="@color/text_sub"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:layout_marginTop="@dimen/space_15_0"/>
+    </LinearLayout>
+</LinearLayout>

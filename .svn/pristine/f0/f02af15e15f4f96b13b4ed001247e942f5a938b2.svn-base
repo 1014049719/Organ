@@ -1,0 +1,489 @@
+package com.talenton.organ.ui.shop;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import com.talenton.organ.R;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.widget.CommonAlertDialog;
+import com.talenton.base.widget.LoadingViewHolder;
+import com.talenton.organ.server.ShopServer;
+import com.talenton.organ.server.bean.shop.AdressInfo;
+import com.talenton.organ.server.bean.shop.RecvListAdressData;
+import com.talenton.organ.server.bean.shop.SendDeleteAdressData;
+import com.talenton.organ.server.bean.shop.SendEditAdressData;
+import com.talenton.organ.server.bean.shop.SendListAdressData;
+
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/4/22.
+ */
+/*
+管理收货地址
+ */
+public class ManageAdressActivity extends BaseCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
+
+
+    private Button mButton;
+   // private ArrayList<AdressInfo> mAdressInfoList;
+    private pick_class pickclass[];
+    private ListView mListView;
+    private AddressInAdapter mAdapter;
+    private CommonAlertDialog mDeleteOkDlg;
+    private LoadingViewHolder mLoading;
+    private static boolean beginForMine=false;
+    private static final int REQUEST_CODE_ADD_ADDRESS=3;
+    private static final int REQUEST_CODE_EDIT_ADDRESS=4;
+    private static final int REQUEST_CODE_EDIT_ADDRESS_MINE=5;
+    private boolean bShowInitDefaultAddress=false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        setContentView(R.layout.activity_shop_manage_adress);
+        super.onCreate(savedInstanceState);
+        initView();
+        getAdressList();
+
+    }
+/*
+    public static void startManageAdressActivity(Context context){
+        beginForMine=false;
+        Intent intent = new Intent(context, ManageAdressActivity.class);
+        context.startActivity(intent);
+    }
+*/
+    public static void startManageAdressActivityFromMine(Context context){
+        beginForMine=true;
+        Intent intent = new Intent(context, ManageAdressActivity.class);
+        context.startActivity(intent);
+    }
+    /**
+     * 初始化view
+     * @param
+     */
+    private void initView() {
+
+
+        mButton=(Button)findViewById(R.id.btn_add_address);
+        mButton.setOnClickListener(this);
+        mListView=(ListView)findViewById(R.id.adress_list_view);
+        mListView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        mAdapter = new AddressInAdapter(this);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(this);
+        View loading = findViewById(R.id.shop_manage_adress_loading_container);
+        mLoading = new LoadingViewHolder(mListView, loading, this, this);
+
+
+    }
+
+    /*
+    private void startEditActivity(AdressInfo mAdressInfo){
+        EditAddressActivity.startEditAddressActivity(this,mAdressInfo);
+    }
+*/
+    private void startEditActivityForResult(AdressInfo mAdressInfo,int code){
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("mAdressInfo", mAdressInfo);
+        intent.setClass(this, EditAddressActivity.class);
+        intent.putExtras(bundle);
+        startActivityForResult(intent,code);
+    }
+    private void deleteAdressClick(final int addressId){
+        if (mDeleteOkDlg == null) {
+            mDeleteOkDlg = new CommonAlertDialog(this);
+            mDeleteOkDlg.setTitle("确定要删除该地址么");
+        }
+
+        String stringText = "删除请点击确定,不删除点击取消";
+        mDeleteOkDlg.setMessage(stringText);
+        mDeleteOkDlg.setPositiveButton(
+                getString(android.R.string.yes),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        getDeleteAdress(addressId);
+                        mDeleteOkDlg.dismiss();
+
+
+                    }
+                });
+        mDeleteOkDlg.setNegativeButton(
+                getString(android.R.string.no),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDeleteOkDlg.dismiss();
+                    }
+                });
+        mDeleteOkDlg.show();
+
+    }
+    private  void getDeleteAdress(int addressId){
+
+        ShopServer.getDeleteAdress(new SendDeleteAdressData(addressId),
+                new XLTResponseCallback<Object>() {
+
+                    @Override
+                    public void onResponse(Object data, XLTError error) {
+
+                        // TODO Auto-generated method stub
+
+                        if ((error == null) && (data != null)) {
+
+                            Toast.makeText(getApplicationContext(), "删除地址成功", Toast.LENGTH_SHORT).show();
+                            getAdressList();
+                        } else {
+
+
+                        }
+
+                    }
+
+
+                });
+    }
+
+    private void editAddress(int address_id,String consignee,String mobile,String address,String area,int is_default) {
+        ShopServer.getEditAdress(new SendEditAdressData(address_id, consignee, mobile, address, area, is_default), new XLTResponseCallback<Object>() {
+
+            @Override
+            public void onResponse(Object data, XLTError error) {
+                // TODO Auto-generated method stub
+                if ((error == null) && (data != null)) {
+                    Toast.makeText(getApplicationContext(), "编辑地址成功", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+
+
+                }
+
+            }
+
+        });
+    }
+
+
+    private  void getAdressList(){
+        SendListAdressData mSendListAdressData= new SendListAdressData();
+        ShopServer.getAdressListData(mSendListAdressData,
+                new XLTResponseCallback<RecvListAdressData>() {
+
+                    @Override
+                    public void onResponse(RecvListAdressData data, XLTError error) {
+     //                   mLoading.showView(LoadingViewHolder.VIEW_TYPE_LOADING);
+                        // TODO Auto-generated method stub
+
+                        if ((error == null) && (data != null)) {
+           //                 mLoading.showView(LoadingViewHolder.VIEW_TYPE_DATA);
+                      //      mAdressInfoList = data.list;
+                            mAdapter.setData( data.list);
+                            bShowInitDefaultAddress=false;
+                            pickclass=new pick_class[data.list.size()];
+                            for (int i = 0; i < data.list.size(); i++) {
+                                pickclass[i] = new pick_class();
+
+                            }
+
+                        }  else if(error != null) {
+            //                mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_NOTWORK);
+                            Toast.makeText(getApplicationContext(), error.getMesssage(), Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "您暂时没有地址，请添加新地址", Toast.LENGTH_SHORT).show();
+           //                 mLoading.showView(LoadingViewHolder.VIEW_TYPE_NO_DATA);
+                        }
+
+                    }
+
+
+                });
+    }
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.shop_text_manage_address;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        switch (v.getId()) {
+            case R.id.btn_add_address:
+                intent.setClass(ManageAdressActivity.this, AddNewAdressActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD_ADDRESS);
+                break;
+            case R.id.btn_reload:
+            case R.id.empty_action:
+                getAdressList();
+                break;
+
+
+        }
+    }
+
+    public class AddressInAdapter extends BaseAdapter {
+        private LayoutInflater mInflater;
+        private ArrayList<AdressInfo> mAdressInfo;
+
+
+        public AddressInAdapter(Context context) {
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mAdressInfo = new ArrayList<AdressInfo>();
+
+
+        }
+
+        public int getCount() {
+            return mAdressInfo.size();
+        }
+
+        public void setData(ArrayList<AdressInfo> paths) {
+            mAdressInfo.clear();
+            mAdressInfo.addAll(paths);
+
+            notifyDataSetChanged();
+        }
+        public void changeSelected(int position){ //刷新方法
+
+            {
+
+
+                if(pickclass[position].mbSelect){
+                    pickclass[position].mbSelect=false;
+
+                }
+
+                else{
+                    for(int i=0;i<pickclass.length;i++){
+                        pickclass[i].mbSelect=false;
+                    }
+                    pickclass[position].mbSelect=true;
+
+                }
+
+            }
+            notifyDataSetChanged();
+
+        }
+
+
+        public AdressInfo getItem(int position) {
+            return mAdressInfo.get(position);
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.item_shop_address, parent, false);
+                holder.setDefault = (ImageButton)convertView.findViewById(R.id.shop_not_set_defalut_address);
+                holder.setDefaultLinearLayout=(LinearLayout)convertView.findViewById(R.id.LinearLayout_shop_not_set_defalut_address);
+                holder.edit=(LinearLayout)convertView.findViewById(R.id.LinearLayout_shop_address_edit);
+                holder.delete=(LinearLayout)convertView.findViewById(R.id.LinearLayout_shop_delete_address);
+                holder.shop_address_edit = (ImageButton)convertView.findViewById(R.id.shop_address_edit);
+                holder.shop_delete_address = (ImageButton)convertView.findViewById(R.id.shop_delete_address);
+                holder.address_manage_name=(TextView)convertView.findViewById(R.id.address_manage_name);
+                holder.address_manage_number=(TextView)convertView.findViewById(R.id.address_manage_number);
+                holder.address_manage_area=(TextView)convertView.findViewById(R.id.address_manage_area);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.position = position;
+            final AdressInfo item = getItem(position);
+            holder.address_manage_name.setText(item.consignee);
+            holder.address_manage_number.setText(item.mobile);
+            holder.address_manage_area.setText(item.area+item.address);
+
+            if(!bShowInitDefaultAddress) {
+
+                if (item.is_default == 1) {
+                    bShowInitDefaultAddress=true;
+                    pickclass[position].mbSelect=true;
+                }
+            }
+
+            if (pickclass[position].mbSelect) {
+
+                holder.setDefault.setImageResource((R.mipmap.icon_shop_set_default_address));
+
+            } else {
+
+                holder.setDefault.setImageResource((R.mipmap.icon_shop_not_set_defalut_address));
+            }
+            holder.setDefaultLinearLayout.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    changeSelected(position);
+                    editAddress(item.address_id,item.consignee,item.mobile,item.area,item.address,1);
+                }
+
+            });
+            holder.setDefault.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    changeSelected(position);
+                    editAddress(item.address_id,item.consignee,item.mobile,item.area,item.address,1);
+                }
+
+            });
+
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    AdressInfo mAdressInfo = (AdressInfo) mAdapter.getItem(position);
+                    if(beginForMine) {
+                        startEditActivityForResult(mAdressInfo,REQUEST_CODE_EDIT_ADDRESS_MINE);
+                    }else{
+                        startEditActivityForResult(mAdressInfo,REQUEST_CODE_EDIT_ADDRESS);
+                    }
+
+                }
+
+            });
+            holder.shop_address_edit.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    AdressInfo mAdressInfo = (AdressInfo) mAdapter.getItem(position);
+                    if(beginForMine) {
+                        startEditActivityForResult(mAdressInfo,REQUEST_CODE_EDIT_ADDRESS_MINE);
+                    }else{
+                        startEditActivityForResult(mAdressInfo,REQUEST_CODE_EDIT_ADDRESS);
+                    }
+
+                }
+
+            });
+
+            holder.delete.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    AdressInfo mAdressInfo = (AdressInfo) mAdapter.getItem(position);
+
+                    deleteAdressClick(mAdressInfo.address_id);
+                }
+
+            });
+
+            holder.shop_delete_address.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    AdressInfo mAdressInfo = (AdressInfo) mAdapter.getItem(position);
+
+                    deleteAdressClick(mAdressInfo.address_id);
+                }
+
+            });
+
+            return convertView;
+        }
+
+        public class ViewHolder {
+            ImageButton setDefault;
+            LinearLayout setDefaultLinearLayout;
+            LinearLayout delete;
+            LinearLayout edit;
+            ImageButton shop_address_edit;
+            ImageButton shop_delete_address;
+            TextView address_manage_name;
+            TextView address_manage_number;
+            TextView address_manage_area;
+            public int position;
+        }
+
+
+
+    }
+
+    public class pick_class{
+
+        public boolean mbSelect;//是否选中
+    }
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CODE_ADD_ADDRESS) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                setResult(RESULT_OK, data);
+                if(beginForMine){
+                    getAdressList();
+                    beginForMine=false;
+                }
+                else{
+                    finish();
+                }
+             //   AdressInfo  mDefautAdress = (AdressInfo) data.getExtras().getSerializable("mSelected");
+
+            }
+        }
+        if (requestCode == REQUEST_CODE_EDIT_ADDRESS_MINE) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+             //   setResult(RESULT_OK, data);
+
+                    getAdressList();
+
+                }
+                //   AdressInfo  mDefautAdress = (AdressInfo) data.getExtras().getSerializable("mSelected");
+
+
+        }
+        if (requestCode == REQUEST_CODE_EDIT_ADDRESS) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                setResult(RESULT_OK, data);
+                finish();
+
+            }
+            //   AdressInfo  mDefautAdress = (AdressInfo) data.getExtras().getSerializable("mSelected");
+
+
+        }
+    }
+}
+

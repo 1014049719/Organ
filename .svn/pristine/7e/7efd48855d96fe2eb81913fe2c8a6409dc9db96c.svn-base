@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.talenton.organ.ui.user.PointSucceedActivity"
+    android:orientation="vertical">
+
+    <!--头部导航-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="兑换信息"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_38"
+                android:textColor="#333333"
+                android:layout_marginLeft="@dimen/space_10"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e5e5e5"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/shr_icon"
+                android:layout_marginLeft="17dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收货人："
+                android:textColor="#333333"
+                android:textSize="@dimen/text_34"
+                android:layout_marginLeft="@dimen/space_5_0"/>
+            <TextView
+                android:id="@+id/name_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="王先生"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_34" />
+            <TextView
+                android:id="@+id/number_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18928960824"
+                android:textSize="@dimen/text_34"
+                android:textColor="#333333"
+                android:layout_marginLeft="@dimen/space_15_0"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:background="#e5e5e5"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/space_10_0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/dz_icon"
+                android:layout_marginLeft="17dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="地    址："
+                android:textColor="#333333"
+                android:textSize="@dimen/text_34"
+                android:layout_marginLeft="@dimen/space_5_0"/>
+            <TextView
+                android:id="@+id/address_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="广东省广州市暗示是大大大是大幅度发发的发生第三方"
+                android:textColor="#333333"
+                android:textSize="@dimen/text_34" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/dcg_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="兑换成功"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="#3dcc56"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="60dp">
+        <Button
+            android:id="@+id/backDetail_btn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_point_bg_white_corner_gray"
+            android:text="查看记录"
+            android:textColor="#333333"
+            android:textSize="@dimen/text_32"/>
+        <Button
+            android:id="@+id/backMine_btn"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg_corner_blue"
+            android:text="返回我的"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_32"
+            android:layout_marginLeft="35dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

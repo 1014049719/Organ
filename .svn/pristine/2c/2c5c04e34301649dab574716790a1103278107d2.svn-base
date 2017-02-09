@@ -1,0 +1,31 @@
+package com.talenton.organ.server;
+
+import com.google.gson.JsonObject;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.organ.server.bean.operation.RspHomeAdvertisement;
+
+/**
+ * Created by ttt on 2016/4/5.
+ */
+public class OperationProjectServer {
+    /* 获得手机端启动广告数据接口 */
+    public final static String HOME_ADVERTISEMENT_URL="user.php?mod=ad&cmdcode=15";
+
+    public static void getHomeAdvertisement(int type, final XLTResponseCallback<RspHomeAdvertisement> listener) {
+        JsonObject jo = new JsonObject();
+        jo.addProperty("advPosition", type);
+        OkHttpClientManager.getInstance().addGsonRequest(HOME_ADVERTISEMENT_URL, RspHomeAdvertisement.class,
+          new XLTResponseListener<RspHomeAdvertisement>() {
+
+            @Override
+            public void onResponse(RspHomeAdvertisement responseData, XLTError errorData) {
+
+                listener.onResponse(responseData, errorData);
+
+            }
+         }, jo.toString());
+    }
+}

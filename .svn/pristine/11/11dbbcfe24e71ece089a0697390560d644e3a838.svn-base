@@ -1,0 +1,18 @@
+package com.talenton.organ.server.bean.shop;
+
+import java.io.Serializable;
+
+/**
+ * Created by xiaoxiang on 2016/4/22.
+ */
+public class AdressInfo implements Serializable {
+    public int address_id;
+    public String address;
+    public String mobile;
+    public String consignee;
+    public String area;
+    public String zipcode;
+    public int is_default;
+    public String best_time;
+
+}

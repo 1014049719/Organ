@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bbg="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_80"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_80"
+        android:background="@color/white"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:paddingLeft="@dimen/space_15_0">
+        <com.talenton.base.widget.CornerView
+            android:id="@+id/feeds_tag_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_8_0"
+            android:layout_marginBottom="-3dp"
+            bbg:corner_radius="@dimen/space_8_0" />
+        <ImageView
+            android:id="@+id/iv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/rank1"
+            android:scaleType="centerCrop" />
+        <TextView
+            android:id="@+id/tv_rank_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/space_10_0"
+            android:paddingLeft="@dimen/space_10_0"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_32" />
+        <com.talenton.base.widget.CircleImageView
+            android:id="@+id/user_logo"
+            android:layout_width="@dimen/height_50"
+            android:layout_height="@dimen/height_50"
+            android:layout_marginLeft="@dimen/width_40"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/user_photo"
+            bbg:civ_border_color="@color/transparent"
+            bbg:civ_border_width="0.5dp" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/user_logo"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_32" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/tv_title"
+            android:layout_toRightOf="@+id/user_logo"
+            android:layout_marginLeft="@dimen/space_10_0"
+            android:layout_marginTop="@dimen/space_10_0">
+            <TextView
+                android:id="@+id/tv_topics_num"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_24" />
+            <TextView
+                android:id="@+id/tv_like_num"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_24" />
+            <TextView
+                android:id="@+id/tv_reply_num"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_24" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_10_0"
+            android:layout_alignParentBottom="true"
+            android:background="@mipmap/feeds_list_bg_bottom">
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

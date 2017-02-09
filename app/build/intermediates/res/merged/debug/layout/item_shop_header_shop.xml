@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    tools:context="com.talenton.organ.ui.shop.ShopFragment">
+    <!--商城-->
+    <!--搜索和购物车-->
+    <!--广告-->
+    <com.talenton.organ.widget.AdvertisementView
+        android:id="@+id/shop_widget_advertisement"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="160dp" />
+
+
+    <!--优惠推荐热卖分类-->
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp">
+
+        <com.talenton.base.widget.ImageTextButton
+            android:id="@+id/btn_shop_discount"
+            lsg:text_size="@dimen/text_28"
+            lsg:text="@string/shop_text_discount"
+            lsg:src="@mipmap/icon_shop_discount"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <com.talenton.base.widget.ImageTextButton
+            android:id="@+id/btn_shop_recommend"
+            lsg:text_size="@dimen/text_28"
+            lsg:text="@string/shop_text_recommend"
+            lsg:src="@mipmap/icon_shop_recommend"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+        <com.talenton.base.widget.ImageTextButton
+            android:id="@+id/btn_shop_hot_sale"
+            lsg:text_size="@dimen/text_28"
+            lsg:text="@string/shop_text_hot"
+            lsg:src="@mipmap/icon_shop_hotsale"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+        <com.talenton.base.widget.ImageTextButton
+            android:id="@+id/btn_shop_classify"
+            lsg:text_size="@dimen/text_28"
+            lsg:text="@string/shop_text_classify"
+            lsg:src="@mipmap/icon_shop_classify"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

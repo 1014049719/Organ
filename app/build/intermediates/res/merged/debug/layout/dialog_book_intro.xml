@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/half_transparent"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_weight="4"
+        android:layout_margin="@dimen/space_15_0"
+        android:background="@drawable/btn_white_corner_bg"
+        android:divider="@color/transparent"
+        android:dividerHeight="@dimen/space_15_0"
+        android:listSelector="@null"
+        android:padding="@dimen/space_15_0"
+        android:scrollbars="none"
+        tools:listitem="@layout/item_gift_book_intro" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

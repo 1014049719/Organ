@@ -1,0 +1,161 @@
+package com.talenton.organ.server.bean.school;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * @author zjh
+ * @date 2016/4/27
+ */
+public class ClassBriefData implements Parcelable {
+    public static final int FREE = 0;
+    public static final int CHARGE = 1;
+    private long aid; //课程ID
+    private String title; //课程标题
+    private float starcount; //星数
+    private int ispay; //是否付费
+    private double price; //价格
+    private int likecount;  //点赞数
+    private String content; //简介
+    private int commentcount; //评论数
+    private int islike; //是否点赞
+    private int iscollection; //是否收藏
+
+    public ClassBriefData(long aid, String title, float starcount, int ispay, double price, int likecount, String content, int commentcount, int islike, int iscollection) {
+        this.aid = aid;
+        this.title = title;
+        this.starcount = starcount;
+        this.ispay = ispay;
+        this.price = price;
+        this.likecount = likecount;
+        this.content = content;
+        this.commentcount = commentcount;
+        this.islike = islike;
+        this.iscollection = iscollection;
+    }
+
+    public int getIscollection() {
+        return iscollection;
+    }
+
+    public void setIscollection(int iscollection) {
+        this.iscollection = iscollection;
+    }
+
+    public int getIslike() {
+        return islike;
+    }
+
+    public void setIslike(int islike) {
+        this.islike = islike;
+    }
+
+    public int getCommentcount() {
+        return commentcount;
+    }
+
+    public void setCommentcount(int commentcount) {
+        this.commentcount = commentcount;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getLikecount() {
+        return likecount;
+    }
+
+    public void setLikecount(int likecount) {
+        this.likecount = likecount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getIspay() {
+        return ispay;
+    }
+
+    public void setIspay(int ispay) {
+        this.ispay = ispay;
+    }
+
+    public float getStarcount() {
+        return starcount;
+    }
+
+    public void setStarcount(float starcount) {
+        this.starcount = starcount;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getAid() {
+        return aid;
+    }
+
+    public void setAid(long aid) {
+        this.aid = aid;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.aid);
+        dest.writeString(this.title);
+        dest.writeFloat(this.starcount);
+        dest.writeInt(this.ispay);
+        dest.writeDouble(this.price);
+        dest.writeInt(this.likecount);
+        dest.writeString(this.content);
+        dest.writeInt(this.commentcount);
+        dest.writeInt(this.islike);
+        dest.writeInt(this.iscollection);
+    }
+
+    protected ClassBriefData(Parcel in) {
+        this.aid = in.readLong();
+        this.title = in.readString();
+        this.starcount = in.readFloat();
+        this.ispay = in.readInt();
+        this.price = in.readDouble();
+        this.likecount = in.readInt();
+        this.content = in.readString();
+        this.commentcount = in.readInt();
+        this.islike = in.readInt();
+        this.iscollection = in.readInt();
+    }
+
+    public static final Creator<ClassBriefData> CREATOR = new Creator<ClassBriefData>() {
+        @Override
+        public ClassBriefData createFromParcel(Parcel source) {
+            return new ClassBriefData(source);
+        }
+
+        @Override
+        public ClassBriefData[] newArray(int size) {
+            return new ClassBriefData[size];
+        }
+    };
+}

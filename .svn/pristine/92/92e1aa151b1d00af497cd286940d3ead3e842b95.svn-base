@@ -1,0 +1,47 @@
+package com.talenton.base.server.bean;
+
+import java.util.LinkedList;
+
+public class RspLogin {
+	// errorcode:
+	// $msg_arr[101] = '无法找到该用户';O
+	// $msg_arr[102] = '登陆失败';
+	// $msg_arr[261] = '密码错误';
+	// $msg_arr[262] = '安全提问错';
+
+	public final static Integer[] FATAL_ERROR = { 101, 102, 261, 262 };
+	public UserInfo member;
+	public String sessid; // SESSION ID，当登录成功时返回
+
+	public int open_statistics; //统计开关，1-开、0-关
+	public String qntoken;
+	public String qndns;
+	public String access_token;
+	public String ec_url;
+
+	public LinkedList<AppModule> app_model;
+	public LinkedList<AppType> app_type;
+	public AppData app_cur;
+	public LinkedList<AppData> app_list;
+
+	/**
+	 * 致命错误，缓存也不允许进去了
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public static boolean isFatal(int code) {
+		for (int i : FATAL_ERROR) {
+			if (i == code) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public UserInfo getUserInfo(){
+		if (member != null) return member;
+
+		return UserInfo.EMPTY;
+	}
+}

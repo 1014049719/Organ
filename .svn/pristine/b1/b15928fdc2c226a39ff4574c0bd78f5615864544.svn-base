@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3683e5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#cccccc</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_2">#20000000</color>
+    <color name="transparent_3">#30000000</color>
+    <color name="transparent_5">#50000000</color>
+    <color name="transparent_6">#60000000</color>
+    <color name="transparent_7">#70000000</color>
+    <color name="transparent_white_5">#50ffffff</color>
+    <color name="translucent">#e0000000</color>
+    <color name="text_light">#cccccc</color>
+    <color name="divider_main">#dddddd</color>
+    <color name="text_green2">#6dcf6b</color>
+    <color name="text_blue">#599def</color>
+    <color name="gray_main">#ABA7A2</color>
+    <color name="gray1">#ff787878</color>
+    <color name="gray2">#EDEDED</color>
+    <color name="gray">#f2f2f2</color>
+    <color name="green_3">#3fbb65</color>
+    <color name="text_red">#ff6440</color>
+    <color name="black_divider">#444444</color>
+    <color name="circle_white">#f2f2f2</color>
+
+    <!-- login -->
+    <color name="login_qq">#51aafc</color>
+    <color name="login_wechat">#27dd30</color>
+    <color name="login_phone">#FEC300</color>
+
+    <!-- menucolor -->
+    <color name="menu_main">#ff6440</color>
+    <color name="menu_main_pressed">#ec5633</color>
+    <color name="menu_yellow">#ffba00</color>
+    <color name="menu_yellow_pressed">#ffa800</color>
+    <color name="main_menu_text_color">#3A82CF</color>
+    <color name="divider_photo_time">#eeeeee</color>
+    <color name="divider_gift">#f0e7c5</color>
+    <drawable name="feeds_skin_default">#00000000</drawable>
+    <color name="transparent_yellow">#ccffba00</color>
+    <color name="main_blue">#3983cc</color>
+    <color name="black_bg">#333333</color>
+    <color name="black_mark">#CC000000</color>
+    <color name="mask_white">#E6FFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="text_green">#6ece6b</color>
+
+    <!--学堂首页字体左边竖线颜色-->
+    <color name="text_vertical_line">#1A91BC</color>
+    <color name="divider_line">#e5e5e5</color>
+    <!--学堂免费字体颜色 -->
+    <color name="text_free">#3fbb65</color>
+    <!--学堂收费字体颜色 -->
+    <color name="text_charge">#ff8434</color>
+    <color name="catalog_text_bg">#F2F2F2</color>
+    <color name="text_limit">#666666</color>
+    <!--放弃学习背景颜色-->
+    <color name="bg_give_up">#fa4534</color>
+
+    <!-- 圈子 -->
+    <color name="feeds_circle_private">#FF8434</color>
+    <color name="feeds_circle_public">#3FBB65</color>
+    <color name="feeds_circle_share">#44D188</color>
+
+    <!-- 积分 -->
+    <color name="point_blue">#3983cc</color>
+</resources>

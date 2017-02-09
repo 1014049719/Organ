@@ -1,0 +1,618 @@
+package com.talenton.organ.server;
+
+import android.text.TextUtils;
+
+import com.google.gson.JsonObject;
+import com.talenton.base.okhttp.OkHttpClientManager;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.XLTResponseListener;
+import com.talenton.base.server.bean.BabyData;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.user.DuihuanParam;
+import com.talenton.organ.server.bean.user.ReqAppInfo;
+import com.talenton.organ.server.bean.user.FamilyData;
+import com.talenton.organ.server.bean.user.MyOrdersParam;
+import com.talenton.organ.server.bean.user.MyPointsParam;
+import com.talenton.organ.server.bean.user.MyTopicParam;
+import com.talenton.organ.server.bean.user.PingjiaParam;
+import com.talenton.organ.server.bean.user.ReqBabayData;
+import com.talenton.organ.server.bean.user.ReqListApproval;
+import com.talenton.organ.server.bean.user.ReqModifyUserInfo;
+import com.talenton.organ.server.bean.user.ReqPostApproval;
+import com.talenton.organ.server.bean.user.ReqSchoolData;
+import com.talenton.organ.server.bean.user.ReqSuggestion;
+import com.talenton.organ.server.bean.user.RspAppData;
+import com.talenton.organ.server.bean.user.RspAttentionUserApp;
+import com.talenton.organ.server.bean.user.RspBrowser;
+import com.talenton.organ.server.bean.user.RspCustomerServiceInfo;
+import com.talenton.organ.server.bean.user.RspHelperList;
+import com.talenton.organ.server.bean.user.RspListApproval;
+import com.talenton.organ.server.bean.user.RspMemberList;
+import com.talenton.organ.server.bean.user.RspMyFollowAppListData;
+import com.talenton.organ.server.bean.user.RspMyOrders;
+import com.talenton.organ.server.bean.user.RspMyPoints;
+import com.talenton.organ.server.bean.user.RspMyTopic;
+import com.talenton.organ.server.bean.user.RspObject;
+import com.talenton.organ.server.bean.user.RspSchoolBaby;
+import com.talenton.organ.server.bean.user.RspShopPoints;
+import com.talenton.organ.server.bean.user.SchoolBabyData;
+import com.talenton.organ.server.bean.user.ShopPointsParam;
+import com.talenton.organ.server.bean.user.UploadFile;
+import com.talenton.organ.server.bean.user.event.ShouhuoParam;
+import com.talenton.organ.server.bean.user.RspListBabyData;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+/**
+ * Created by ttt on 2016/4/18.
+ */
+public class MineServer {
+
+    //上传头像
+    public static void uploadFile(long uid, File file, final XLTResponseCallback<UploadFile> listener) {
+        Map<String, String> params = new HashMap<>();
+        params.put("uid", String.valueOf(uid));
+        OkHttpClientManager.getInstance().addFileReqeust(UploadFile.URL, UploadFile.class, new XLTResponseListener<UploadFile>() {
+
+            @Override
+            public void onResponse(UploadFile responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, params, "avartar", file);
+    }
+
+    //获取学校列表
+    public static void getSchoolDatas(String province, String city, String dist, final XLTResponseCallback<ReqSchoolData> listener) {
+        JsonObject json = new JsonObject();
+        if (!TextUtils.isEmpty(province)) {
+            json.addProperty("resideprovince", province);
+        }
+        if (!TextUtils.isEmpty(city)) {
+            json.addProperty("residecity", city);
+        }
+        if (!TextUtils.isEmpty(dist)) {
+            json.addProperty("residedist", dist);
+        }
+        OkHttpClientManager.getInstance().addGsonRequest(ReqSchoolData.URL, ReqSchoolData.class, new XLTResponseListener<ReqSchoolData>() {
+
+            @Override
+            public void onResponse(ReqSchoolData responseData, XLTError errorData) {
+                if (listener != null) {
+                    listener.onResponse(responseData, errorData);
+                }
+            }
+        }, json.toString());
+    }
+
+    //修改个人信息
+    public static void modifiyPersonal(String realname, BabyData babyData, final XLTResponseCallback<RspObject> listener) {
+        JsonObject json = new JsonObject();
+        json.addProperty("realname", realname);
+        //if (!TextUtils.isEmpty(userInfo.password)) {
+        //    json.addProperty("password", userInfo.password);
+        //}\
+
+        if (babyData != null) {
+            json.addProperty("baobaoname", babyData.name);
+            json.addProperty("birthday", babyData.birthday);
+            json.addProperty("schoolid", babyData.schoolid);
+            json.addProperty("schoolname", babyData.classname);
+            json.addProperty("resideprovince", babyData.resideprovince);
+            json.addProperty("residecity", babyData.residecity);
+            json.addProperty("residedist", babyData.residedist);
+        }
+
+        OkHttpClientManager.getInstance().addGsonRequest(ObjectCode.URL_MODIFY_PERSONAL, RspObject.class,
+                new XLTResponseListener<RspObject>() {
+
+                    @Override
+                    public void onResponse(RspObject responseData, XLTError errorData) {
+                        listener.onResponse(responseData, errorData);
+                    }
+                }, json.toString());
+    }
+
+    //获取省份城市地区内容
+    public static void getRegions(int id, final XLTResponseCallback<RspObject> listener) {
+        JsonObject jo = new JsonObject();
+        jo.addProperty("parentID", id);
+        OkHttpClientManager.getInstance().addGsonRequest("user.php?mod=district&cmdcode=11", RspObject.class,
+                new XLTResponseListener<RspObject>() {
+
+                    @Override
+                    public void onResponse(RspObject responseData, XLTError errorData) {
+                        if (listener != null)
+                            listener.onResponse(responseData, errorData);
+                    }
+                }, jo.toString());
+    }
+
+    //获取同校宝宝列表
+    public static void getSchoolBaby(String value, final int type, final XLTResponseCallback<RspSchoolBaby> listener) {
+        JsonObject json = new JsonObject();
+        String url;
+        if (type == 1) {
+            json.addProperty("baobaouid", Long.parseLong(value));
+            url = "user.php?mod=sameschoolbaobao&cmdcode=108";
+        } else {
+            json.addProperty("mobile", value);
+            url = "user.php?mod=getbaobaobymobile&cmdcode=109";
+        }
+
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspSchoolBaby.class,
+                new XLTResponseListener<RspSchoolBaby>() {
+
+                    @Override
+                    public void onResponse(RspSchoolBaby responseData, XLTError errorData) {
+
+                        if (type == 1 && responseData != null && responseData.list != null) {
+                            BabyData mBabyData = UserServer.getCurrentUser().getBaobaodata();
+                            if(mBabyData != null && mBabyData.baobaouid > 0) {
+                                Iterator<SchoolBabyData> iterator = responseData.list.iterator();
+                                while (iterator.hasNext()) {
+                                    SchoolBabyData d = iterator.next();
+                                    if (d.baobaouid == mBabyData.baobaouid) {
+                                        iterator.remove();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        listener.onResponse(responseData, errorData);
+                    }
+                }, json.toString());
+    }
+
+    //获取积分
+    public static void getMyPointsData(MyPointsParam myPointsParam,final XLTResponseCallback<RspMyPoints>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest(myPointsParam.URL, RspMyPoints.class, new XLTResponseListener<RspMyPoints>() {
+            @Override
+            public void onResponse(RspMyPoints responseData, XLTError errorData) {
+
+                listener.onResponse(responseData,errorData);
+            }
+        },OkHttpClientManager.getInstance().getmGson().toJson(myPointsParam));
+    }
+
+    //积分兑换
+    public static void getDuihuanData(DuihuanParam duihuanParam,final XLTResponseCallback<ObjectCode>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest(duihuanParam.URL, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                listener.onResponse(responseData,errorData);
+            }
+        },OkHttpClientManager.getInstance().getmGson().toJson(duihuanParam),30000);
+    }
+
+    //我收藏的话题
+    public static void getMyTopicData(MyTopicParam myTopicParam,final XLTResponseCallback<RspMyTopic>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest(myTopicParam.URL, RspMyTopic.class, new XLTResponseListener<RspMyTopic>() {
+            @Override
+            public void onResponse(RspMyTopic responseData, XLTError errorData) {
+
+                listener.onResponse(responseData,errorData);
+            }
+        },OkHttpClientManager.getInstance().getmGson().toJson(myTopicParam));
+
+    }
+
+    //获取积分商城列表
+    public  static void getShopPointsData(ShopPointsParam shopPointsParam,final XLTResponseCallback<RspShopPoints>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest(shopPointsParam.URL, RspShopPoints.class, new XLTResponseListener<RspShopPoints>() {
+            @Override
+            public void onResponse(RspShopPoints responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(shopPointsParam));
+    }
+
+    //我的订单列表
+    public static void getMyOrdersData(MyOrdersParam myOrdersParam,final XLTResponseCallback<RspMyOrders>listener){
+
+        OkHttpClientManager.getInstance().addGsonRequest1(myOrdersParam.URL, RspMyOrders.class, new XLTResponseListener<RspMyOrders>() {
+            @Override
+            public void onResponse(RspMyOrders responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(myOrdersParam));
+    }
+
+    //确认收货
+    public static void shouhuoData(ShouhuoParam shouhuoParam,final XLTResponseCallback<ObjectCode>listener){
+        OkHttpClientManager.getInstance().addGsonRequest1(shouhuoParam.URL, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                listener.onResponse(responseData,errorData);
+            }
+        },OkHttpClientManager.getInstance().getmGson().toJson(shouhuoParam));
+
+    }
+
+    //商品评价(无返回参数)
+    public static void pingJiaData(PingjiaParam param,final XLTResponseCallback<ObjectCode>listener){
+        OkHttpClientManager.getInstance().addGsonRequest1(param.URL, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, OkHttpClientManager.getInstance().getmGson().toJson(param));
+    }
+
+
+    //反馈
+    public static void postSuggestion(ReqSuggestion reqSuggestion,final XLTResponseListener<JSONObject> listener){
+        if (reqSuggestion == null){
+            return;
+        }
+        OkHttpClientManager.getInstance().addGsonRequest(reqSuggestion.getReqUrl(), JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+                listener.onResponse(responseData, errorData);
+            }
+        }, reqSuggestion.getReqParams());
+    }
+
+    //获取帮助列表
+    public static void getHelperList(final XLTResponseListener<RspHelperList> listener){
+        String url = "my.php?mod=helplist&cmdcode=94";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspHelperList.class, new XLTResponseListener<RspHelperList>() {
+            @Override
+            public void onResponse(RspHelperList responseData, XLTError errorData) {
+                if (errorData == null && responseData != null){
+                    //请求成功
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },"");
+    }
+
+    //获得话题浏览人接口
+    public static void getBrowserList(long tid, String order, String pager, final XLTResponseCallback<RspBrowser> listener){
+        JsonObject json = new JsonObject();
+        json.addProperty("tid", tid);
+
+        if(!TextUtils.isEmpty(order)){
+            json.addProperty("query_orderby", order);
+        }
+        if(!TextUtils.isEmpty(pager)){
+            json.addProperty("query_pager", pager);
+        }
+
+        String url = "topic.php?mod=gettopicbrowserecords&cmdcode=88";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspBrowser.class, new XLTResponseListener<RspBrowser>() {
+            @Override
+            public void onResponse(RspBrowser responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },json.toString());
+    }
+
+    //修改宝宝关系
+    public static void modifyRelationBaby(long uid, long babyId, int gxid, String gxname, final XLTResponseCallback<ObjectCode> listener){
+        JsonObject json = new JsonObject();
+        json.addProperty("uid", uid);
+        json.addProperty("baobaouid", babyId);
+        json.addProperty("gxid", gxid);
+        json.addProperty("gxname", gxname);
+
+        String url = "user.php?mod=modgx&cmdcode=123";
+        OkHttpClientManager.getInstance().addGsonRequest(url, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },json.toString());
+    }
+
+    //设置/取消圈子管理员接口
+    public static void modifyFamilyAuthority(long circleId, long uid, int attentionType, final XLTResponseCallback<ObjectCode> listener){
+        JsonObject json = new JsonObject();
+        json.addProperty("uid", uid);
+        json.addProperty("circle_id", circleId);
+        json.addProperty("attention_type", attentionType);
+
+        String url = "circle.php?mod=circle&ac=setmangerstatus&cmdcode=22";
+        OkHttpClientManager.getInstance().addGsonRequest(url, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },json.toString());
+    }
+
+    /**
+     * 获取审批列表
+     */
+    public static class ApprovalListServer implements IListServer<RspListApproval>{
+        private ReqListApproval reqListApproval;
+        public ApprovalListServer(ReqListApproval reqListApproval){
+            this.reqListApproval = reqListApproval;
+        }
+
+
+        @Override
+        public void getData(int page, final int limit, final XLTResponseCallback<RspListApproval> listener) {
+            reqListApproval.setPage(page);
+            reqListApproval.setGetcount(limit);
+            String url = reqListApproval.getReqUrl();
+            String param = reqListApproval.getReqParams();
+            OkHttpClientManager.getInstance().addGsonRequest(url, RspListApproval.class, new XLTResponseListener<RspListApproval>() {
+                @Override
+                public void onResponse(RspListApproval responseData, XLTError errorData) {
+                    if (errorData == null && responseData != null){
+                        //TODO 请求成功
+                        BaseCacheServer.getInstance().saveOrReplaceHttpCacheData(reqListApproval.getReqUrl(),reqListApproval.getReqParams(),OkHttpClientManager.getInstance().getmGson().toJson(responseData));
+                    }
+                    if (listener != null){
+                        listener.onResponse(responseData,errorData);
+                    }
+                }
+            },param);
+        }
+
+        @Override
+        public RspListApproval getCacheData() {
+            return BaseCacheServer.getInstance().getRspCacheData(reqListApproval.getReqUrl(),reqListApproval.getReqParams(),RspListApproval.class);
+        }
+    }
+
+    /**
+     * 提交是否同意申请请求
+     * @param reqPostApproval
+     * @param listener
+     */
+    public static void postApproval(ReqPostApproval reqPostApproval,final XLTResponseCallback<ObjectCode> listener){
+        String url = reqPostApproval.getReqUrl();
+        String param = reqPostApproval.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },param);
+    }
+
+    /**
+     * 修改宝宝基础数据或学校
+     * @param reqBabayData
+     * @param listener
+     */
+    public static void modifyBabyInfo(ReqBabayData reqBabayData,final XLTResponseCallback<ObjectCode> listener){
+        String url = reqBabayData.getReqUrl();
+        String param = reqBabayData.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },param);
+    }
+
+    /**
+     * 获取我孩子信息
+     * @param listener
+     */
+    public static void getMyChildInfo(final XLTResponseCallback<RspListBabyData> listener){
+        String url = "my.php?mod=baobaoinfo&cmdcode=37";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspListBabyData.class, new XLTResponseListener<RspListBabyData>() {
+            @Override
+            public void onResponse(RspListBabyData responseData, XLTError errorData) {
+                listener.onResponse(responseData,errorData);
+            }
+        },"");
+    }
+
+    /**
+     * 修改个人信息
+     * @param reqModifyUserInfo
+     * @param listener
+     */
+    public static void modifyUserInfo(ReqModifyUserInfo reqModifyUserInfo,final XLTResponseCallback<JSONObject> listener){
+        String url = reqModifyUserInfo.getReqUrl();
+        String param = reqModifyUserInfo.getReqParams();
+        OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },param);
+    }
+
+    /**
+     * 获取客服信息
+     */
+    public static void getCustomerServiceInfo(final XLTResponseCallback<RspCustomerServiceInfo> listener){
+        final String url = "my.php?mod=customservice&cmdcode=137";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspCustomerServiceInfo.class, new XLTResponseListener<RspCustomerServiceInfo>() {
+            @Override
+            public void onResponse(RspCustomerServiceInfo responseData, XLTError errorData) {
+                if (errorData == null && responseData != null){
+                    BaseCacheServer.getInstance().saveOrReplaceHttpCacheData(url,"",OkHttpClientManager.getInstance().getmGson().toJson(responseData));
+                }else {
+                    RspCustomerServiceInfo customerServiceInfo = BaseCacheServer.getInstance().getRspCacheData(url,"",RspCustomerServiceInfo.class);
+                    if (customerServiceInfo != null){
+                        responseData = customerServiceInfo;
+                        errorData = null;
+                    }
+                }
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },"");
+
+    }
+
+    //用户动态数和照片数接口
+    public static void getUserDynamicInfo(long circleId, long uid, final XLTResponseCallback<FamilyData> listener){
+        String url = "topic.php?mod=getmembertopiccount&cmdcode=138";
+        JsonObject json = new JsonObject();
+        json.addProperty("uid", uid);
+        json.addProperty("circle_id", circleId);
+
+        OkHttpClientManager.getInstance().addGsonRequest(url, FamilyData.class, new XLTResponseListener<FamilyData>() {
+            @Override
+            public void onResponse(FamilyData responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, json.toString());
+    }
+    /**
+     * 提交推送token
+     */
+    public static void postPushToken(String oldToken,String newToken,String appId){
+        if (oldToken != null && newToken != null){
+            if (oldToken.equals(newToken)){
+                return;
+            }
+        }
+        String url = "user.php?mod=mod_token&cmdcode=140";
+        String param = JsonObjUtil.getInstance().addParam("token_old",oldToken).addParam("token_new",newToken).addParam("appid",appId).toJsonString();
+        OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+
+            }
+        },param);
+    }
+
+    /**
+     * 用户通过邀请码加入应用接口
+     * @param invitecode
+     * @param listener
+     */
+    public static void attentionUserApplication(String invitecode, final XLTResponseCallback<RspAttentionUserApp> listener){
+        String url = "user.php?mod=intoapp&cmdcode=147";
+        JsonObject json = new JsonObject();
+        json.addProperty("invitecode", invitecode);
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspAttentionUserApp.class, new XLTResponseListener<RspAttentionUserApp>() {
+            @Override
+            public void onResponse(RspAttentionUserApp responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, json.toString());
+    }
+
+    /**
+     * 通过应用ID获取该应用成员接口
+     * @param appid
+     * @param listener
+     */
+    public static void getMemberList(long appid, final XLTResponseCallback<RspMemberList> listener){
+        String url = "user.php?mod=appmemberlist&cmdcode=148";
+        JsonObject json = new JsonObject();
+        json.addProperty("appboxid", appid);
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspMemberList.class, new XLTResponseListener<RspMemberList>() {
+            @Override
+            public void onResponse(RspMemberList responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, json.toString());
+    }
+
+    /**
+     * 删除应用的人员接口
+     * @param appid
+     * @param uid
+     * @param listener
+     */
+    public static void deleteMemberList(long appid, long uid, final XLTResponseCallback<ObjectCode> listener){
+        String url = "user.php?mod=delappmember&cmdcode=152";
+        JsonObject json = new JsonObject();
+        json.addProperty("appboxid", appid);
+        json.addProperty("uid", uid);
+        OkHttpClientManager.getInstance().addGsonRequest(url, ObjectCode.class, new XLTResponseListener<ObjectCode>() {
+            @Override
+            public void onResponse(ObjectCode responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, json.toString());
+    }
+
+
+    /**
+     * 创建专属应用
+     * @param reqAppInfo
+     * @param listener
+     */
+    public static void createExclusiveApp(ReqAppInfo reqAppInfo,final XLTResponseCallback<RspAppData> listener){
+        if (reqAppInfo == null){
+            return;
+        }
+        OkHttpClientManager.getInstance().addGsonRequest(reqAppInfo.getReqUrl(), RspAppData.class, new XLTResponseListener<RspAppData>() {
+            @Override
+            public void onResponse(RspAppData responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        }, reqAppInfo.getReqParams());
+    }
+
+    /**
+     * 获取我关注的应用列表
+     * @param listener
+     */
+    public static void getMyFollowAppList(final XLTResponseCallback<RspMyFollowAppListData> listener){
+        String url = "user.php?mod=applist&cmdcode=150";
+        OkHttpClientManager.getInstance().addGsonRequest(url, RspMyFollowAppListData.class, new XLTResponseListener<RspMyFollowAppListData>() {
+            @Override
+            public void onResponse(RspMyFollowAppListData responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },"");
+    }
+
+    /**
+     * 删除我关注的应用
+     */
+    public static void delMyApp(long appBoxId,final XLTResponseCallback<JSONObject> listener){
+        String url = "user.php?mod=delapp&cmdcode=151";
+        String param = JsonObjUtil.getInstance().addParam("appboxid",appBoxId).toJsonString();
+        OkHttpClientManager.getInstance().addGsonRequest(url, JSONObject.class, new XLTResponseListener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject responseData, XLTError errorData) {
+                if (listener != null){
+                    listener.onResponse(responseData,errorData);
+                }
+            }
+        },param);
+    }
+}

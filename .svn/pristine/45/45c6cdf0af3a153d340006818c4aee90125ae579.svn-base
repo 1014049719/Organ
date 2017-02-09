@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'AndResGuard'
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+
+    defaultConfig {
+        applicationId "com.talenton.organ"
+        minSdkVersion 15
+        targetSdkVersion 22 //此处需使用22,因为ijk的so编译时使用的是22的sdk
+        versionCode 100
+        versionName "1.0.0"
+    }
+    signingConfigs {
+        debug{
+            keyAlias 'jy1x'
+            keyPassword 'JyexYounkee2012'
+            storeFile file('ykselfkey.keystore')
+            storePassword 'JyexYounkee2012'
+        }
+        release {
+            keyAlias 'jy1x'
+            keyPassword 'JyexYounkee2012'
+            storeFile file('ykselfkey.keystore')
+            storePassword 'JyexYounkee2012'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            zipAlignEnabled true
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            shrinkResources true
+            zipAlignEnabled true
+        }
+    }
+
+//   压缩资源文件
+    andResGuard {
+        mappingFile = null
+        use7zip = true
+        useSign = true
+        keepRoot = false
+        // add <yourpackagename>.R.drawable.icon into whitelist.
+        // because the launcher will get thgge icon with his name
+        whiteList = [
+                'R.mapmip.ic_launcher',
+        ]
+        compressFilePattern = [
+                "*.png",
+                "*.jpg",
+                "*.jpeg",
+                "*.gif",
+                "resources.arsc"
+        ]
+        sevenzip {
+            artifact = 'com.tencent.mm:SevenZip:1.1.8'
+        }
+    }
+
+}
+
+repositories { flatDir { dirs 'libs' } }
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':libray-base')
+    compile project(':library-player')
+}

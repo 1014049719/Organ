@@ -1,0 +1,57 @@
+/*
+ * Copyright (C) 2012 YIXIA.COM
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.github.junrar.util;
+
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.util.Log;
+
+import java.io.File;
+
+public class ContextUtils {
+	public static int getVersionCode(Context ctx) {
+		int version = 0;
+		try {
+			version = ctx.getPackageManager().getPackageInfo(ctx.getApplicationInfo().packageName, 0).versionCode;
+		} catch (Exception e) {
+			Log.e("getVersionInt", e.getMessage());
+		}
+		return version;
+	}
+
+	public static String getDataDir(Context ctx) {
+		ApplicationInfo ai = ctx.getApplicationInfo();
+		if (ai.dataDir != null)
+			return fixLastSlash(ai.dataDir);
+		else
+			return "/data/data/" + ai.packageName + "/";
+	}
+
+	public static String getDataLibsDir(Context ctx){
+		File extrLibDir = new File(ContextUtils.getDataDir(ctx) + "libs");
+		if(!extrLibDir.exists()){
+			extrLibDir.mkdirs();
+		}
+		return extrLibDir.getAbsolutePath() + File.separator;
+	}
+
+	public static String fixLastSlash(String str) {
+		String res = str == null ? "/" : str.trim() + "/";
+		if (res.length() > 2 && res.charAt(res.length() - 2) == '/')
+			res = res.substring(0, res.length() - 1);
+		return res;
+	}
+}

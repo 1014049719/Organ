@@ -1,0 +1,105 @@
+package com.talenton.base.widget;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.base.R;
+
+/**
+ * @author zjh
+ * @date 2016/4/5
+ */
+public class ImageTextButton extends LinearLayout{
+    private ImageView imageView;
+    private TextView textView;
+    private int textSize;
+    private String text;
+    private int imgResId;
+    private float textImgSpace;
+    private int textColor;
+
+    public ImageTextButton(Context context) {
+        super(context);
+        init(context);
+    }
+
+    public ImageTextButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        initAttr(context, attrs);
+        init(context);
+    }
+
+    private void initAttr(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.ImageTextButton);
+        textSize = typedArray.getDimensionPixelSize(R.styleable.ImageTextButton_text_size,20);
+        text = typedArray.getString(R.styleable.ImageTextButton_text);
+        imgResId = typedArray.getResourceId(R.styleable.ImageTextButton_src, 0);
+        textImgSpace = typedArray.getDimension(R.styleable.ImageTextButton_img_text_space,5);
+        textColor = typedArray.getColor(R.styleable.ImageTextButton_text_color,context.getResources().getColor(R.color.text_main));
+    }
+
+    private void init(Context context) {
+        imageView = new ImageView(context);
+        LayoutParams imgLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        imgLayoutParams.gravity = Gravity.CENTER;
+        imageView.setLayoutParams(imgLayoutParams);
+
+        textView = new TextView(context);
+        LayoutParams textLayoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        textLayoutParams.topMargin = (int) textImgSpace;
+        textLayoutParams.gravity = Gravity.CENTER;
+        textView.setLayoutParams(textLayoutParams);
+        textView.setTextColor(textColor);
+
+        if(textSize != 0){
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+        }
+        if(text != null){
+            textView.setText(text);
+        }
+        if(imgResId != 0){
+            imageView.setImageResource(imgResId);
+        }
+
+        setOrientation(VERTICAL);
+        addView(imageView);
+        addView(textView);
+    }
+
+    /**
+     * 设置文字说明
+     * @param text 文字说明
+     */
+    public void setText(String text){
+        textView.setText(text);
+    }
+
+    public String getText(){
+        return textView.getText().toString();
+    }
+
+    public void setSrc(int resId){
+        imageView.setImageResource(resId);
+    }
+
+    public void setSrc(Drawable drawable){
+        imageView.setImageDrawable(drawable);
+    }
+
+    public void setSrc(Bitmap bitmap){
+        imageView.setImageBitmap(bitmap);
+    }
+
+}

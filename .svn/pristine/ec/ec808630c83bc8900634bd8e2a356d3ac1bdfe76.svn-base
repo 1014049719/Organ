@@ -1,0 +1,492 @@
+package com.talenton.organ.ui.feed.adapter;
+
+import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.talenton.organ.R;
+import com.talenton.base.server.task.TaskBase;
+import com.talenton.base.util.DateUtil;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.base.widget.CommentTextView;
+import com.talenton.base.widget.OptimizeGridView;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CircleMember;
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.bean.feed.MediaBean;
+import com.talenton.organ.ui.ImageDetailViewerActivity;
+import com.talenton.organ.ui.feed.OnFeedsClickListener;
+import com.talenton.organ.ui.school.PlayerActivity;
+
+import java.util.ArrayList;
+
+/**
+ * Created by ttt on 2016/6/2.
+ */
+public class CircleDetailFeedsItemLayout {
+    public Context mContext;
+    public Feeds feeds;
+    public ItemViewHolder holder;
+    private static int imageWidthDetail = 0;
+    private View.OnClickListener basicClickListener;
+    private OnFeedsClickListener mOnFeedsClickListener;
+    private LayoutInflater inflater;
+    //private PostToParam mPostToParam;
+
+    private static AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Object tag = parent.getTag();
+            if (tag instanceof MediaBean) {
+                MediaBean media = (MediaBean) tag;
+                if (media != null) {
+                    //VideoPlayerActivity.startVideoPlayerActivity(parent.getContext(), media);
+                    PlayerActivity.startPlayerActivity(parent.getContext(), media.getVideoUrl());
+                }
+            } else if (tag instanceof ArrayList) {
+
+                ArrayList<String> urls = (ArrayList<String>) tag;
+                if (urls != null && urls.size() > 0) {
+                    ImageDetailViewerActivity.startViewImage(parent.getContext(), urls, position);
+                }
+            }
+
+        }
+    };
+    private static OptimizeGridView.OnTouchItemListener mOnTouchItemListener = new OptimizeGridView.OnTouchItemListener() {
+
+        @Override
+        public boolean onTouchItem(View parent, int motionPosition, int motionEvent) {
+            if (motionEvent == MotionEvent.ACTION_UP) {
+                Object tag = parent.getTag();
+                if (tag instanceof MediaBean) {
+                    MediaBean media = (MediaBean) tag;
+                    if (media != null) {
+                        //VideoPlayerActivity.startVideoPlayerActivity(parent.getContext(), media);
+                        PlayerActivity.startPlayerActivity(parent.getContext(), media.getVideoUrl());
+                    }
+                } else if (tag instanceof ArrayList) {
+                    ArrayList<String> urls = (ArrayList<String>) tag;
+                    if (urls != null && motionPosition < urls.size()) {
+                        ImageDetailViewerActivity.startViewImage(parent.getContext(), urls, motionPosition);
+                    }
+                }
+                return false; // 不终止路由事件让父级控件处理事件
+            } else {
+                return true;
+            }
+
+        }
+    };
+
+    public static class ItemViewHolder {
+        ImageView mAuthorPhoto;
+        TextView mAuthorName;
+        TextView mNickName;
+        TextView mPublishTime;
+        TextView mTextContent, mPhotoTime;
+
+        OptimizeGridView mPhotoGridView;
+        View mSendProgressbar;
+        TextView mSendFeedFailedView;
+        View mFeedsDelete,mFeedsEdit,mOperatorView, mSendGift, mFeedsLike, mFeedsShare, mFeedsCollect;
+        View mDeleteDiv, mEditDiv, mLikeDiv, mShareDiv, mCollectDiv, mImageLike, mImageReply, mImageBrowser;
+        public ImageView mImageFeedsLike, mImageFeedsCollect;
+
+        CommentContainerLayout mCommentListView;
+        View mItemContainer;
+        TextView mTitle, mCircleName, mLikeNum, mReplyNum, mBrowserNum;
+        public View mRoot, mLayoutInfo;
+    }
+
+    /**
+     * Feeds view holder
+     *            view type BbGroupFeedsFragment.FEEDS_BBG or
+     *            BbGroupFeedsFragment.FEEDS_CLASS
+     */
+    public CircleDetailFeedsItemLayout(Context context, View convertView, OnFeedsClickListener onFeedsClickListener) {
+        mContext = context;
+        inflater = LayoutInflater.from(mContext);
+        mOnFeedsClickListener = onFeedsClickListener;
+        initViewItems(convertView);
+    }
+
+    public ItemViewHolder getHolder() {
+        return holder;
+    }
+
+
+    /**
+     * @param feed
+     *  hidenFeeds
+     *            界面外部当前隐藏的feedsid
+     *  param
+     *            上一行的拍照时间
+     */
+    public void setFeeds(Feeds feed) {
+        this.feeds = feed;
+        fillData();
+    }
+
+    private void initViewListeners() {
+        basicClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mOnFeedsClickListener != null) {
+                    mOnFeedsClickListener.onCircleFeedsDetailClick(CircleDetailFeedsItemLayout.this, view);
+                    return;
+                }
+            }
+        };
+        if(holder.mFeedsDelete != null){
+            holder.mFeedsDelete.setOnClickListener(basicClickListener);
+        }
+        if(holder.mFeedsEdit != null){
+            holder.mFeedsEdit.setOnClickListener(basicClickListener);
+        }
+        if (holder.mFeedsLike != null) {
+            holder.mFeedsLike.setOnClickListener(basicClickListener);
+        }
+        if (holder.mFeedsShare != null) {
+            holder.mFeedsShare.setOnClickListener(basicClickListener);
+        }
+        if (holder.mFeedsCollect != null) {
+            holder.mFeedsCollect.setOnClickListener(basicClickListener);
+        }
+
+        initGridViewListener(holder.mPhotoGridView);
+        holder.mAuthorPhoto.setOnClickListener(basicClickListener);
+        if (holder.mSendFeedFailedView != null) {
+            holder.mSendFeedFailedView.setOnClickListener(basicClickListener);
+        }
+    }
+
+    private void initGridViewListener(OptimizeGridView gridView) {
+
+        gridView.setOnItemClickListener(mOnItemClickListener);
+
+        gridView.setOnTouchInvalidPositionListener(OptimizeGridView.defaultOnTouchInvalidPositionListener);
+
+        gridView.setOnTouchItemListener(mOnTouchItemListener);
+    }
+
+    public void initViewItems(View mainLayout) {
+        holder = new ItemViewHolder();
+        holder.mRoot = mainLayout;
+        holder.mAuthorPhoto = (ImageView) mainLayout.findViewById(R.id.user_logo);
+        holder.mAuthorName = (TextView) mainLayout.findViewById(R.id.user_name);
+        //holder.mLevel = (TextView) mainLayout.findViewById(R.id.level);
+        holder.mNickName = (TextView) mainLayout.findViewById(R.id.nick_name);
+        holder.mPublishTime = (TextView) mainLayout.findViewById(R.id.publish_time);
+        holder.mTextContent = (TextView) mainLayout.findViewById(R.id.feeds_text_content);
+
+
+        holder.mPhotoTime = (TextView) mainLayout.findViewById(R.id.images_time);
+        holder.mPhotoGridView = (OptimizeGridView) mainLayout.findViewById(R.id.feeds_content_gridview);
+        holder.mSendFeedFailedView = (TextView) mainLayout.findViewById(R.id.feeds_send_failed_view);
+        holder.mSendProgressbar = mainLayout.findViewById(R.id.feeds_send_progressbar);
+
+        holder.mFeedsDelete = mainLayout.findViewById(R.id.feeds_delete);
+        holder.mFeedsEdit = mainLayout.findViewById(R.id.feeds_edit);
+        holder.mOperatorView = mainLayout.findViewById(R.id.feeds_operator);
+        holder.mFeedsLike = mainLayout.findViewById(R.id.feeds_like);
+        holder.mFeedsShare = mainLayout.findViewById(R.id.feeds_share);
+        holder.mFeedsCollect = mainLayout.findViewById(R.id.feeds_collect);
+        holder.mSendGift = mainLayout.findViewById(R.id.feeds_gift);
+        holder.mDeleteDiv = mainLayout.findViewById(R.id.view_div_delete);
+        holder.mEditDiv = mainLayout.findViewById(R.id.view_div_edit);
+        holder.mLikeDiv = mainLayout.findViewById(R.id.view_div_like);
+        holder.mShareDiv = mainLayout.findViewById(R.id.view_div_share);
+        holder.mCollectDiv = mainLayout.findViewById(R.id.view_div_collect);
+        holder.mImageLike = mainLayout.findViewById(R.id.iv_like);
+        holder.mImageReply = mainLayout.findViewById(R.id.iv_reply);
+        holder.mImageBrowser = mainLayout.findViewById(R.id.iv_browser);
+        holder.mImageFeedsLike = (ImageView) mainLayout.findViewById(R.id.iv_feeds_like);
+        holder.mImageFeedsCollect = (ImageView) mainLayout.findViewById(R.id.iv_feeds_collect);
+
+        holder.mCommentListView = (CommentContainerLayout) mainLayout.findViewById(R.id.item_comment_list);
+        //holder.mGiftTotalListView = (GiftTotalContainerLayout) mainLayout.findViewById(R.id.item_gift_list);
+        holder.mItemContainer = mainLayout.findViewById(R.id.feeds_container);
+
+        holder.mLayoutInfo = mainLayout.findViewById(R.id.layout_info);
+        holder.mTitle = (TextView)mainLayout.findViewById(R.id.tv_title);
+        holder.mReplyNum = (TextView)mainLayout.findViewById(R.id.reply_num);
+        holder.mBrowserNum = (TextView)mainLayout.findViewById(R.id.browser_num);
+        holder.mLikeNum = (TextView)mainLayout.findViewById(R.id.like_num);
+        holder.mCircleName = (TextView)mainLayout.findViewById(R.id.circle_name);
+
+        initViewListeners();
+    }
+
+    private void fillData() {
+        fillAuthorBasicInfo();
+        fillTextContent();
+        fillPhotoContent(feeds, holder.mPhotoGridView);
+        fillActionContent();
+        fillCommentContent();
+    }
+
+    private void setImageWidth() {
+        if (imageWidthDetail <= 0) {
+            int margin = mContext.getResources().getDimensionPixelSize(R.dimen.space_15_0) * 2;
+            DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+            imageWidthDetail = dm.widthPixels - margin;
+        }
+    }
+
+    private void fillCommentContent() {
+        if (holder.mCommentListView == null) {
+            return;
+        }
+        if (feeds.ext_topic_comments == null || feeds.ext_topic_comments.isEmpty()) {
+            holder.mCommentListView.setVisibility(View.GONE);
+            return;
+        }
+        holder.mCommentListView.setCommonInfo(feeds);
+
+        if (holder.mCommentListView != null) {
+            if (feeds.ext_topic_comments == null || feeds.ext_topic_comments.isEmpty()) {
+                holder.mCommentListView.setOnFeedsClickListener(null);
+                return;
+            }
+            holder.mCommentListView.setOnFeedsClickListener(mOnFeedsClickListener);
+        }
+    }
+
+    private void fillActionContent() {
+        int visibility = FeedServer.checkDeleteFeedsAuthority(feeds, Feeds.ACTION_DELETE) ? View.VISIBLE : View.GONE;
+
+        if(holder.mFeedsDelete != null){
+            holder.mFeedsDelete.setVisibility(visibility);
+            holder.mDeleteDiv.setVisibility(visibility);
+        }
+        visibility = FeedServer.checkDeleteFeedsAuthority(feeds, Feeds.ACTION_MODIFY) ? View.VISIBLE : View.GONE;
+        visibility = feeds.from == Feeds.FROM_TASK ? View.GONE : visibility;
+        if(holder.mFeedsEdit != null){
+            holder.mFeedsEdit.setVisibility(visibility);
+            holder.mEditDiv.setVisibility(visibility);
+        }
+        if (feeds.ext_is_like == Feeds.FLAG_LIKE){
+            holder.mImageFeedsLike.setImageResource(R.mipmap.feeds_like_ok);
+        }else {
+            holder.mImageFeedsLike.setImageResource(R.mipmap.feeds_like);
+        }
+        if (feeds.ext_is_collect == Feeds.FLAG_LIKE){
+            holder.mImageFeedsCollect.setImageResource(R.mipmap.feeds_collect_ok);
+        }else {
+            holder.mImageFeedsCollect.setImageResource(R.mipmap.feeds_collect);
+        }
+        visibility = feeds.from == Feeds.FROM_TASK ? View.GONE : View.VISIBLE;
+        holder.mFeedsLike.setVisibility(visibility);
+        holder.mLikeDiv.setVisibility(visibility);
+        holder.mFeedsShare.setVisibility(visibility);
+        holder.mShareDiv.setVisibility(visibility);
+        holder.mFeedsCollect.setVisibility(visibility);
+        holder.mCollectDiv.setVisibility(visibility);
+    }
+
+    private void fillTextContent() {
+        // String content = String.format("%d\n(%s,local:%d)\n%s\n%s",
+        // feeds.from, feeds.guid, feeds.localid, feeds.content,
+        // TimeUtil.parseTimeToYMDHMS(new Date(feeds.graphtime * 1000)));
+        String content = feeds.content;
+        if (TextUtils.isEmpty(content)) {
+            holder.mTextContent.setVisibility(View.GONE);
+        } else {
+            holder.mTextContent.setVisibility(View.VISIBLE);
+            holder.mTextContent.setText(content);
+        }
+
+        int visibility = FeedServer.checkDeleteFeedsAuthority(feeds, Feeds.ACTION_DELETE) ? View.VISIBLE : View.GONE;
+
+        if(holder.mFeedsDelete != null){
+            holder.mFeedsDelete.setVisibility(visibility);
+        }
+        visibility = FeedServer.checkDeleteFeedsAuthority(feeds, Feeds.ACTION_MODIFY) ? View.VISIBLE : View.GONE;
+        if(holder.mFeedsEdit != null){
+            holder.mFeedsEdit.setVisibility(visibility);
+        }
+        /*
+        if (holder.mOperatorView != null) {
+            holder.mOperatorView.setVisibility(View.VISIBLE);
+        }
+        */
+        if(TextUtils.isEmpty(feeds.title)){
+            holder.mTitle.setVisibility(View.GONE);
+        }else {
+            holder.mTitle.setVisibility(View.VISIBLE);
+            holder.mTitle.setText(feeds.title);
+        }
+        if(feeds.commentcount > 0){
+            holder.mReplyNum.setVisibility(View.VISIBLE);
+            holder.mReplyNum.setText(String.format("%d回复", feeds.commentcount));
+        }else {
+            holder.mReplyNum.setVisibility(View.GONE);
+        }
+        int vis = feeds.commentcount > 0 ? View.VISIBLE : View.GONE;
+        holder.mReplyNum.setText(String.valueOf(feeds.commentcount));
+        holder.mReplyNum.setVisibility(vis);
+        holder.mImageReply.setVisibility(vis);
+        vis = feeds.likecount > 0 ? View.VISIBLE : View.GONE;
+        holder.mLikeNum.setText(String.valueOf(feeds.likecount));
+        holder.mLikeNum.setVisibility(vis);
+        holder.mImageLike.setVisibility(vis);
+        vis = feeds.browsecount > 0 ? View.VISIBLE : View.GONE;
+        holder.mBrowserNum.setText(String.valueOf(feeds.browsecount));
+        holder.mBrowserNum.setVisibility(vis);
+        holder.mImageBrowser.setVisibility(vis);
+
+        holder.mCircleName.setText(feeds.circle_name);
+    }
+
+    private void fillPhotoContent(Feeds feeds, OptimizeGridView photoGridView) {
+        ArrayList<MediaBean> pics = feeds.attachinfo;
+        holder.mPublishTime.setText(DateUtil.parseTime(mContext, feeds.modify_time));
+
+        boolean hasMedia = false;
+        int resourceId = R.layout.item_feeds_photo_gridview;
+        ArrayList<String> urls = new ArrayList<String>();
+        if (pics != null) {
+            photoGridView.setTag(urls);
+            for (MediaBean pic : pics) {
+                if (pic == null) {
+                    break;
+                }
+                hasMedia = true;
+                if (pic.itype == MediaBean.TYPE_VIDEO) {
+                    resourceId = R.layout.item_feeds_video_gridview;
+                    photoGridView.setTag(pic);
+                    break;
+                } else {
+                    urls.add(pic.genUrl());
+                }
+            }
+        }
+
+        if (hasMedia) {
+            setImageWidth();
+            PhotoGridViewAdapter photoAdapter = new PhotoGridViewAdapter(null, resourceId);
+            photoGridView.setAdapter(photoAdapter);
+            photoGridView.setVisibility(View.VISIBLE);
+            photoGridView.setNumColumns(1);
+            photoAdapter.setPicinfos(pics);
+            photoAdapter.notifyDataSetChanged();
+        } else {
+            photoGridView.setTag(null);
+            photoGridView.setVisibility(View.GONE);
+            //holder.mPhotoTime.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void fillAuthorBasicInfo() {
+
+        ImageLoader.getInstance().displayImage(feeds.getCircleMember().avatar, holder.mAuthorPhoto,
+                ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+
+        holder.mAuthorName.setText(feeds.crerealname);
+        int groupid = feeds.getCircleMember().groupid;
+        if (groupid == CircleMember.GROUP_TEACHER){
+            holder.mNickName.setVisibility(View.VISIBLE);
+            holder.mNickName.setText("老师");
+        }else {
+            holder.mNickName.setVisibility(View.GONE);
+        }
+
+        if (feeds.from == Feeds.FROM_TASK) {
+            //holder.mLevel.setVisibility(View.GONE);
+            holder.mPublishTime.setVisibility(View.GONE);
+            if (feeds.taskStatus == TaskBase.STATUS_FAILED || feeds.taskStatus == TaskBase.STATUS_CANCELED) {
+                holder.mSendFeedFailedView.setVisibility(View.VISIBLE);
+                holder.mSendProgressbar.setVisibility(View.GONE);
+                holder.mSendFeedFailedView.setText("");
+            } else if (feeds.taskStatus == TaskBase.STATUS_PENDING || feeds.taskStatus == TaskBase.STATUS_READY) {
+                holder.mSendFeedFailedView.setVisibility(View.GONE);
+                holder.mSendProgressbar.setVisibility(View.VISIBLE);
+            }
+        } else {
+            //holder.mLevel.setVisibility(View.VISIBLE);
+            //holder.mLevel.setText(String.format("LV%d", feeds.crelevel));
+            holder.mPublishTime.setVisibility(View.VISIBLE);
+            holder.mSendFeedFailedView.setVisibility(View.GONE);
+            holder.mSendProgressbar.setVisibility(View.GONE);
+        }
+    }
+
+    private class PhotoGridViewAdapter extends BaseAdapter {
+        private ArrayList<MediaBean> picinfos;
+        private int columns = 0;
+        private int resourceId;
+
+        // private boolean update;
+
+        public void setPicinfos(ArrayList<MediaBean> picinfos) {
+            this.picinfos = picinfos;
+            this.columns = 1;
+        }
+
+        public PhotoGridViewAdapter(ArrayList<MediaBean> picinfos, int resourceId) {
+            this.picinfos = picinfos;
+            this.resourceId = resourceId;
+            this.columns = 1;
+        }
+
+        @Override
+        public int getCount() {
+            if (picinfos == null) {
+                return 0;
+            }
+            return picinfos.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            if (picinfos == null || i < 0 || i >= picinfos.size()) {
+                return null;
+            }
+            return picinfos.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if (view == null) {
+                view = inflater.inflate(resourceId, viewGroup, false);
+            }
+            MediaBean picinfo = picinfos.get(i);
+            ImageView imageView = (ImageView) view.findViewById(R.id.item_gridview_image);
+            ViewGroup.LayoutParams param = (ViewGroup.LayoutParams) imageView.getLayoutParams();
+            param.width = imageWidthDetail;
+            param.height = param.width;
+            imageView.setLayoutParams(param);
+            imageView.setMaxWidth(param.width);
+            imageView.setMaxHeight(param.height);
+            ImageAware imageAware = new ImageViewAware(imageView, false);
+            if (columns > 1) {
+                ImageLoader.getInstance().displayImage(picinfo.genUrl(param.width, param.height), imageAware,
+                        ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+            } else if (columns == 1) {
+                ImageLoader.getInstance().displayImage(picinfo.genUrl(param.width, param.height), imageAware,
+                        ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_500);
+            }
+            return view;
+        }
+
+    }
+}

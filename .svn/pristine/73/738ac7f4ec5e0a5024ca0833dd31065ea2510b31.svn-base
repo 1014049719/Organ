@@ -1,0 +1,43 @@
+package com.talenton.organ.server.bean.user;
+
+import com.talenton.base.util.JsonObjUtil;
+import com.talenton.organ.server.bean.school.IBaseReq;
+
+/**
+ * @author zjh
+ * @date 2016/5/30
+ */
+public class ReqModifyUserInfo implements IBaseReq{
+    private static final String URL_MODIFY_USER_INFO = "user.php?mod=modinfo&cmdcode=5";
+    private String realname;
+    private int gender = -1;
+
+
+    public ReqModifyUserInfo(String realname) {
+        this.realname = realname;
+    }
+
+    public ReqModifyUserInfo(int gender) {
+        this.gender = gender;
+    }
+
+    public ReqModifyUserInfo(String realname, int gender) {
+        this.realname = realname;
+        this.gender = gender;
+    }
+
+    @Override
+    public String getReqParams() {
+        JsonObjUtil jsonObjUtil = JsonObjUtil.getInstance();
+        jsonObjUtil.addParam("realname",realname);
+        if (gender != -1){
+            jsonObjUtil.addParam("gender",gender);
+        }
+        return jsonObjUtil.toJsonString();
+    }
+
+    @Override
+    public String getReqUrl() {
+        return URL_MODIFY_USER_INFO;
+    }
+}

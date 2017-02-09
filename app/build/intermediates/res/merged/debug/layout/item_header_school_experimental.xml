@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.talenton.organ.widget.AdvertisementView
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_120" />
+
+    <com.talenton.base.widget.IndicationViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/indication_view_pager" />
+
+    <View
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_10_0"/>
+
+    <TextView
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/school_my_upload_class"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_32"
+        android:textColor="@color/text_main"
+        android:layout_marginTop="@dimen/space_15_0" />
+
+</LinearLayout>

@@ -1,0 +1,15 @@
+package com.talenton.organ.server.bean.operation;
+
+/**
+ * Created by ttt on 2016/4/5.
+ */
+public class HomeAdvertisement {
+
+    public int id;
+    public String advPic; //广告图片地址
+    public String advUrl; //广告跳转URL
+    public int showTime; //轮播秒数
+    //public int advOrder; //显示顺序
+    public int oMode; //打开方式，0本地打开；1-跳转到WEBVIEW,（如果appsource=360，这里填-1）
+    //public String closeImageUrl;
+}

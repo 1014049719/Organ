@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.PerfectPersonalInfoActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/space_10_0"
+            android:orientation="vertical" >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/perfect_bg"
+                    android:scaleType="centerCrop" />
+                <com.talenton.base.widget.CircleImageView
+                    android:id="@+id/crop_image"
+                    android:layout_width="@dimen/height_120"
+                    android:layout_height="@dimen/height_120"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"
+                    lsg:civ_border_color="@color/white"
+                    lsg:civ_border_width="2dp" />
+            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/text_input_phone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:layout_marginTop="@dimen/space_10_0"
+                android:layout_marginBottom="@dimen/space_10_0"
+                android:background="@drawable/btn_white_corner_bg"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_10_0"
+                    android:hint="家长姓名"
+                    android:textColorHint="@color/text_light"
+                    android:background="@null"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ems="20"
+                    android:textSize="@dimen/text_34" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:layout_marginBottom="@dimen/space_10_0"
+                android:background="@drawable/btn_white_corner_bg"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/et_babyname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_10_0"
+                    android:hint="宝宝姓名"
+                    android:textColorHint="@color/text_light"
+                    android:background="@null"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ems="20"
+                    android:textSize="@dimen/text_34" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_baby_birth_date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:layout_marginBottom="@dimen/space_10_0"
+                android:gravity="center"
+                android:background="@drawable/btn_white_corner_bg">
+                <TextView
+                    android:id="@+id/tv_baby_birth_date"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_10_0"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_hint_baby_birth_date"
+                    android:textColorHint="@color/text_light"
+                    android:textSize="@dimen/text_34" >
+                </TextView>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/perfect_go" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_region"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:layout_marginBottom="@dimen/space_10_0"
+                android:background="@drawable/btn_white_corner_bg"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_region"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_10_0"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_hint_region"
+                    android:textColorHint="@color/text_light"
+                    android:textSize="@dimen/text_34" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/perfect_go" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginLeft="@dimen/space_15_0"
+                android:layout_marginRight="@dimen/space_15_0"
+                android:background="@drawable/btn_white_corner_bg"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_baby_school"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_10_0"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/user_hint_baby_school"
+                    android:textColorHint="@color/text_light"
+                    android:textSize="@dimen/text_34" />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_login_next"
+                style="@style/match_btn_style"
+                android:text="@string/main_complete" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="5" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_40"
+    android:background="@mipmap/post_type_input_switching"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/space_7_5"
+        android:layout_marginLeft="@dimen/space_7_5"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/ib_emoji"
+            style="@style/input_type_style"
+            android:drawableStart="@drawable/post_type_emoji"
+            android:drawableLeft="@drawable/post_type_emoji"
+            android:text="@string/circle_post_type_emoji" />
+
+        <TextView
+            android:id="@+id/ib_keyboard"
+            style="@style/input_type_style"
+            android:drawableStart="@drawable/post_type_keyboard"
+            android:drawableLeft="@drawable/post_type_keyboard"
+            android:text="@string/circle_post_type_text"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

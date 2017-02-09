@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.feed.AttentionSchoolBabyActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/space_15_0"
+            android:paddingRight="@dimen/space_15_0"
+            android:background="@color/white"
+            android:hint="@string/circle_title_attention_by_phone"
+            android:inputType="text"
+            android:textSize="@dimen/text_28"
+            android:textColorHint="@color/text_sub"
+            android:singleLine="true" />
+        <TextView
+            android:id="@+id/tv_verify"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="@string/main_verify"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_28"
+            android:layout_marginTop="@dimen/space_10_0"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/space_15_0"
+            android:layout_marginRight="@dimen/space_15_0"
+            android:background="@drawable/btn_main_bg_selector" />
+    </LinearLayout>
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/pull_refresh_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent" />
+    <include
+        android:id="@+id/loading_container"
+        layout="@layout/load_fail_view" />
+</LinearLayout>

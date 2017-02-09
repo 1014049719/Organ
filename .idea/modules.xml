@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DaoGenerator/DaoGenerator.iml" filepath="$PROJECT_DIR$/DaoGenerator/DaoGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Organ.iml" filepath="$PROJECT_DIR$/Organ.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-7z/library-7z.iml" filepath="$PROJECT_DIR$/library-7z/library-7z.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-Refresh/library-Refresh.iml" filepath="$PROJECT_DIR$/library-Refresh/library-Refresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-baiduautoupdate/library-baiduautoupdate.iml" filepath="$PROJECT_DIR$/library-baiduautoupdate/library-baiduautoupdate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-ijkplayer/library-ijkplayer.iml" filepath="$PROJECT_DIR$/library-ijkplayer/library-ijkplayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-native/library-native.iml" filepath="$PROJECT_DIR$/library-native/library-native.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-pdfview/library-pdfview.iml" filepath="$PROJECT_DIR$/library-pdfview/library-pdfview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-player/library-player.iml" filepath="$PROJECT_DIR$/library-player/library-player.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libray-base/libray-base.iml" filepath="$PROJECT_DIR$/libray-base/libray-base.iml" />
+    </modules>
+  </component>
+</project>

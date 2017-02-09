@@ -1,0 +1,14 @@
+package com.talenton.base.server.bean;
+
+/**
+ * Created by ttt on 2016/4/5.
+ */
+public class FirstIssueData {
+    public int resId;
+    public String url;
+
+    public FirstIssueData(int resId, String url){
+        this.resId = resId;
+        this.url = url;
+    }
+}

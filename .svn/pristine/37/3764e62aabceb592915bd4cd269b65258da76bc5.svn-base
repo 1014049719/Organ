@@ -1,0 +1,19 @@
+package com.talenton.organ.event;
+
+import com.talenton.organ.server.bean.message.CustomMessageData;
+
+/**
+ * @author zjh
+ * @date 2016/6/3
+ */
+public class PushActionEvent {
+    private CustomMessageData data;
+
+    public PushActionEvent(CustomMessageData data) {
+        this.data = data;
+    }
+
+    public CustomMessageData getData() {
+        return data;
+    }
+}

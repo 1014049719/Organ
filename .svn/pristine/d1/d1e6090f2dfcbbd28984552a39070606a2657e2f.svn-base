@@ -1,0 +1,31 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/4/7.
+ */
+
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+
+public final class GoodsClassifyInfo implements Serializable {
+    /**
+     *
+     */
+
+    private static final long serialVersionUID = -582457752806705419L;
+
+
+    public  int cat_id;
+    public String name;
+
+    public String url;
+    public String cat_img;
+
+    public ArrayList<GoodsInfo> list;
+
+
+
+}
+

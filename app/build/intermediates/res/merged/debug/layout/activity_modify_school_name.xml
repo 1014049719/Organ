@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    tools:context=".ui.user.ModifyChildSchoolActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <EditText
+        android:id="@+id/et_school_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_53"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_10_0"
+        android:textSize="@dimen/text_32"
+        android:textColor="@color/text_main"
+        android:textColorHint="@color/text_sub" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1_0"
+        android:background="@color/main_blue" />
+
+    <ListView
+        android:id="@+id/list"
+        android:divider="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/space_14_0"
+        android:paddingBottom="@dimen/space_14_0"
+        android:textSize="@dimen/text_28"
+        android:textColor="@color/text_main"
+        android:gravity="center_vertical"
+        android:background="@color/catalog_text_bg"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:singleLine="true"
+        android:ellipsize="end" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0">
+        <TextView
+            android:id="@+id/tv_content"
+            android:drawablePadding="@dimen/space_10"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@drawable/tv_indicate_text_selector"
+            android:paddingLeft="@dimen/space_15_0"
+            android:paddingRight="@dimen/space_15_0"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/space_15_0"
+            android:paddingBottom="@dimen/space_15_0"
+            android:drawableLeft="@drawable/btn_bg_player_video_selector"
+            android:textSize="@dimen/text_24" />
+
+        <TextView
+            android:id="@+id/tv_try"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_free"
+            android:text="@string/school_text_try"
+            android:textSize="@dimen/text_24"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.PreviewEBookWebActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <ProgressBar
+        android:id="@+id/wb_loading"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:visibility="visible" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshWebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <include
+        android:id="@+id/loading_container"
+        layout="@layout/load_fail_view" />
+    <LinearLayout
+        android:id="@+id/layout_no_picture"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/no_picture_preview"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_ok"
+        style="@style/match_btn_style"
+        android:layout_marginBottom="@dimen/space_10_0"
+        android:text="批量导入照片"
+        android:visibility="gone"/>
+</LinearLayout>

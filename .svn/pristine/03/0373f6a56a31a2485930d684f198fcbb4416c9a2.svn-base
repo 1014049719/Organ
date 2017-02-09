@@ -1,0 +1,134 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.UserServer;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.event.DeleteRelationEvent;
+import com.talenton.organ.event.ModifyRelationEvent;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.feed.MineCircle;
+import com.talenton.organ.server.bean.user.FamilyData;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+public class ShowFamilyActivity extends BaseCompatActivity implements View.OnClickListener{
+
+    private FamilyData mData;
+    private TextView mDescription;
+    private ImageView mUserLogo;
+    private TextView tv_release_dynamic;
+    private TextView tv_upload_photo;
+
+    public static void startShowCircleActivity(Context context, MineCircle circle, long babyId){
+        Intent intent = new Intent(context, ShowFamilyActivity.class);
+        FamilyData data = new FamilyData();
+        data.babyid = babyId;
+        data.circleId = circle.circle_id;
+        data.memberId = circle.circle_member_id;
+        data.uid = circle.getCircleMember().uid;
+        data.photo = circle.getCircleMember().avatar;
+        data.relname = circle.getCircleMember().realname;
+        data.attentionType = circle.attention_type;
+        data.create_uid = circle.create_uid;
+        int gxid = 0;
+        String gxName = "";
+        if (circle.ext_relation != null){
+            gxid = circle.ext_relation.gxid;
+            if (!TextUtils.isEmpty(circle.ext_relation.gxname))
+                gxName = circle.ext_relation.gxname;
+        }
+        data.gxid = gxid;
+        data.gxName = gxName;
+        intent.putExtra("family", data);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_family);
+
+        Intent intent = getIntent();
+        mData = (FamilyData) intent.getParcelableExtra("family");
+
+        mDescription = (TextView)findViewById(R.id.description);
+        mUserLogo = (ImageView)findViewById(R.id.user_logo);
+        tv_release_dynamic = (TextView) findViewById(R.id.tv_release_dynamic);
+        tv_upload_photo = (TextView) findViewById(R.id.tv_upload_photo);
+        ImageLoader.getInstance().displayImage(mData.photo, mUserLogo, ImageLoaderManager.DEFAULT_USER_IMAGE_DISPLAYER);
+        mDescription.setText(mData.gxName);
+        findViewById(R.id.left).setOnClickListener(this);
+        int attentionType = UserServer.getCurrentUser().attentionType.get((int)mData.circleId);
+        if (attentionType == MineCircle.ATTENTION_TYPE_CREATE
+                || attentionType == MineCircle.ATTENTION_TYPE_ADMIN
+                || mData.uid == UserServer.getCurrentUser().uid){
+            findViewById(R.id.edit).setOnClickListener(this);
+        }else {
+            findViewById(R.id.edit).setVisibility(View.GONE);
+        }
+        if(mData.babyid == 0){
+            findViewById(R.id.edit).setVisibility(View.GONE);
+        }
+
+        MineServer.getUserDynamicInfo(mData.circleId, mData.uid, new XLTResponseCallback<FamilyData>() {
+            @Override
+            public void onResponse(FamilyData data, XLTError error) {
+                if (data != null && error == null){
+                    tv_release_dynamic.setText(String.valueOf(data.topic_count));
+                    tv_upload_photo.setText(String.valueOf(data.images_count));
+                }
+            }
+        });
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ModifyRelationEvent event){
+        if(event == null) return;
+        if (!TextUtils.isEmpty(event.gxname) && mData != null){
+            mDescription.setText(event.gxname);
+            mData.gxid = event.gxid;
+            mData.gxName = event.gxname;
+            mData.attentionType = event.atteintionType;
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DeleteRelationEvent event){
+        if(event == null) return;
+        finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.left:
+                finish();
+                break;
+            case R.id.edit:
+                ModifyFamilyActivity.startModifyFamilyActivity(this, mData);
+                break;
+        }
+    }
+}

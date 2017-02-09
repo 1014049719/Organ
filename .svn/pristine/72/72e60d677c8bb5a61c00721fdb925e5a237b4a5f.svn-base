@@ -1,0 +1,209 @@
+package com.talenton.base.widget;
+
+import com.talenton.base.R;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class LoadingViewHolder {
+	public static final int VIEW_TYPE_NO_DATA = 1;
+	public static final int VIEW_TYPE_NO_NOTWORK = 2;
+	public static final int VIEW_TYPE_DATA = 3;
+	public static final int VIEW_TYPE_LOADING = 4;
+	public static final int VIEW_TYPE_RECOMMEND = 5;
+	public static final int VIEW_TYPE_NO_DATA_CLICK = 6;
+	private View mDataLayout;
+	private View mEmptyLayout;
+	private View mNoNetworkView;
+	private View mEmptyView;
+	private View mEmptyViewNoData;
+	private Button mReLoadButton;
+	private Button mReLoadButtonNoData;
+	private View mProgressBar;
+	private TextView mLoadTextingView, mEmptyHintView;
+	private ImageView mEmptyImage;
+	private ImageView mEmptyImageNoData;
+
+	/**
+	 * 设置容器，并添加empty view
+	 *
+	 */
+	public LoadingViewHolder(View dataView, View emptyLayout, OnClickListener onReload, OnClickListener onEmpty) {
+		// if (dataView == null) {
+		// return;
+		// }
+		this.mDataLayout = dataView;
+		if (mEmptyLayout == null) {
+			mEmptyLayout = emptyLayout;
+			mNoNetworkView = mEmptyLayout.findViewById(R.id.load_fail_view);
+			mEmptyView = mEmptyLayout.findViewById(R.id.content_empty_view);
+			mEmptyViewNoData = mEmptyLayout.findViewById(R.id.content_empty_view_no_data);
+			mReLoadButton = (Button) mEmptyLayout.findViewById(R.id.btn_reload);
+			mReLoadButtonNoData = (Button) mEmptyLayout.findViewById(R.id.btn_reload_no_data);
+			mReLoadButton.setOnClickListener(onReload);
+			mReLoadButtonNoData.setOnClickListener(onReload);
+			mEmptyImage = (ImageView)mEmptyLayout.findViewById(R.id.empty_action);
+			mEmptyImageNoData = (ImageView)mEmptyLayout.findViewById(R.id.empty_action_no_data);
+			mEmptyImage.setOnClickListener(onEmpty);
+			mEmptyImageNoData.setOnClickListener(onEmpty);
+
+			mProgressBar = mEmptyLayout.findViewById(R.id.loading_view);
+			mLoadTextingView = (TextView) mEmptyLayout.findViewById(R.id.loading_text);
+			mEmptyHintView = (TextView) mEmptyLayout.findViewById(R.id.empty_hint);
+			mEmptyHintView.setVisibility(View.GONE);
+		}
+		showView(VIEW_TYPE_DATA);
+	}
+	
+	public void hideView(){
+		mEmptyView.setVisibility(View.INVISIBLE);
+		mEmptyLayout.setVisibility(View.INVISIBLE);
+		mNoNetworkView.setVisibility(View.INVISIBLE);
+		mProgressBar.setVisibility(View.INVISIBLE);
+	}
+
+	public void showView(int viewType) {
+		switch (viewType) {
+		case VIEW_TYPE_DATA: {
+			if (mDataLayout != null) {
+				mDataLayout.setVisibility(View.VISIBLE);
+			}
+			mEmptyView.setVisibility(View.GONE);
+			mEmptyLayout.setVisibility(View.GONE);
+			mNoNetworkView.setVisibility(View.GONE);
+			hidenLoading();
+			break;
+		}
+		case VIEW_TYPE_NO_DATA: {
+			if (mDataLayout != null) {
+				mDataLayout.setVisibility(View.GONE);
+			}
+			mEmptyView.setVisibility(View.VISIBLE);
+			mEmptyLayout.setVisibility(View.VISIBLE);
+			mNoNetworkView.setVisibility(View.GONE);
+			hidenLoading();
+			break;
+		}
+			case VIEW_TYPE_NO_DATA_CLICK: {
+				if (mDataLayout != null) {
+					mDataLayout.setVisibility(View.GONE);
+				}
+				mEmptyView.setVisibility(View.GONE);
+				mEmptyViewNoData.setVisibility(View.VISIBLE);
+				mEmptyLayout.setVisibility(View.VISIBLE);
+				mNoNetworkView.setVisibility(View.GONE);
+				hidenLoading();
+				break;
+			}
+		case VIEW_TYPE_LOADING: {
+			if (mDataLayout != null) {
+				mDataLayout.setVisibility(View.GONE);
+			}
+			mEmptyView.setVisibility(View.GONE);
+			mEmptyLayout.setVisibility(View.VISIBLE);
+			mNoNetworkView.setVisibility(View.GONE);
+			showLoading();
+			break;
+		}
+		case VIEW_TYPE_RECOMMEND: {
+			if (mDataLayout != null) {
+				mDataLayout.setVisibility(View.GONE);
+			}
+			mEmptyView.setVisibility(View.GONE);
+			mEmptyLayout.setVisibility(View.VISIBLE);
+			mNoNetworkView.setVisibility(View.GONE);
+			hidenLoading();
+			break;
+		}
+		case VIEW_TYPE_NO_NOTWORK: {
+			if (mDataLayout != null) {
+				mDataLayout.setVisibility(View.GONE);
+			}
+			mEmptyView.setVisibility(View.GONE);
+			mEmptyLayout.setVisibility(View.VISIBLE);
+			mNoNetworkView.setVisibility(View.VISIBLE);
+			hidenLoading();
+			break;
+		}
+
+		}
+	}
+
+	/**
+	 * 为空，点击再一次加载
+	 */
+	protected void onEmptyAction() {
+
+	}
+
+	/**
+	 * 为空，点击再一次加载
+	 */
+	protected void onReload() {
+
+	}
+
+	public void setEmptyText(int resId) {
+		if (mEmptyHintView != null) {
+			if (resId > 0) {
+				mEmptyHintView.setVisibility(View.VISIBLE);
+				mEmptyHintView.setText(resId);
+			} else {
+				mEmptyHintView.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	public void setEmptyImage(int resId){
+		if (mEmptyImage != null){
+			if (resId > 0){
+				mEmptyImage.setVisibility(View.VISIBLE);
+				mEmptyImage.setImageResource(resId);
+			}else {
+				mEmptyImage.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	protected void onLoadingText(String text) {
+		if (mLoadTextingView != null) {
+			mLoadTextingView.setText(text);
+		}
+	}
+
+	protected void onLoadingTextColor(int color) {
+		mLoadTextingView.setTextColor(color);
+	}
+
+	protected void setReLoadButtonText(String text) {
+		if (mReLoadButton != null) {
+			mReLoadButton.setText(text);
+		}
+	}
+
+	/**
+	 * 显示“正在加载”视图
+	 */
+	private void showLoading() {
+		mProgressBar.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * 隐藏“正在加载”视图
+	 */
+	protected void hidenLoading() {
+		mProgressBar.setVisibility(View.GONE);
+	}
+
+	/**
+	 * 隐藏“正在加载”视图
+	 */
+	protected void hidenViewLoading(View view) {
+		if (view != null) {
+			view.clearAnimation();
+		}
+		view.setVisibility(View.GONE);
+	}
+}

@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/ic_launcher.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/up.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-mdpi/up.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/mipmap-mdpi-v4/family_photo.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/mipmap-mdpi/family_photo.png"
+    }
+]

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.user.InputRelationActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_50"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/space_15_0"
+        android:paddingRight="@dimen/space_15_0"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_28"
+            android:textColor="@color/text_main"
+            android:hint="请输入自定义关系"
+            android:singleLine="true"
+            android:background="@null" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/save_ok"
+        style="@style/match_btn_style"
+        android:text="@string/main_confirm" />
+</LinearLayout>

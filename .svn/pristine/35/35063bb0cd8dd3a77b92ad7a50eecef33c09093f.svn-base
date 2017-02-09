@@ -1,0 +1,12 @@
+package com.talenton.organ.server.bean.user;
+
+import com.talenton.base.server.bean.AppData;
+
+
+/**
+ * @author zjh
+ * @date 2016/7/12
+ */
+public class RspAppData {
+    public AppData app_data;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/space_15_0"
+    android:layout_height="@dimen/height_80">
+
+    <com.talenton.base.widget.CircleImageView
+        android:id="@+id/iv_left"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/message_avatar_width"
+        android:layout_height="@dimen/message_avatar_height" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_toLeftOf="@+id/tv_time"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_toRightOf="@+id/iv_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textSize="@dimen/text_32"
+        android:textColor="@color/text_main"
+        android:layout_marginRight="@dimen/space_30_0"
+        android:text="@string/message_text_welcome" />
+
+    <TextView
+        android:id="@+id/tv_introduce"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_alignLeft="@+id/tv_title"
+        android:layout_toRightOf="@+id/iv_left"
+        android:layout_below="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:ellipsize="middle"
+        android:textSize="@dimen/text_24"
+        android:textColor="@color/text_sub"
+        android:layout_toLeftOf="@+id/iv_desc"
+        android:layout_marginRight="@dimen/space_20_0"
+        android:text="@string/message_text_introduce" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="刚刚"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_24"
+        android:layout_alignTop="@+id/tv_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/space_15_0" />
+
+    <ImageView
+        android:id="@+id/iv_desc"
+        android:layout_width="@dimen/width_30"
+        android:layout_height="@dimen/height_30"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@+id/tv_time"
+        android:layout_marginTop="@dimen/space_5_0"
+        android:scaleType="centerCrop"
+        android:layout_alignRight="@+id/tv_time" />
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:background="@color/divider_line"  />
+
+</RelativeLayout>

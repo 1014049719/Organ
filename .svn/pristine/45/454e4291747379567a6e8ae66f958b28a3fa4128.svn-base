@@ -1,0 +1,221 @@
+package com.talenton.organ.ui.user.adapter;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.server.bean.ObjectCode;
+import com.talenton.base.util.AppLogger;
+import com.talenton.base.util.XLTToast;
+import com.talenton.base.widget.NoScrollListView;
+import com.talenton.organ.server.MineServer;
+import com.talenton.organ.server.bean.shop.GoodsCartInfo;
+import com.talenton.organ.server.bean.shop.GoodsOrderInfo;
+import com.talenton.organ.server.bean.shop.LogisticsQueryInfo;
+import com.talenton.organ.server.bean.user.MyOrders;
+import com.talenton.organ.server.bean.user.event.ShouhuoParam;
+import com.talenton.organ.ui.shop.ConfirmOrderActivity;
+import com.talenton.organ.ui.shop.LogisticsQueryActivity;
+import com.talenton.organ.widget.adapter.LSGBaseAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by Wang.'''' on 2016/5/11.
+ */
+public class MyOrdersAdapter extends LSGBaseAdapter<MyOrders> {
+
+    //显示订单状态
+    private String order_zhuangtai_str;
+    //进入哪个页面
+    private String type;
+
+    private ProgressDialog mProgressDlg;
+
+    public MyOrdersAdapter(Context context, List datas, String type) {
+        super(context, datas);
+        this.type = type;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        final MyOrders myOrders = getItem(position);
+        ViewHolder viewHolder = null;
+        if (viewHolder == null) {
+
+            viewHolder = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.cell_paying, null);
+            viewHolder.no_scroll_list = (NoScrollListView) convertView.findViewById(R.id.no_scroll_list);
+            viewHolder.no_scroll_list.setDivider(null);
+            viewHolder.total_fee_TextView = (TextView) convertView.findViewById(R.id.total_fee_tv);
+            viewHolder.num_TextView = (TextView) convertView.findViewById(R.id.num_tv);
+            viewHolder.order_zhuangtai_TextView = (TextView) convertView.findViewById(R.id.order_zhuangtai);
+            viewHolder.zhuangtai_layout = (LinearLayout) convertView.findViewById(R.id.zhuangtai_layout);
+            viewHolder.shouhuo_layout = (LinearLayout) convertView.findViewById(R.id.shouhuo_layout);
+            viewHolder.jiesuan_layout = (LinearLayout) convertView.findViewById(R.id.jiesuan_layout);
+            viewHolder.jiesuan_btn = (Button) convertView.findViewById(R.id.jiesuan_btn);
+            viewHolder.shouhuo_btn = (Button) convertView.findViewById(R.id.shouhuo_btn);
+            viewHolder.wuliu_btn = (Button) convertView.findViewById(R.id.wuliu_btn);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        viewHolder.no_scroll_list.setAdapter(new GoodsAdapter(context, myOrders.getGoodslist(), myOrders.getOrder_zhuangtai() ,myOrders));
+        viewHolder.total_fee_TextView.setText("¥ " + myOrders.getTotal_fee());
+        viewHolder.num_TextView.setText("共" + myOrders.getNum());
+
+        if (type.equals("全部订单")) {
+
+            if (myOrders.getOrder_zhuangtai()!=null){
+
+                if (myOrders.getOrder_zhuangtai().equals("1")) {
+                    order_zhuangtai_str = "待付款";
+                    viewHolder.shouhuo_layout.setVisibility(View.GONE);
+                } else if (myOrders.getOrder_zhuangtai().equals("2")) {
+                    order_zhuangtai_str = "待发货";
+                    viewHolder.shouhuo_layout.setVisibility(View.GONE);
+                    viewHolder.jiesuan_layout.setVisibility(View.GONE);
+                } else if (myOrders.getOrder_zhuangtai().equals("3")) {
+                    order_zhuangtai_str = "待收货";
+                    viewHolder.jiesuan_layout.setVisibility(View.GONE);
+                } else if (myOrders.getOrder_zhuangtai().equals("4")) {
+                    order_zhuangtai_str = "交易完成";
+                    viewHolder.shouhuo_layout.setVisibility(View.GONE);
+                    viewHolder.jiesuan_layout.setVisibility(View.GONE);
+                } else if (myOrders.getOrder_zhuangtai().equals("6")) {
+                    order_zhuangtai_str = "取消订单";
+                    viewHolder.shouhuo_layout.setVisibility(View.GONE);
+                    viewHolder.jiesuan_layout.setVisibility(View.GONE);
+                }
+                viewHolder.order_zhuangtai_TextView.setText(order_zhuangtai_str);
+            }
+        }
+
+        //只有全部订单显示头部
+        if (!type.equals("全部订单")) {
+            viewHolder.zhuangtai_layout.setVisibility(View.GONE);
+        }
+        //只有待收货显示
+        if (!type.equals("待收货") && !type.equals("全部订单")) {
+            viewHolder.shouhuo_layout.setVisibility(View.GONE);
+        }
+        //只有待付款显示
+        if (!type.equals("待付款") && !type.equals("全部订单")) {
+            viewHolder.jiesuan_layout.setVisibility(View.GONE);
+        }
+
+        //绑定单击事件
+        //结算
+        viewHolder.jiesuan_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppLogger.d("支付价格：" + myOrders.getGoodslist());
+
+                //商品
+                ArrayList<GoodsCartInfo> goodsCartInfos = new ArrayList<>();
+                for (MyOrders.GoodslistBean goodslistBean : myOrders.getGoodslist()) {
+
+                    GoodsCartInfo goodsCartInfo = new GoodsCartInfo();
+                    goodsCartInfo.name = goodslistBean.getName();
+                    goodsCartInfo.goods_attr_id=goodslistBean.getGoods_id();
+                    goodsCartInfo.goods_attr=goodslistBean.getGoods_attr();
+                    goodsCartInfo.goods_price=Double.parseDouble(goodslistBean.getGoods_price());
+                    goodsCartInfo.market_price=goodslistBean.getMarket_price();
+                    goodsCartInfo.goods_img=goodslistBean.getGoods_img();
+                    goodsCartInfo.goods_number=Integer.parseInt(goodslistBean.getGoods_number());
+
+                    goodsCartInfos.add(goodsCartInfo);
+                }
+                //订单
+                GoodsOrderInfo mGoodsOrderInfo=new GoodsOrderInfo();
+                mGoodsOrderInfo.order_id=Integer.parseInt(myOrders.getOrder_id());
+                mGoodsOrderInfo.order_sn=myOrders.getOrder_sn();
+                mGoodsOrderInfo.total_price=Double.parseDouble(myOrders.getTotal_fee());
+
+                ConfirmOrderActivity.startConfirmOrderActivity(context, goodsCartInfos,mGoodsOrderInfo);
+            }
+        });
+
+        //物流查询
+        viewHolder.wuliu_btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                LogisticsQueryInfo logisticsQueryInfo=new LogisticsQueryInfo();
+                logisticsQueryInfo.com=myOrders.getWl_code();
+                logisticsQueryInfo.no=myOrders.getWl_sn();
+                LogisticsQueryActivity.startLogisticsQueryActivity(context, logisticsQueryInfo );
+            }
+        });
+
+        //收货
+        viewHolder.shouhuo_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //显示转圈
+                if (context instanceof BaseCompatActivity){
+                    ((BaseCompatActivity) context).showProgress("正在处理");
+                }
+
+                ShouhuoParam shouhuoParam=new ShouhuoParam();
+                shouhuoParam.order_id=Integer.parseInt(myOrders.getOrder_id());
+                MineServer.shouhuoData(shouhuoParam, new XLTResponseCallback<ObjectCode>() {
+                    @Override
+                    public void onResponse(ObjectCode data, XLTError error) {
+
+                        //隐藏转圈
+                        if (context instanceof BaseCompatActivity){
+                            ((BaseCompatActivity) context).hideProgress();
+                        }
+
+                        if (data!=null && error==null){
+                            AppLogger.d(data.msg);
+                            XLTToast.makeText(context,data.msg).show();
+                            if (data.res==1){
+
+                                //收货成功后删除所在的item
+                                getDatas().remove(myOrders);
+                                notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+
+        return convertView;
+    }
+
+    class ViewHolder {
+        NoScrollListView no_scroll_list;
+        TextView total_fee_TextView;
+        TextView num_TextView;
+        TextView order_zhuangtai_TextView;
+
+        LinearLayout zhuangtai_layout;
+        LinearLayout shouhuo_layout;
+        LinearLayout jiesuan_layout;
+
+        Button jiesuan_btn;
+        Button shouhuo_btn;
+        Button wuliu_btn;
+
+    }
+
+
+}

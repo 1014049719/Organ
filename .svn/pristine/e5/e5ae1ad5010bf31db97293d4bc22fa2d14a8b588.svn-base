@@ -1,0 +1,65 @@
+package com.talenton.organ.widget.adapter;
+
+import android.content.Context;
+import android.widget.BaseAdapter;
+
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/4/1
+ */
+public abstract class LSGBaseAdapter<T> extends BaseAdapter{
+    private List<T> datas;
+    protected Context context;
+
+
+    public LSGBaseAdapter(Context context, List<T> datas){
+        this.datas = datas;
+        this.context = context;
+    }
+
+    @Override
+    public int getCount() {
+        return datas.size();
+    }
+
+    @Override
+    public T getItem(int position) {
+        return datas.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public List<T> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<T> datas) {
+        this.datas = datas;
+    }
+
+    public void addAll(List<T> listDatas){
+        datas.addAll(listDatas);
+    }
+
+    public void add(T data){
+        datas.add(data);
+    }
+
+    public void add(int position,T data){
+        datas.add(position,data);
+    }
+
+    public void clear(){
+        datas.clear();
+    }
+
+    public T remove(int position){
+        return datas.remove(position);
+    }
+}

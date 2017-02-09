@@ -1,0 +1,103 @@
+<resources>
+
+    <dimen name="space_0_5">0.5dp</dimen>
+    <dimen name="space_1_0">1dp</dimen>
+    <dimen name="space_2_0">2dp</dimen>
+    <dimen name="space_3_0">3dp</dimen>
+    <dimen name="space_4_0">4dp</dimen>
+    <dimen name="space_5_0">5dp</dimen>
+    <dimen name="space_7_5">7.5dp</dimen>
+    <dimen name="space_8_0">8dp</dimen>
+    <dimen name="space_10_0">10dp</dimen>
+    <dimen name="space_13_0">13dp</dimen>
+    <dimen name="space_14_0">14dp</dimen>
+    <dimen name="space_15_0">15dp</dimen>
+    <dimen name="space_16_0">16dp</dimen>
+    <dimen name="space_20_0">20dp</dimen>
+    <dimen name="space_24_0">24dp</dimen>
+    <dimen name="space_25_0">25dp</dimen>
+    <dimen name="space_30_0">30dp</dimen>
+    <dimen name="space_36_0">36dp</dimen>
+    <dimen name="space_40_0">40dp</dimen>
+    <dimen name="space_45_0">45dp</dimen>
+    <dimen name="space_47_5">47.5dp</dimen>
+    <dimen name="space_48_0">48dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="height_8">8dp</dimen>
+    <dimen name="height_15">15dp</dimen>
+    <dimen name="height_18">18dp</dimen>
+    <dimen name="height_30">30dp</dimen>
+    <dimen name="height_33">33dp</dimen>
+    <dimen name="height_36">36dp</dimen>
+    <dimen name="height_34">34dp</dimen>
+    <dimen name="height_40">40dp</dimen>
+    <dimen name="height_45">45dp</dimen>
+    <dimen name="height_50">50dp</dimen>
+    <dimen name="height_53">53dp</dimen>
+    <dimen name="height_60">60dp</dimen>
+    <dimen name="height_65">65dp</dimen>
+    <dimen name="height_70">70dp</dimen>
+    <dimen name="height_75">75dp</dimen>
+    <dimen name="height_80">80dp</dimen>
+    <dimen name="height_85">85dp</dimen>
+    <dimen name="height_90">90dp</dimen>
+    <dimen name="height_100">100dp</dimen>
+    <dimen name="height_120">120dp</dimen>
+    <dimen name="height_135">135dp</dimen>
+    <dimen name="height_140">140dp</dimen>
+    <dimen name="height_150">150dp</dimen>
+    <dimen name="height_160">160dp</dimen>
+    <dimen name="height_180">180dp</dimen>
+    <dimen name="height_200">200dp</dimen>
+    <dimen name="height_250">250dp</dimen>
+    <dimen name="height_300">300dp</dimen>
+
+    <dimen name="width_107">107dp</dimen>
+    <dimen name="width_108">108dp</dimen>
+    <dimen name="width_120">120dp</dimen>
+    <dimen name="width_135">135dp</dimen>
+    <dimen name="width_160">160dp</dimen>
+    <dimen name="width_150">150dp</dimen>
+    <dimen name="width_200">200dp</dimen>
+    <dimen name="width_30">30dp</dimen>
+    <dimen name="width_40">40dp</dimen>
+    <dimen name="width_50">50dp</dimen>
+    <dimen name="width_55">55dp</dimen>
+    <dimen name="width_60">60dp</dimen>
+    <dimen name="width_70">70dp</dimen>
+    <dimen name="width_90">90dp</dimen>
+    <dimen name="width_110">110dp</dimen>
+    <dimen name="width_8">8dp</dimen>
+
+    <!--圆角大小-->
+    <dimen name="radius_size_3">3dp</dimen>
+    <dimen name="radius_size_50">50dp</dimen>
+
+    <!--学堂列表图片高度-->
+    <dimen name="school_item_left_img_height">95dp</dimen>
+    <!--学堂列表图片宽带-->
+    <dimen name="school_item_left_img_width">142dp</dimen>
+
+    <dimen name="school_advertisement_height">150dp</dimen>
+
+    <dimen name="school_avatar_width">30dp</dimen>
+    <dimen name="school_avatar_height">30dp</dimen>
+
+    <dimen name="message_avatar_width">40dp</dimen>
+    <dimen name="message_avatar_height">40dp</dimen>
+
+    <dimen name="mine_avatar_width">94dp</dimen>
+    <dimen name="mine_avatar_height">94dp</dimen>
+
+    <dimen name="mine_child_avatar_width">33dp</dimen>
+    <dimen name="mine_child_avatar_height">33dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="mine_approval_avatar_width">44dp</dimen>
+    <dimen name="mine_approval_avatar_height">44dp</dimen>
+
+    <dimen name="app_type_gv_spacing">5dp</dimen>
+</resources>

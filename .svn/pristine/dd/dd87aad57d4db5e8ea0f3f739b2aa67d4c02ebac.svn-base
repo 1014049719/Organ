@@ -1,0 +1,27 @@
+package com.talenton.organ.server.bean.discovery;
+
+/**
+ * Created by Wang.'''' on 2016/4/28.
+ */
+public class TestSchool {
+
+
+    /**
+     * blogid : 2
+     * subject : 开始活动了
+     * type : 4
+     * dateline : 1460529717
+     * attachment : xxxx
+     * describe : 大家热闹起来吧人体润 ...
+     */
+
+    public String blogid;
+    public String subject;
+    public String type;
+    public String dateline;
+    public String attachment;
+    public String describe;
+    public String location;
+
+
+}

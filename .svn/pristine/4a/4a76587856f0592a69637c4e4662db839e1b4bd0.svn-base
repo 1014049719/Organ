@@ -1,0 +1,165 @@
+package com.talenton.organ.ui.shop;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+
+import com.talenton.organ.BaseListActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.organ.server.ShopServer;
+import com.talenton.organ.server.bean.shop.GoodsInfo;
+import com.talenton.organ.server.bean.shop.RecvClassifyDetailGoodsData;
+import com.talenton.organ.server.bean.shop.RecvHotGoodsData;
+import com.talenton.organ.ui.shop.adapter.GoodsAdapter;
+import java.util.ArrayList;
+
+/**
+ * Created by xiaoxiang on 2016/4/7.
+ */
+public class ClassifyAreaDetailActivity extends BaseListActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+
+    private ArrayList<GoodsInfo> mGoodsDiscountInfoList;
+    private int cat_id;
+    private String name;
+    private Button button_new;
+    private Button button_sale;
+    private Button button_price;
+    private ImageView classify_ImageView_price;
+    private int utab;
+    private boolean bSaleNumber=true;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_shop_classify_detail);
+
+        initView();
+        fillListData(0, 0);//默认最新
+        utab=0;
+
+    }
+    /**
+     * 初始化view
+     * @param
+     */
+    private void initView() {
+
+
+        cat_id=getIntent().getIntExtra("cat_id", 0);
+        name = getIntent().getStringExtra("name");
+        mGoodsDiscountInfoList=new ArrayList<>();
+        setTitle(name);
+        classify_ImageView_price=(ImageView)findViewById(R.id.classify_ImageView_price);
+        button_new=(Button)findViewById(R.id.classify_detail_button_new);
+        button_new.setBackgroundResource(R.drawable.btn_main_bg_selector);
+        button_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button_new.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                button_sale.setBackgroundResource(R.drawable.btn_main_bg_white);
+                button_price.setBackgroundResource(R.drawable.btn_main_bg_white);
+                classify_ImageView_price.setImageResource(R.mipmap.icon_shop_price);
+                fillListData(0, 0);//销售降序
+            }
+        });
+        button_sale=(Button)findViewById(R.id.classify_detail_button_sale);
+        button_sale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bSaleNumber) {
+                    button_sale.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                    button_new.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    button_price.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    classify_ImageView_price.setImageResource(R.mipmap.icon_shop_price);
+                    fillListData(0, 1);//销售降序
+                    bSaleNumber=false;
+                } else {
+                    button_sale.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                    button_new.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    button_price.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    classify_ImageView_price.setImageResource(R.mipmap.icon_shop_price);
+                    fillListData(0, 2);//销售降序
+                    bSaleNumber=true;
+                }
+            }
+        });
+
+        button_price=(Button)findViewById(R.id.classify_detail_button_price);
+        button_price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (utab == 2 || utab == 0) {
+                    utab = 1;
+                    button_price.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                    button_sale.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    button_new.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    classify_ImageView_price.setImageResource(R.mipmap.icon_shop_price_low);
+                    fillListData(utab, 0);//价格降序
+                } else if (utab == 1) {
+                    utab = 2;
+                    button_price.setBackgroundResource(R.drawable.btn_main_bg_selector);
+                    button_sale.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    button_new.setBackgroundResource(R.drawable.btn_main_bg_white);
+                    classify_ImageView_price.setImageResource(R.mipmap.icon_shop_price_high);
+                    fillListData(utab, 0);//升序降序
+                }
+            }
+        });
+
+
+
+    }
+    /*
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.shop_text_discount_area;
+    }
+    */
+
+    @Override
+    protected int getPullRefreshListViewResId() {
+        return R.id.classify_detail_pull_refresh_list;
+    }
+
+    private void fillListData(int orderprice,int ordersalesnum) {
+
+
+        mGoodsDiscountInfoList=new ArrayList<GoodsInfo>();
+
+        startGetData(new ShopServer.ShopClassifyDetailListServer(cat_id,orderprice,ordersalesnum), new ListResponseCallback<RecvClassifyDetailGoodsData>() {
+            @Override
+            public void onSuccess(RecvClassifyDetailGoodsData data) {
+                mGoodsDiscountInfoList.clear();
+                mGoodsDiscountInfoList.addAll(data.getList());
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(XLTError error) {
+
+            }
+        });
+        mAdapter = new GoodsAdapter(this,mGoodsDiscountInfoList,0);
+        mPullRefreshListView.getRefreshableView().setAdapter(mAdapter);
+        mPullRefreshListView.setOnItemClickListener(this);
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          position = position - mPullRefreshListView.getRefreshableView().getHeaderViewsCount();
+        GoodsInfo mGoodsInfo = (GoodsInfo) mAdapter.getItem(position);
+        GoodsDetailActivity.startGoodsDetailActivity(this, mGoodsInfo);
+
+    }
+}
+

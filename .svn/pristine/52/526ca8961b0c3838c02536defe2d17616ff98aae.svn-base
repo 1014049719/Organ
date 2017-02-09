@@ -1,0 +1,19 @@
+package com.talenton.organ.server.bean.school;
+
+import java.util.List;
+
+/**
+ * @author zjh
+ * @date 2016/5/9
+ */
+public class RspFilterAgeList {
+    private List<ClassFilterAge> list;
+
+    public List<ClassFilterAge> getList() {
+        return list;
+    }
+
+    public void setList(List<ClassFilterAge> list) {
+        this.list = list;
+    }
+}

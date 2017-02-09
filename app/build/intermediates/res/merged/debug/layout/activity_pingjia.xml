@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.talenton.organ.ui.user.myOrders.PingjiaActivity"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!--头部导航-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        layout="@layout/global_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/goods_thumb_ImageView"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:src="@mipmap/load_image"
+            android:layout_marginLeft="@dimen/space_20_0"
+            android:layout_marginTop="@dimen/space_20_0"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:layout_marginLeft="@dimen/space_25_0">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="评分"
+                android:textColor="#333333"
+                android:textSize="16sp"/>
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/LSGRatingBar"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:stepSize="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_5_0"/>
+            <TextView
+                android:id="@+id/pingji_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="好评"
+                android:textColor="#ff8434"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_20_0"/>
+
+
+    <EditText
+        android:id="@+id/content_editText"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="   记录购买体会，为其他小伙伴提供参考哦！"
+        android:background="@null"
+        android:gravity="top"
+        android:layout_marginTop="@dimen/space_25_0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:background="#eeeeee"
+        android:orientation="horizontal"
+        android:minHeight="@dimen/height_100">
+        <Button
+            android:id="@+id/pingjia_btn"
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_15_0"
+            android:text="发表评价"
+            android:textSize="16sp"
+            android:textColor="#ffffff"
+            android:background="@drawable/btn_bg_corner_blue"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/animator/timepicker_anim_enter_bottom.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/animator/timepicker_anim_enter_bottom.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/libray-base/build/intermediates/res/merged/release/animator/timepicker_anim_exit_bottom.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/libray-base/src/main/res/animator/timepicker_anim_exit_bottom.xml"
+    }
+]

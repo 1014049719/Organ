@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.talenton.organ.ui.shop.ClassifyAreaActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginTop="@dimen/space_10"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:text="收货人"
+                    android:textSize="@dimen/text_28" />
+
+                <EditText
+                    android:id="@+id/address_name"
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="0dip"
+                    android:layout_height="@dimen/height_30"
+                    android:layout_weight="1"
+                    android:hint="请输入姓名"
+                    android:background="@null"
+                    android:textSize="@dimen/text_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:text="手机号码"
+                    android:textSize="@dimen/text_28" />
+
+                <EditText
+                    android:id="@+id/address_phone"
+                    android:layout_width="0dip"
+                    android:layout_height="@dimen/height_30"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="15dp"
+                    android:hint="请输入手机号码"
+                    android:background="@null"
+                    android:textSize="@dimen/text_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_address_area"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:text="所在地区"
+                    android:textSize="@dimen/text_28" />
+
+                <TextView
+                    android:id="@+id/address_area"
+                    android:layout_width="0dip"
+                    android:layout_height="@dimen/height_30"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:hint="请选择地区"
+                    android:textSize="@dimen/text_24" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:text="详细地址"
+                    android:textSize="@dimen/text_28" />
+
+                <EditText
+                    android:id="@+id/address_detail_area"
+                    android:layout_width="0dip"
+                    android:layout_height="@dimen/height_30"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:hint="请输入详细地址"
+                    android:background="@null"
+                    android:textSize="@dimen/text_28" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayout_is_default"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_50"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_weight="1"
+                    android:text="设为默认地址"
+                    android:textSize="@dimen/text_28" />
+
+                <ImageButton
+                    android:id="@+id/is_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_shop_not_set_defalut_address"
+                    android:layout_marginRight="15dp"
+                    android:textSize="@dimen/text_28" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/add_new_address"
+                style="@style/comment_btn_style"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:text="保存" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

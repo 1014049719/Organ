@@ -1,0 +1,180 @@
+package com.talenton.organ.widget;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Scroller;
+
+import com.talenton.base.util.AppLogger;
+
+/**
+ * @author zjh
+ * @date 2016/4/29
+ * 只能有2个子view 只支持从左往右滑出第二个view
+ */
+public class SlideView extends LinearLayout {
+    private Context context;
+    private Scroller myScroller;
+    private GestureDetector detector;
+    private int firstX;
+    private int totalDistance; //总的移动距离
+    private OnClickViewListener onClickViewListener;
+    private boolean clickEnable = true; //是否允许点击事件
+    private boolean isFling; //是否快速滑动
+
+    public SlideView(Context context) {
+        super(context);
+        this.context = context;
+        init();
+    }
+
+    public SlideView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+        init();
+    }
+
+    private void init() {
+        setHorizontalGravity(HORIZONTAL);
+        myScroller = new Scroller(context);
+        detector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                if (onClickViewListener != null && clickEnable) {
+                    onClickViewListener.onClick(SlideView.this);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                /**
+                 * 移动当前view内容 移动一段距离
+                 * disX	 X方向移的距离		为正是，图片向左移动，为负时，图片向右移动
+                 * disY  Y方向移动的距离
+                 */
+                if (getChildCount() >= 2) {
+                    int endX = (int) e2.getX();
+                    int distance = endX - firstX;
+                    int width = getChildAt(1).getMeasuredWidth();
+                    AppLogger.d("width==>" + width);
+                    AppLogger.d("totalDistance==>" + totalDistance);
+                    AppLogger.d("distanceX==>" + distanceX);
+                    if (distance < 0) { //左滑
+                        if (Math.abs(distance) < width && totalDistance < width) {
+                            totalDistance += Math.abs(distanceX);
+                            scrollBy((int) distanceX, 0);
+                        } else {
+                            scrollTo(width, 0);
+                        }
+                    } else { //右滑
+                        if (totalDistance > 0 && totalDistance >= width) {
+                            totalDistance -= Math.abs(distanceX);
+                            scrollBy((int) distanceX, 0);
+                        } else {
+                            scrollTo(0, 0);
+                        }
+                    }
+                    if (totalDistance < 0 || totalDistance > width) {
+                        totalDistance = 0;
+                    }
+
+                }
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                isFling = true;
+                if (velocityX > 0) { // 快速向右滑动
+                    reset();
+                } else if (velocityX < 0) { // 快速向左滑动
+                    open(getChildAt(1).getMeasuredWidth());
+                }
+                return false;
+            }
+        });
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        detector.onTouchEvent(event);
+
+        //添加自己的事件解析
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                firstX = (int) event.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+            case MotionEvent.ACTION_UP:
+                if (!isFling) {
+                    int width = getChildAt(1).getMeasuredWidth();
+                    int distance = (int) (event.getX() - firstX);
+                    AppLogger.d("ontouch distance == >" + distance);
+                    if (distance < 0) {
+                        if (Math.abs(distance) > width / 2) {
+                            AppLogger.d("ontouch == >" + 1);
+                            open(width);
+                        } else {
+                            AppLogger.d("ontouch == >" + 2);
+                            reset();
+                        }
+                    } else {
+                        AppLogger.d("ontouch == >" + 3);
+                        reset();
+                    }
+                }
+
+                isFling = false;
+                break;
+        }
+        return true;
+    }
+
+    private void open(int width) {
+        scrollTo(width, 0);
+        totalDistance = width;
+        clickEnable = false;
+        invalidate();
+    }
+
+    private void reset() {
+        scrollTo(0, 0);
+        totalDistance = 0;
+        clickEnable = true;
+        invalidate();
+    }
+
+    public OnClickViewListener getOnClickViewListener() {
+        return onClickViewListener;
+    }
+
+    public void setOnClickViewListener(OnClickViewListener onClickViewListener) {
+        this.onClickViewListener = onClickViewListener;
+    }
+
+    public interface OnClickViewListener {
+        void onClick(View v);
+    }
+}

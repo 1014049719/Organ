@@ -1,0 +1,35 @@
+package com.talenton.organ.server.bean.school;
+
+/**
+ * @author zjh
+ * @date 2016/5/26
+ */
+public class AdVideoData {
+    private String adname; //广告名称
+    private String adpath; //广告地址
+    private int playtime; //播放时间
+
+    public String getAdname() {
+        return adname;
+    }
+
+    public void setAdname(String adname) {
+        this.adname = adname;
+    }
+
+    public String getAdpath() {
+        return adpath;
+    }
+
+    public void setAdpath(String adpath) {
+        this.adpath = adpath;
+    }
+
+    public int getPlaytime() {
+        return playtime;
+    }
+
+    public void setPlaytime(int playtime) {
+        this.playtime = playtime;
+    }
+}

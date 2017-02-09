@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray"
+    tools:context="com.talenton.organ.ui.school.SearchActivity">
+
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+        <com.talenton.organ.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_search_content"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 热门搜索 -->
+            <LinearLayout
+                android:id="@+id/ll_hot"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/space_15_0"
+                android:paddingRight="@dimen/space_15_0"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_45"
+                    android:text="@string/school_search_hot"
+                    android:textSize="@dimen/text_28"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_sub" />
+
+                <com.talenton.base.widget.NoScrollGridView
+                    android:id="@+id/gv_hot"
+                    android:numColumns="3"
+                    android:minHeight="@dimen/height_50"
+                    android:horizontalSpacing="@dimen/space_10"
+                    android:verticalSpacing="@dimen/space_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <!--最近搜索 -->
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/space_15_0"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_45"
+                    android:text="@string/school_search_history"
+                    android:textSize="@dimen/text_28"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_sub" />
+
+
+                <ListView
+                    android:id="@+id/list"
+                    android:cacheColorHint="@color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--搜索结果view-->
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:background="@color/white"
+            android:id="@+id/result_list"
+            android:divider="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+</LinearLayout>

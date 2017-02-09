@@ -1,0 +1,68 @@
+package com.talenton.organ.server.bean.discovery;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/**
+ * Created by Administrator on 2016/4/19.
+ */
+public class Action implements Parcelable {
+
+
+    /**
+     * blogid : 2
+     * subject : 开始活动了
+     * type : 2
+     * dateline : 1460529717
+     * attachment : xxxx
+     * describe : 大家热闹起来吧人体润 ...
+     */
+
+    public String blogid;
+    public String subject;
+    public String type;
+    public long dateline;
+    public String attachment;
+    public String describe;
+
+//序列化
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.blogid);
+        dest.writeString(this.subject);
+        dest.writeString(this.type);
+        dest.writeLong(this.dateline);
+        dest.writeString(this.attachment);
+        dest.writeString(this.describe);
+    }
+
+    public Action() {
+    }
+
+    protected Action(Parcel in) {
+        this.blogid = in.readString();
+        this.subject = in.readString();
+        this.type = in.readString();
+        this.dateline = in.readLong();
+        this.attachment = in.readString();
+        this.describe = in.readString();
+    }
+
+    public static final Parcelable.Creator<Action> CREATOR = new Parcelable.Creator<Action>() {
+        @Override
+        public Action createFromParcel(Parcel source) {
+            return new Action(source);
+        }
+
+        @Override
+        public Action[] newArray(int size) {
+            return new Action[size];
+        }
+    };
+}

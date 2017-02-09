@@ -1,0 +1,160 @@
+package com.talenton.organ.ui.school;
+
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatFragment;
+import com.talenton.organ.R;
+import com.talenton.organ.ui.user.JumpType;
+import com.talenton.base.util.NetWorkUtils;
+import com.talenton.organ.server.SchoolServer;
+import com.talenton.organ.server.bean.school.ClassBriefData;
+import com.talenton.organ.server.bean.school.ReqPraise;
+
+public class BriefFragment extends BaseCompatFragment implements View.OnClickListener {
+    private ClassBriefData briefData;
+    private static final String DATA = "data";
+    private TextView tv_class_name;
+    private RatingBar rating_bar;
+    private TextView tv_evaluate_number;
+    private TextView tv_praise; //点赞按钮
+    private TextView tv_price;
+    private TextView tv_content;
+    private SchoolServer schoolServer;
+    private TextView tv_praise_anim;
+    private int praiseCount; //当前点赞数
+    private AnimatorSet animSet;
+
+    public static BriefFragment newInstance(ClassBriefData briefData) {
+        BriefFragment fragment = new BriefFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DATA, briefData);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        briefData = getArguments().getParcelable(DATA);
+        praiseCount = briefData.getLikecount();
+        schoolServer = new SchoolServer();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_brief, container, false);
+        initView(v);
+        fillData();
+        return v;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void initView(View v) {
+        tv_class_name = (TextView) v.findViewById(R.id.tv_class_name);
+        rating_bar = (RatingBar) v.findViewById(R.id.rating_bar);
+        tv_evaluate_number = (TextView) v.findViewById(R.id.tv_evaluate_number);
+        tv_praise = (TextView) v.findViewById(R.id.tv_praise);
+        tv_price = (TextView) v.findViewById(R.id.tv_price);
+        tv_content = (TextView) v.findViewById(R.id.tv_content);
+        tv_praise_anim = (TextView) v.findViewById(R.id.tv_praise_anim);
+
+        tv_praise.setOnClickListener(this);
+
+        if (briefData.getIslike() == 1) {
+            tv_praise.setSelected(true);
+        }
+    }
+
+    private void fillData() {
+        tv_class_name.setText(briefData.getTitle());
+        rating_bar.setRating(briefData.getStarcount());
+        tv_evaluate_number.setText(briefData.getCommentcount() + getString(R.string.school_evaluate_number_end));
+        if (briefData.getIspay() == ClassBriefData.FREE) {
+            tv_price.setTextColor(getResources().getColor(R.color.text_free));
+            tv_price.setText(getString(R.string.school_text_free));
+        } else {
+            tv_price.setTextColor(getResources().getColor(R.color.text_charge));
+            tv_price.setText("￥" + briefData.getPrice());
+        }
+        tv_content.setText(Html.fromHtml(briefData.getContent()));
+        tv_praise.setText(String.valueOf(briefData.getLikecount()));
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (!NetWorkUtils.isNetworkAvailable(getContext())) {
+            showShortToast(getString(R.string.main_disable_network));
+            return;
+        }
+        switch (v.getId()) {
+            case R.id.tv_praise:
+                //点击点赞按钮
+                if (tv_praise.isSelected()) {
+                    tv_praise.setSelected(false);
+                    praiseCount -= 1;
+                    if (praiseCount < 0) {
+                        praiseCount = 0;
+                    }
+                    tv_praise.setText(String.valueOf(praiseCount));
+                } else {
+                    tv_praise.setSelected(true);
+                    startAnimation();
+                    praiseCount += 1;
+                    tv_praise.setText(String.valueOf(praiseCount));
+                }
+                schoolServer.praiseClass(new ReqPraise(briefData.getAid()), null);
+                break;
+        }
+    }
+
+    private void startAnimation(){
+        if (animSet == null){
+            animSet = new AnimatorSet();
+            ObjectAnimator anim1 = ObjectAnimator.ofFloat(tv_praise_anim,"y",10f,0.0f);
+            ObjectAnimator anim2 = ObjectAnimator.ofFloat(tv_praise_anim,"scaleX",1.0f,1.3f);
+            ObjectAnimator anim3 = ObjectAnimator.ofFloat(tv_praise_anim,"scaleY",1.0f,1.3f);
+            ObjectAnimator anim4 = ObjectAnimator.ofFloat(tv_praise_anim,"alpha",1.0f,0.3f);
+            animSet.play(anim1).with(anim2).with(anim3).with(anim4);
+            animSet.setDuration(500);
+            animSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    tv_praise_anim.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+        }
+        tv_praise_anim.setVisibility(View.VISIBLE);
+        animSet.start();
+    }
+
+}

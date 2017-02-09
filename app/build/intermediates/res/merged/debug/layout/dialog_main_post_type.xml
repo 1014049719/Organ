@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mask_white"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/space_15_0" >
+
+            <TextView
+                android:id="@+id/main_feeds_photo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/space_5_0"
+                android:drawableTop="@mipmap/main_feeds_photo"
+                android:gravity="center"
+                android:text="@string/post_main_type_photo"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_28" />
+
+            <TextView
+                android:id="@+id/main_feeds_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/space_5_0"
+                android:drawableTop="@mipmap/main_feeds_video"
+                android:gravity="center"
+                android:text="@string/post_main_type_video"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_28" />
+
+            <TextView
+                android:id="@+id/main_feeds_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/space_5_0"
+                android:drawableTop="@mipmap/main_feeds_text"
+                android:gravity="center"
+                android:text="@string/post_main_type_text"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_28" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/space_15_0" >
+
+            <TextView
+                android:id="@+id/main_feeds_gallery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/space_5_0"
+                android:drawableTop="@mipmap/main_feeds_gallery"
+                android:gravity="center"
+                android:text="@string/post_main_type_gallery"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/text_28" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="2" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/main_feeds_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/space_15_0"
+        android:src="@mipmap/feeds_close" />
+
+    <ImageView
+        android:id="@+id/guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

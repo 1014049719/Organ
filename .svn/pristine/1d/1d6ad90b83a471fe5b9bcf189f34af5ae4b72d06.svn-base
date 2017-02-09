@@ -1,0 +1,20 @@
+package com.talenton.organ.server.bean.feed;
+
+import java.util.ArrayList;
+
+/**
+ * Created by ttt on 2016/5/19.
+ */
+public class ReqSocialCircle {
+    public static final String URL = "topic.php?mod=sharetopictocircle&cmdcode=124";
+
+    public long tid;
+    public String content;
+    public ArrayList<Long> circle_ids;
+
+    public ReqSocialCircle(long tid, String content, ArrayList<Long> circleIDs){
+        this.tid = tid;
+        this.content = content;
+        this.circle_ids = circleIDs;
+    }
+}

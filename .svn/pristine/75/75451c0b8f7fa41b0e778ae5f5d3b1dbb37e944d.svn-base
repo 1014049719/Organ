@@ -1,0 +1,12 @@
+package com.talenton.organ.server.bean.discovery;
+
+/**
+ * Created by Administrator on 2016/4/20.
+ */
+public class RspDiscoverNumType {
+
+    //定义网络返回数据类型
+    public int actionnum;
+    public int messagenum;
+
+}

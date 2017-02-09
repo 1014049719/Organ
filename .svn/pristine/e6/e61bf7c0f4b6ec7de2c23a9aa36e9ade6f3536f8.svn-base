@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/zhuangtai_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/order_zhuangtai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单状态"
+            android:textSize="20sp"
+            android:textColor="#ff8434"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:layout_centerVertical="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/space_10"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:background="#e5e5e5" />
+    </LinearLayout>
+
+
+    <com.talenton.base.widget.NoScrollListView
+        android:id="@+id/no_scroll_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10">
+        <TextView
+            android:id="@+id/hanyunfei_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(含运费:¥0.00)"
+            android:textSize="@dimen/text_32"
+            android:textColor="#333333"
+            android:layout_marginRight="@dimen/space_10"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/total_fee_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥20000"
+            android:textColor="#333333"
+            android:layout_toLeftOf="@+id/hanyunfei_tv"
+            android:layout_marginRight="@dimen/space_5_0"
+            android:textSize="@dimen/text_32" />
+        <TextView
+            android:id="@+id/heji_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计:"
+            android:textColor="#333333"
+            android:layout_toLeftOf="@+id/total_fee_tv"
+            android:textSize="@dimen/text_32" />
+        <TextView
+            android:id="@+id/shangpin_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_2_0"
+            android:text="件商品"
+            android:textColor="#333333"
+            android:layout_toLeftOf="@+id/heji_tv"
+            android:textSize="@dimen/text_32"
+            android:layout_marginRight="@dimen/space_10_0"/>
+        <TextView
+            android:id="@+id/num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textColor="#333333"
+            android:layout_toLeftOf="@+id/shangpin_tv"
+            android:textSize="@dimen/text_32" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/jiesuan_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+        <Button
+            android:id="@+id/jiesuan_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:text="去结算"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_order_bg_orange"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:layout_marginRight="@dimen/space_10"
+            android:textSize="@dimen/text_32"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/shouhuo_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end">
+        <Button
+            android:id="@+id/wuliu_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:text="查看物流"
+            android:textColor="#333333"
+            android:background="@drawable/btn_order_bg_white"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:layout_marginRight="@dimen/space_10"
+            android:textSize="@dimen/text_32"/>
+        <Button
+            android:id="@+id/shouhuo_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:text="确认收货"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_order_bg_orange"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:layout_marginRight="@dimen/space_10"
+            android:textSize="@dimen/text_32"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:background="#e5e5e5" />
+</LinearLayout>

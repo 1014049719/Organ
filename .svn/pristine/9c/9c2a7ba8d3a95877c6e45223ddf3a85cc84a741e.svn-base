@@ -1,0 +1,85 @@
+package com.talenton.organ.server.bean.user;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.talenton.base.server.bean.AppModule;
+
+import java.util.ArrayList;
+
+/**
+ * @author zjh
+ * @date 2016/7/13
+ */
+public class WrapperAppData implements Parcelable {
+    public static final int TYPE_DEFAULT = 1;
+    public static final int TYPE_MORE = 2;
+    private String name;
+    private ArrayList<AppModule> appModule;
+    private int type;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<AppModule> getAppModule() {
+        return appModule;
+    }
+
+    public void setAppModule(ArrayList<AppModule> appModule) {
+        this.appModule = appModule;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public WrapperAppData() {
+    }
+
+    public WrapperAppData(String name, ArrayList<AppModule> appModule, int type) {
+        this.name = name;
+        this.appModule = appModule;
+        this.type = type;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeList(this.appModule);
+        dest.writeInt(this.type);
+    }
+
+    protected WrapperAppData(Parcel in) {
+        this.name = in.readString();
+        this.appModule = new ArrayList<AppModule>();
+        in.readList(this.appModule, AppModule.class.getClassLoader());
+        this.type = in.readInt();
+    }
+
+    public static final Creator<WrapperAppData> CREATOR = new Creator<WrapperAppData>() {
+        @Override
+        public WrapperAppData createFromParcel(Parcel source) {
+            return new WrapperAppData(source);
+        }
+
+        @Override
+        public WrapperAppData[] newArray(int size) {
+            return new WrapperAppData[size];
+        }
+    };
+}

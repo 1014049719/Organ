@@ -1,0 +1,75 @@
+package com.talenton.organ.ui.user;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.OrganApplication;
+import com.talenton.organ.R;
+import com.talenton.organ.server.bean.shop.AdressInfo;
+import com.talenton.organ.ui.MainActivity;
+
+public class PointSucceedActivity extends BaseCompatActivity implements View.OnClickListener {
+
+    //下方返回按钮
+    private Button backDetailBtn;
+    private Button backMineBtn;
+
+    //传来的用户信息
+    private AdressInfo mDefautAdress;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_point_succeed);
+
+        //用户信息
+        mDefautAdress = (AdressInfo) getIntent().getSerializableExtra("mDefautAdress");
+
+        backDetailBtn = (Button) findViewById(R.id.backDetail_btn);
+        backDetailBtn.setOnClickListener(this);
+        backMineBtn = (Button) findViewById(R.id.backMine_btn);
+        backMineBtn.setOnClickListener(this);
+
+        TextView nameTV = (TextView) findViewById(R.id.name_textView);
+        TextView numberTV = (TextView) findViewById(R.id.number_textView);
+        TextView addressTV = (TextView) findViewById(R.id.address_textView);
+        nameTV.setText(mDefautAdress.consignee);
+        numberTV.setText(mDefautAdress.mobile);
+        addressTV.setText(mDefautAdress.address);
+
+    }
+
+    //点击事件
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backDetail_btn: {
+                //返回前两层activity
+                Intent intent = new Intent(OrganApplication.getAppContext(), MyPointsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            break;
+            case R.id.backMine_btn: {
+                //返回前三层activity
+                Intent intent = new Intent(OrganApplication.getAppContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            break;
+
+        }
+    }
+
+    //导航
+    @Override
+    protected int getTitleResourceId() {
+        return R.string.pointSucceed_title;
+    }
+}

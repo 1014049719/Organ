@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:lsg="http://schemas.android.com/apk/res-auto"
+    tools:context="com.talenton.organ.ui.shop.ConfirmOrderActivity">
+    <!--优惠-->
+    <!--顶部-->
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/icon_shop_pay_order_ok"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/icon_shop_pay_order_ok" />
+            <TextView
+                android:id="@+id/pay_result_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:text="支付成功" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_pay_ok_to_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/pay_ok_to_order"
+                style="@style/comment_btn_style"
+                android:layout_marginLeft="15dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="开始学习" >
+            </Button>
+
+            <Button
+                android:id="@+id/pay_ok_to_first"
+                style="@style/comment_btn_style"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="返回学堂" >
+            </Button>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_pay_error_to_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <Button
+                android:id="@+id/pay_error_to_order"
+                style="@style/comment_btn_style"
+                android:layout_marginLeft="15dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="返回学堂" >
+            </Button>
+
+            <Button
+                android:id="@+id/pay_error_to_first"
+                style="@style/comment_btn_style"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="重新购买" >
+            </Button>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</LinearLayout>

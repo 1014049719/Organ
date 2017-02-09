@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@mipmap/feeds_list_bg"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_marginRight="@dimen/space_10_0">
+        <ImageView
+
+            android:id="@+id/imgurl_imageview"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/load_image"
+            android:layout_margin="@dimen/space_5_0"/>
+        <TextView
+            android:id="@+id/giftname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="京东50元礼品卡"
+            android:layout_marginTop="@dimen/space_5_0"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/text_30" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/space_2_0">
+            <TextView
+                android:id="@+id/points_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123"
+                android:textColor="#3983cc"
+                android:layout_marginLeft="@dimen/space_8_0"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/text_26"
+                />
+            <TextView
+                android:id="@+id/jifen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分"
+                android:layout_toRightOf="@+id/points_tv"
+                android:layout_centerVertical="true"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_26"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/duihuan_btn"
+                android:layout_width="65dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="@dimen/space_8_0"
+                android:layout_marginLeft="@dimen/space_10"
+                android:layout_gravity="end"
+                android:background="@drawable/btn_bg_corner_blue"
+                android:text="兑换"
+                android:textColor="@color/white"/>
+    </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

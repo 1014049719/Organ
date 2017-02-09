@@ -1,0 +1,590 @@
+[
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/point_focured.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/point_focured.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner_black_stoke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_corner_black_stoke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_btn_colored_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/image_top_back_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/image_top_back_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_white_corner_pressed.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_white_corner_pressed.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_ratingbar_small_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_ratingbar_small_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_dark.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_list_selector_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/setting_item_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/setting_item_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_text_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_text_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/circle_private_conner_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/circle_private_conner_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/actionbar_back_btn.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/actionbar_back_btn.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_cab_background_internal_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_cab_background_internal_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_point_red_duihuan.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_point_red_duihuan.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg_red.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg_red.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_point_bg_white_corner_gray.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_point_bg_white_corner_gray.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/wheel_val.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/wheel_val.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_big_corner_cs.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_big_corner_cs.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/indicator_bg_top.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-Refresh/unspecified/res/drawable/indicator_bg_top.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_mine_click_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_mine_click_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_et_gray_big_corner.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_et_gray_big_corner.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/i2.jpg",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/i2.jpg"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/point_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/point_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/bdp_update_bg_dialog_btn.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/res/drawable/bdp_update_bg_dialog_btn.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_order_bg_white.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_order_bg_white.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_indicate_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_indicate_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ease_unread_dot.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/ease_unread_dot.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_btn_default_mtrl_shape.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_btn_default_mtrl_shape.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_places_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_places_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_transparent_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_transparent_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_objects_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_objects_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_circle_conner_half.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_circle_conner_half.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/shape_red_oval.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/shape_red_oval.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_ratingbar_indicator_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_ratingbar_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_indicate_text_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_indicate_text_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/bdp_update_bg_dialog_title.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/res/drawable/bdp_update_bg_dialog_title.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/tv_transparent_5_indicate_text_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/tv_transparent_5_indicate_text_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_tab_indicator_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_tab_indicator_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_text_cursor_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_ratingbar_full_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_ratingbar_full_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/progress_dialog_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/progress_dialog_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/textview_oval_background.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/textview_oval_background.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_transparent.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_transparent.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_btn_check_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_btn_check_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner_gray_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_corner_gray_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_gray_stroke_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_gray_stroke_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_white_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_white_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_login_wechat.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_login_wechat.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/timebg_bottom.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/timebg_bottom.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_blue_conner_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_blue_conner_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/bdp_update_progress_download.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/res/drawable/bdp_update_progress_download.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_points_bg_gray.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_points_bg_gray.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/radio_btn_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/radio_btn_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_half_corner_white_rect_right.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_half_corner_white_rect_right.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/post_type_emoji.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/post_type_emoji.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/bg_red_point.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/bg_red_point.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_login_qq.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_login_qq.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/background_tab.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/background_tab.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_points_duihua.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_points_duihua.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/point_nomal.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/point_nomal.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/dot_main.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/dot_main.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_gray_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_gray_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/post_type_keyboard.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/post_type_keyboard.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/dot_red_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/dot_red_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_half_corner_left_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_half_corner_left_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_btn_radio_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_btn_radio_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_white_corner_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_white_corner_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_list_selector_holo_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_white_corner_bg_pressed.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_white_corner_bg_pressed.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_shop_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_shop_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_login_qq_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_login_qq_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/bdp_update_bg_dialog_content.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/res/drawable/bdp_update_bg_dialog_content.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/checkbox_album_img.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/checkbox_album_img.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_gray1_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_gray1_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_recent_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_recent_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_plaza_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_plaza_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg_pressed.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg_pressed.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_half_corner_blue_rect_right.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_half_corner_blue_rect_right.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_order_bg_orange.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_order_bg_orange.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_white_corner_bg_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_white_corner_bg_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_school_white_corner_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_school_white_corner_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_edit_text_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/design_fab_background.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/drawable/design_fab_background.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_seekbar_thumb_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_seekbar_thumb_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/checkbox_picture.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/checkbox_picture.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_down.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/btn_down.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_mine_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_mine_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_imgs_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_imgs_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/post_addpic.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/post_addpic.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_player_video_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_player_video_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/timebg_top.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/timebg_top.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_circle_conner_half_press.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_circle_conner_half_press.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_topic_conner_half_press.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_topic_conner_half_press.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg_white.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg_white.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_spinner_textfield_background_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_half_corner_right_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_half_corner_right_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/feeds_timeline_top_line.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/feeds_timeline_top_line.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/i5.jpg",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/i5.jpg"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_blue_conner_stroke_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_blue_conner_stroke_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/sym_keyboard_delete.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/sym_keyboard_delete.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner_blue.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_corner_blue.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/design_snackbar_background.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/res/drawable/design_snackbar_background.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/indicator_bg_bottom.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-Refresh/unspecified/res/drawable/indicator_bg_bottom.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_nature_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_nature_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/drawable/btn_bg_corner.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_yellow_conner_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_yellow_conner_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/tv_indicate_text_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/tv_indicate_text_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/dot_uncheck.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/dot_uncheck.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_login_phone.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_login_phone.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_textfield_search_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_textfield_search_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_people_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_people_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_confrim.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/btn_confrim.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/popup_main_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/popup_main_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_blue_conner_solid.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_blue_conner_solid.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/rating_bar_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/rating_bar_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_favorite_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_favorite_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_dialog_material_background_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_white_bg_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/btn_white_bg_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg_red_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg_red_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_seekbar_track_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_seekbar_track_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/dialog_bg_conner.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/dialog_bg_conner.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_school_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_school_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner_white_stroke.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_corner_white_stroke.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_login_phone_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_login_phone_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_corner_green.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_corner_green.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_et_white_big_corner.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_et_white_big_corner.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_dark.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_dialog_material_background_dark.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_praise_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_praise_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/ic_emoji_symbols_light.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/res/drawable/ic_emoji_symbols_light.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_half_corner_blue_rect_left.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_half_corner_blue_rect_left.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_topic_conner_half.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_topic_conner_half.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_btn_borderless_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_btn_borderless_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/main_menu_discover_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/main_menu_discover_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_login_wechat_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_login_wechat_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_pdf_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_pdf_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/app_video_center_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/res/drawable/app_video_center_bg.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_bg_half_corner_white_rect_left.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_bg_half_corner_white_rect_left.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_normal.9.png",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/btn_normal.9.png"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_dark.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_item_background_holo_dark.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_et_gray_corner.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_et_gray_corner.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/abc_cab_background_top_material.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/res/drawable/abc_cab_background_top_material.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/btn_main_bg_selector.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/src/main/res/drawable/btn_main_bg_selector.xml"
+    },
+    {
+        "merged": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/res/merged/debug/drawable/wheel_bg.xml",
+        "source": "/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/res/drawable/wheel_bg.xml"
+    }
+]

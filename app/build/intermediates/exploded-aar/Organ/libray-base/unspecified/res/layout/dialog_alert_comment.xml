@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@mipmap/popup_background">
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_alert_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:textColor="#5f5f5f"
+            android:textSize="@dimen/text_34"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_alert_message"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="30dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:textColor="#5f5f5f"
+            android:textSize="@dimen/text_28"
+            android:visibility="gone" />
+        <View
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/list_div_color"/>
+        <LinearLayout
+            android:id="@+id/Layout_btn_alert"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/btn_negative"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_confrim"
+                android:textColor="@color/text_sub"
+                android:textSize="@dimen/text_28"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/v_delimit_btn"
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/list_div_color"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_positive"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_confrim"
+                android:textColor="@color/confirm_btn"
+                android:textSize="@dimen/text_28"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

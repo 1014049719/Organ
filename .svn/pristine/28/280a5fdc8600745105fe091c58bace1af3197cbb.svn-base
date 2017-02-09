@@ -1,0 +1,8 @@
+package com.talenton.organ.server.bean.shop;
+
+/**
+ * Created by xiaoxiang on 2016/5/20.
+ */
+public class SendSearchHotGoodsData {
+    public final static String URL = "mobile/hotsearch.php?cmdcode=121";
+}

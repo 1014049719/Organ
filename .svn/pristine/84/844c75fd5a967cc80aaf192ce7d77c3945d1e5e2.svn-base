@@ -1,0 +1,145 @@
+package com.talenton.organ.ui.feed;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+
+import com.rockerhieu.emojicon.EmojiconGridFragment;
+import com.rockerhieu.emojicon.emoji.Emojicon;
+import com.talenton.organ.BaseCompatActivity;
+import com.talenton.organ.R;
+import com.talenton.base.server.XLTError;
+import com.talenton.base.server.XLTResponseCallback;
+import com.talenton.base.widget.ResizeRelativeLayout;
+import com.talenton.organ.event.CommentingEvent;
+import com.talenton.organ.server.FeedServer;
+import com.talenton.organ.server.bean.feed.CommentInfo;
+import com.talenton.organ.server.bean.feed.PostToParam;
+import com.talenton.organ.ui.feed.adapter.EmojiInputViewHolder;
+
+import org.greenrobot.eventbus.EventBus;
+
+public class FeedsCommentActivity extends BaseCompatActivity implements View.OnClickListener,
+		EmojiconGridFragment.OnEmojiconClickedListener, FeedsEmojiFragment.OnEmojiconBackspaceClickedListener {
+	private static final String TAG = FeedsCommentActivity.class.getSimpleName();
+	public static final String KEY_FEED_INFO = "key_feed_info";
+	public static final String KEY_USER_ID = "key_user_id";
+	public static final String KEY_USER_NAME = "key_user_name";
+	public static final String KEY_COMMENT_ID = "key_comment_id";
+	public static final String KEY_DTYPE = "key_dtype";
+	public static final String KEY_HEIGHT = "key_height";
+
+	private EmojiInputViewHolder mHolder;
+	private PostToParam mPostToParam;
+	private boolean isReplay = false;
+
+	public static void startCommentActivity(Context context, PostToParam postToParam) {
+		if (postToParam == null || postToParam.tid <= 0) {
+			return;
+		}
+		Intent intent = new Intent(context, FeedsCommentActivity.class);
+		intent.putExtra("key_post_to", postToParam);
+		context.startActivity(intent);
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_feeds_comment);
+		Intent intent = getIntent();
+		if (intent != null) {
+			mPostToParam = (PostToParam) intent.getParcelableExtra("key_post_to");
+		}
+		if (mPostToParam == null) {
+			finish();
+			return;
+		}
+
+		View emojiInputView = findViewById(R.id.root);
+		mHolder = new EmojiInputViewHolder(emojiInputView);
+		mHolder.setOnBackPressListener(new EmojiInputViewHolder.OnBackPressListener() {
+
+			@Override
+			public void OnBackPress() {
+				hideSoftInput(mHolder.mInputEditText);
+				finish();
+				overridePendingTransition(0, 0);
+			}
+		});
+
+		((ResizeRelativeLayout) emojiInputView.findViewById(R.id.chat_resize_panel))
+				.setOnResizeRelativeListener(new ResizeRelativeLayout.OnResizeRelativeListener() {
+
+					@Override
+					public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+						if (h > 0) {
+							EventBus.getDefault().post(new CommentingEvent(mPostToParam.circleId, mPostToParam.guid, "", h - mPostToParam.height));
+						}
+					}
+
+				});
+
+		findViewById(R.id.comment).setOnClickListener(this);
+
+		isReplay = TextUtils.isEmpty(mPostToParam.name) ? false : true;
+
+		mHolder.mInputEditText.setHint(TextUtils.isEmpty(mPostToParam.name) ? getResources().getString(R.string.comment)
+				: getResources().getString(R.string.comment_comment_hint, mPostToParam.name));
+		mHolder.mInputEditText.setText("");
+		mHolder.mInputEditText.requestFocus();
+		emojiInputView.setOnClickListener(this);
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		// MomentsManager.getInstance(getApplicationContext())
+		// .CommentInputChanged(mFeedInfo.iFeedsID, -1);
+		hideSoftInput(mHolder.mInputEditText);
+		finish();
+		overridePendingTransition(0, 0);
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		if (id == R.id.comment) {
+			String comment = mHolder.mInputEditText.getText().toString();
+			if (comment.trim().length() == 0) {
+				return;
+			}
+			showProgress(R.string.commenting);
+			FeedServer.comment(new CommentInfo(mPostToParam.tid, isReplay ? mPostToParam.commentUID : 0, comment),
+					new XLTResponseCallback<CommentInfo>() {
+
+						@Override
+						public void onResponse(CommentInfo data, XLTError error) {
+							// TODO Auto-generated method stub
+							hideProgress();
+						}
+
+					});
+
+			onBackPressed();
+		}
+		if (id == R.id.root) {
+			onBackPressed();
+		}
+
+	}
+
+	@Override
+	public void onEmojiconBackspaceClicked(View v) {
+		FeedsEmojiFragment.backspace(mHolder.mInputEditText);
+
+	}
+
+	@Override
+	public void onEmojiconClicked(Emojicon emojicon) {
+		FeedsEmojiFragment.input(mHolder.mInputEditText, emojicon);
+
+	}
+}

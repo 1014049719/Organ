@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_30_0"
+        android:text="@string/school_class_filter_text_age"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_26" />
+
+    <com.talenton.base.widget.NoScrollGridView
+        android:id="@+id/gv_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_15_0"
+        android:numColumns="3"
+        android:listSelector="@color/transparent"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="@dimen/space_10" />
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_0_5"
+        android:layout_marginTop="@dimen/space_30_0"
+        android:background="@color/list_div_color" />
+
+</LinearLayout>

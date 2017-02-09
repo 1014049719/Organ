@@ -1,0 +1,14 @@
+package com.talenton.organ.server.bean.discovery;
+
+/**
+ * Created by Wang.'''' on 2016/6/1.
+ */
+public class ShareParam {
+
+    //网络接口
+    public final static String URL="discover.php?mod=sharecount&cmdcode=122";
+
+    //要传入的位置参数
+    public int type;
+    public int blogid;
+}

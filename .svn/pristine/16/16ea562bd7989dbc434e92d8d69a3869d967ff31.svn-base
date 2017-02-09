@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/feeds_list_gift_bg"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/gift_total_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@mipmap/gift_more"
+        android:gravity="center|left"
+        android:paddingBottom="@dimen/space_10_0"
+        android:paddingLeft="@dimen/space_10_0"
+        android:paddingRight="@dimen/space_10_0"
+        android:text="@string/circle_feeds_list_gift_total"
+        android:textColor="@color/text_sub"
+        android:textSize="@dimen/text_20" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gift" />
+
+    <LinearLayout
+        android:id="@+id/gift_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:orientation="horizontal" >
+    </LinearLayout>
+
+</LinearLayout>

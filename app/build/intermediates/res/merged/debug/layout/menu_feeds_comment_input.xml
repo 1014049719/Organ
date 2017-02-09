@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/emoji_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:id="@+id/emoji_top_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <com.talenton.base.widget.ResizeRelativeLayout
+                android:id="@+id/chat_resize_panel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:id="@+id/chat_input_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/post_type_input_switching"
+                android:gravity="left|center"
+                android:minHeight="@dimen/height_40"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/space_7_5"
+                android:paddingRight="@dimen/space_7_5" >
+
+                <Button
+                    android:id="@+id/ib_emoji"
+                    android:layout_width="@dimen/height_30"
+                    android:layout_height="@dimen/height_30"
+                    android:background="@drawable/post_type_emoji" />
+
+                <com.rockerhieu.emojicon.EmojiconEditText
+                    android:id="@+id/et_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="@string/comment_hint"
+                    android:maxLength="120"
+                    android:maxLines="4"
+                    android:minHeight="32dp"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/text_light"
+                    android:textSize="@dimen/text_28"
+                    emojicon:emojiconSize="20sp" />
+
+                <TextView
+                    android:id="@+id/comment"
+                    style="@style/small_btn_style"
+                    android:layout_marginLeft="@dimen/space_15_0"
+                    android:text="@string/comment"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/chat_emoji_panel"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@mipmap/feeds_post_area_bg"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible" >
+            <fragment
+                android:id="@+id/emojicons"
+                android:name="com.talenton.organ.ui.feed.FeedsEmojiFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider_main" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <com.talenton.base.widget.ResizeRelativeLayout
+        android:id="@+id/input_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</merge>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-7z/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f859bc56af2d3986e71283f23fa83dd8ba59ec9b">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-7z-unspecified_f6e042ba4ad88a13a53e5d0a9a6a5c3562893bef.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.nostra13.universalimageloader/universal-image-loader/1.9.5/442dbfb517b9ab5cb5c6da7ebf8cc28ec5bd0375/universal-image-loader-1.9.5.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="442dbfb517b9ab5cb5c6da7ebf8cc28ec5bd0375">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/universal-image-loader-1.9.5_ec1d0746a96ab2253d3b778e0fddf91850f6684a.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/open_sdk_r5509.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="2c6dc3b2127223bb5f67b5e9f8ed75f358db3d39">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/open_sdk_r5509_80f70e393decc61c6cf8cea7731989b016bb5f51.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.github.chrisbanes/PhotoView/1.2.6/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e39dd45427d2ba136c82ed1946f80dd3dff16695">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.github.chrisbanes-PhotoView-1.2.6_63a92ec424c6b3c0ec34362257be5fe6bfd80fdd.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.tencent.bugly/crashreport/2.1.9/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="fe0d33c466ba39b67c3e9fa4259d780102c9b4b3">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.tencent.bugly-crashreport-2.1.9_2fd78a0796c76c5e27797e6896242325281d65cd.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.2.1_4f9d3999e508b41df25a11d87d1168d585482be3.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/jars/libs/BDAutoUpdateSDK_20150605_V1.2.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1005c35d252170d1972f75c35057360aa2afe539">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/BDAutoUpdateSDK_20150605_V1.2.0_949122cb609f106a3744b17e9f12f5dbc5dc1c0a.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/jars/libs/need_lib.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="0003d4e05aaf06d5830e1b5f1c8816dbc1414b18">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/need_lib_2a092d9f69042b48b825ed1918ee6b7db3f64ca2.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/alipaysdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="24656b659380467524197222061b20d7c9f83979">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/alipaysdk_e49155a2f39cc473bfc76847a9069529d154c0e2.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="920fab2c18f176a556fa9d37dada395c18d854d1">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-baiduautoupdate-unspecified_8ac3056b83f35d883df76432bc3d6fb3f2159a4c.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.3.1/19047bdb6a4fc00a44124f64ca98e88fc204e7e3/okhttp-3.3.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="19047bdb6a4fc00a44124f64ca98e88fc204e7e3">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/okhttp-3.3.1_08a47aacd69c396c1a267d87792e983a66b8213f.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/libpingpp.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d15da937605fbe6f22cc099dca5f0d35f09aa810">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/libpingpp_ebb23b7034b6d5fdedb942bf66198d900c517682.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/design/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-design-23.2.1_59bd2a5a8af08b829dc63a097edf60d78d1c46ff.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/wup-1.0.0.E-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b478883af03ae88b14cf4c63db5da73bd31038cc">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/wup-1.0.0.E-SNAPSHOT_bd73c3160b8ccbb6679a6cd170c1255706bc8069.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-pdfview/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3792fd15d1d34c73080fe02be0810238017c3e19">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-pdfview-unspecified_655bb5131c016550c998ce1a9c41349cc12c6d3e.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.qiniu/qiniu-android-sdk/7.1.2/ce7e5e12767b15241de044d86a2c7d064e24a8da/qiniu-android-sdk-7.1.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ce7e5e12767b15241de044d86a2c7d064e24a8da">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/qiniu-android-sdk-7.1.2_b4798a39ee850c6d23d140feb805b4ca3e07177e.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.8.0/5ea7af56cc7c567ed9856d99efb30740e9b17ff/okio-1.8.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="05ea7af56cc7c567ed9856d99efb30740e9b17ff">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/okio-1.8.0_1e1c1f8ff1840f522c5dda02d55a56366b2061f0.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-player/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="80f42a00522965993611235640c3ba505498646a">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-player-unspecified_319b19a8f6311a9478042b485565d302c867309e.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/org.greenrobot/eventbus/3.0.0/ddd99896e9569eaababbe81b35d80e1b91c4ad85/eventbus-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ddd99896e9569eaababbe81b35d80e1b91c4ad85">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/eventbus-3.0.0_8aafb9166f33e8f30b5538dbb605e5c0ce83dd90.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/libammsdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="0985bdda1f2efc39bc2bd6e237de68bf80fc005b">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/libammsdk_723bc40e396481c6198ebe0107ab3a30c3a6c3eb.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.rockerhieu.emojicon/library/1.3.3/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="bcca57571c432c186f738fccb93e4ca5bc02aada">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.rockerhieu.emojicon-library-1.3.3_5a648a38520183be768f2612a3b99661bbf0b0e0.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-Refresh/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="2fa3e714c5d4223e7462636245dc8e29ec58d8c6">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-Refresh-unspecified_4c97df7d29d66e525670148763567b7ada453833.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.7.2/20f6463eb19ac61960c5d91a094c2f4f0727dc2e/okhttp-2.7.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="20f6463eb19ac61960c5d91a094c2f4f0727dc2e">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/okhttp-2.7.2_6d2f8f1d24b9ecaa31fa3acdcebf2ce48f71358c.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/jg_filter_sdk_1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="cbc5a625393dc53f7b8c6cb862e626b222e5ee06">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/jg_filter_sdk_1.1_368d34d39076dd9e395f54e15ad186ff1c045c86.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.2.1_eb24c9561ed8d6135d97e30f07554cc2774ee3e8.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/alipayutdid.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f6d62eefad48ea5953c77c59600c381fd3c76c4c">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/alipayutdid_abe5741a0548ffe69c2241711d92afdbe6376cdd.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.qiniu/happy-dns/0.2.5/c0ee8266504682a0e500d95d849a5af94a718df1/happy-dns-0.2.5.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c0ee8266504682a0e500d95d849a5af94a718df1">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/happy-dns-0.2.5_cc1de1727568d6fccc0c499e4bef8e82f5ecda07.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.baoyz.swipemenulistview/library/1.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8ec8378e8d7aa3104f60823e6350f2728d3609ba">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.baoyz.swipemenulistview-library-1.3.0_e212e941398c381788c2ba69ee6e6ffb4c99a474.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/internal_impl-23.3.0_d08695ee37c08b5aea94f0837f7183f99d41b728.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.2/f1bc476cc167b18e66c297df599b2377131a8947/gson-2.6.2.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/gson-2.6.2_2cce1ba6cde512b2b774e1e624d0ab4dbcc371e1.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/Xg_sdk_v2.45_20160510_1845.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="59b00c883eb736115145f44de2411c9c3eabdc02">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Xg_sdk_v2.45_20160510_1845_10a2505685f07d1da2b3037e64f30a51a1539e0b.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/support-annotations-23.3.0_57097095e2b27930a183251b19d963b09851b74c.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.3.0_366a7125e47782a34646abb34216d0abd3b30316.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/libs/alipaysecsdk.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="dff07c9b7360b9811c1bf8d8f3c4dfc42776f33d">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/alipaysecsdk_79ca560461320ff3396c8a645bb4adc3a3273039.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao/2.1.0/9414c1d4578673dac83a23119009624fd695726d/greendao-2.1.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="9414c1d4578673dac83a23119009624fd695726d">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/greendao-2.1.0_afef501152177a5037fab8279de1984ede44e3b0.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.2.1_eaaec214498e0e594f71ee869ddb2a66c317ea25.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.2.1_7807cdc9e540ec8553f9ff1e359078e3a64f0713.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-ijkplayer/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="9f1e3ec57573a69664eeeda4a7ccbaae0bb8ae9e">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-ijkplayer-unspecified_126744c6bf7c214e3179c1840ba4a2eab5d00f97.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-native/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="cef62cdb5bf50da51a8f1f31df5c3ba8b164c375">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-library-native-unspecified_1a53ce8eccc37a140657aa0dfe5734fb81ee2001.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/library-baiduautoupdate/unspecified/jars/libs/patchupdate.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="2c07ec8163ecce715a1c1a5dc650b504f40024f8">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/patchupdate_9069f56cc1079288186582a52930095d0d09eb66.jar" />
+    </item>
+    <item
+        jar="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/exploded-aar/Organ/libray-base/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d118facebe1611439cc7434149c51e7c59f233bd">
+        <dex dex="/Users/wangtianhong/Desktop/Organ/app/build/intermediates/pre-dexed/debug/Organ-libray-base-unspecified_5ac0dc5c4739e8bded2947d90a813a3c45e8e2df.jar" />
+    </item>
+
+</items>

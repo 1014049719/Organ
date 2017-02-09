@@ -1,0 +1,15 @@
+package com.talenton.organ.event;
+
+import com.talenton.organ.server.bean.feed.Feeds;
+import com.talenton.organ.server.task.TaskFeeds;
+
+public class FeedsTaskEvent {
+	public Feeds feeds;
+	
+	public FeedsTaskEvent(TaskFeeds data) {
+		feeds = data.feeds;
+		feeds.taskStatus = data.status;
+		feeds.taskMessage = data.message;
+		feeds.from = Feeds.FROM_TASK;
+	}
+}

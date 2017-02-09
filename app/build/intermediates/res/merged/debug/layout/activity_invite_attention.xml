@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.talenton.organ.ui.feed.InviteAttentionActivity">
+    <ViewStub
+        android:id="@+id/vs_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/global_app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/space_15_0"
+        android:layout_marginRight="@dimen/space_15_0"
+        android:layout_marginTop="@dimen/space_20_0"
+        android:padding="@dimen/space_20_0"
+        android:background="@drawable/btn_white_corner_bg">
+        <TextView
+            android:id="@+id/tvNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="您的应用邀请码是"
+            android:textColor="@color/text_main_6"
+            android:textSize="@dimen/text_36" />
+        <ImageView
+            android:layout_width="@dimen/width_55"
+            android:layout_height="@dimen/height_15"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:src="@mipmap/invite_code_icon"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center" />
+        <TextView
+            android:id="@+id/tv_invite_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_20_0"
+            android:layout_marginBottom="@dimen/space_20_0"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp" />
+        <TextView
+            android:id="@+id/tv_invite_code_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/circle_get_invite_code_again"
+            android:padding="@dimen/space_15_0"
+            android:layout_marginBottom="@dimen/width_55"
+            android:textSize="@dimen/text_28"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_blue_conner_stroke"/>
+
+        <TextView
+            android:id="@+id/tv_introduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_7_5"
+            android:layout_marginRight="@dimen/space_7_5"
+            android:text="@string/circle_hint_invite_notice"
+            android:textColor="@color/text_sub"
+            android:textSize="@dimen/text_26" >
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <LinearLayout
+        android:id="@+id/invite_by_wechat"
+        style="@style/comment_btn_style"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/space_7_5"
+        android:layout_marginRight="@dimen/space_7_5"
+        android:background="@drawable/btn_login_wechat_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:onClick="onClick">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/login_weixin"
+            android:drawablePadding="4dp"
+            android:text="@string/circle_invite_by_sms_wechat"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/invite_by_qq"
+        style="@style/comment_btn_style"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_marginLeft="@dimen/space_7_5"
+        android:layout_marginRight="@dimen/space_7_5"
+        android:background="@drawable/btn_login_qq_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:onClick="onClick">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/login_qq"
+            android:drawablePadding="4dp"
+            android:text="@string/circle_invite_by_sms_qq"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/invite_by_phone"
+        style="@style/comment_btn_style"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/space_10_0"
+        android:layout_marginLeft="@dimen/space_7_5"
+        android:layout_marginRight="@dimen/space_7_5"
+        android:background="@drawable/btn_main_bg_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:onClick="onClick">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/login_phone"
+            android:drawablePadding="4dp"
+            android:text="@string/circle_invite_by_sms_code"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_34" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

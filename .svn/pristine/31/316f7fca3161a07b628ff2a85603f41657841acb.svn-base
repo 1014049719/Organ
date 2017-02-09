@@ -1,0 +1,10 @@
+package com.talenton.organ.server.bean.feed;
+
+/**
+ * Created by ttt on 2016/5/26.
+ */
+public class CollectFeedsData {
+    public String circle_name;
+    public long dateline;// "收藏时间"
+    public Feeds ext_topic;
+}

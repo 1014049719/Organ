@@ -1,0 +1,451 @@
+package com.talenton.organ.ui.feed.image;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.talenton.organ.BaseCompatFragment;
+import com.talenton.organ.R;
+import com.talenton.base.util.ImageLoaderManager;
+import com.talenton.organ.server.bean.feed.MediaBean;
+import com.talenton.organ.widget.HackyViewPager;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import uk.co.senab.photoview.PhotoView;
+
+public class PreviewFragment extends BaseCompatFragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
+	private static final String ISLOCKED_ARG = "isLocked";
+	private static final String TAG = PreviewFragment.class.getSimpleName();
+	private static final int DIVISOR = 1024;
+
+	private Button mBtnUse;
+	private CheckBox mCbxOrigin;
+	private CheckBox mCbSelect;
+	private ImageView mIvBack;
+	private View mReLayoutOriginal;
+	private ProgressBar mCompressBar;
+	private HackyViewPager mViewPager;
+	private TextView mTvTitle, mImageSelected;
+	private AllPicFragment.OnGetPicDataListener mOnGetPicDataListener;
+
+	private ArrayList<MediaBean> mImageDatas = new ArrayList<MediaBean>();
+	// private ArrayList<ImageBean> mSelectDatas = new ArrayList<ImageBean>();
+	private Map<String, Boolean> mSelectedHelper = new HashMap<String, Boolean>();
+	private AlbumBean mAlbumBean;
+
+	private PictureAdapter mPictureAdapter;
+
+	// 是否是点击预览按钮后跳转到此fragment
+	private boolean isPreview;
+	// private boolean isUseOriginal = false;
+
+	private int defaultPosition;
+	private int mSelectedSize;
+
+	private AllPicFragment.OnSendBtnClickListener mOnSendBtnClickListener = null;
+
+	public void setOnSendBtnClickListener(AllPicFragment.OnSendBtnClickListener mOnSendBtnClickListener) {
+		this.mOnSendBtnClickListener = mOnSendBtnClickListener;
+	}
+
+	public PreviewFragment() {
+
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (getActivity() instanceof AllPicFragment.OnGetPicDataListener) {
+			mOnGetPicDataListener = (AllPicFragment.OnGetPicDataListener) getActivity();
+		} else {
+			throw new IllegalArgumentException(
+					activity + " must implement interface " + AllPicFragment.OnGetPicDataListener.class.getSimpleName());
+		}
+	}
+
+	public static PreviewFragment getInstance(Bundle bundle) {
+		PreviewFragment previewFragment = new PreviewFragment();
+		previewFragment.setArguments(bundle);
+		return previewFragment;
+
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_pic_preview, container, false);
+		initViews(view);
+		initData();
+		if (savedInstanceState != null) {
+			boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG, false);
+			((HackyViewPager) mViewPager).setLocked(isLocked);
+		}
+
+		return view;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+	}
+
+	public void setAlbumBean(AlbumBean albumBean) {
+		if (albumBean == null) {
+			return;
+		}
+		this.mAlbumBean = albumBean;
+		this.mImageDatas = albumBean.getImageBeans();
+		for (MediaBean ib : mOnGetPicDataListener.getSelected()) {
+			// 把已选的初始化
+			if (ib.isSelected()) {
+				mSelectedHelper.put(ib.getPath(), true);
+				// mSelectDatas.add(ib);
+				mSelectedSize += ib.getmSize();
+			}
+		}
+		if (mPictureAdapter != null) {
+			mPictureAdapter.notifyDataSetChanged();
+		}
+		mTvTitle.setText(1 + "/" + mImageDatas.size());
+	}
+
+	public void setPosition(int position) {
+		this.defaultPosition = position;
+	}
+
+	public void setPreview(boolean preview) {
+		this.isPreview = preview;
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.iv_picture_preview_back || v.getId() == R.id.tv_picture_preview_title) {
+			int count = getFragmentManager().getBackStackEntryCount();
+			if (count > 0) {
+				getFragmentManager().popBackStack();
+			} else {
+				getActivity().finish();
+			}
+		} else if (v.getId() == R.id.preview_cb) {
+			handleClickOriginalCb();
+		} else if (v.getId() == R.id.preview_relayout_original) {
+			handleClickOriginalCb();
+			mCbxOrigin.setChecked(mOnGetPicDataListener.isUseOriginal());
+		} else if (v.getId() == R.id.btn_use) {
+			if (mOnSendBtnClickListener != null) {
+				if (mOnGetPicDataListener.getSelected().size() == 0 && getActivity() != null) {
+					Toast.makeText(getActivity(), R.string.image_select_nothing, Toast.LENGTH_SHORT).show();
+				} else {
+					mOnSendBtnClickListener.onClickSendBtn(mOnGetPicDataListener.isUseOriginal());
+				}
+			}
+			// handleClickSendBtn();
+		} else if (v.getId() == R.id.cb_picture_preview_select) {
+			if (mOnGetPicDataListener.getSelected().size() >= mOnGetPicDataListener.getMaxNum() && mCbSelect.isChecked()
+					&& getActivity() != null) {
+				mCbSelect.setChecked(false);
+				Toast.makeText(getActivity(),
+						getResources().getString(R.string.image_beyong_limit, mOnGetPicDataListener.getMaxNum()),
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			int index = mViewPager.getCurrentItem();
+			mSelectedHelper.put(mImageDatas.get(index).getPath(), mCbSelect.isChecked());
+			updateSelectedChange(mCbSelect.isChecked());
+			updateSendBtnAndOriginalCBState();
+		}
+	}
+
+	@Override
+	public void onPageScrolled(int i, float v, int i2) {
+
+	}
+
+	@Override
+	public void onPageSelected(int i) {
+		if (mSelectedHelper.containsKey(mImageDatas.get(i).getPath())
+				&& mSelectedHelper.get(mImageDatas.get(i).getPath())) {
+			mCbSelect.setChecked(true);
+		} else {
+			mCbSelect.setChecked(false);
+		}
+
+		if (mOnGetPicDataListener.isUseOriginal()) {
+			mCbxOrigin.setChecked(true);
+		} else {
+			mCbxOrigin.setChecked(false);
+		}
+
+		if (isPreview) {
+			mTvTitle.setText(i + 1 + "/" + mImageDatas.size());
+		}
+
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int i) {
+
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		if (isViewPagerActive()) {
+			outState.putBoolean(ISLOCKED_ARG, ((HackyViewPager) mViewPager).isLocked());
+		}
+		super.onSaveInstanceState(outState);
+	}
+
+	private void initViews(View view) {
+		mViewPager = (HackyViewPager) view.findViewById(R.id.galleryViewPager_image_viewer);
+		// mGalleryViewPager.setOffscreenPageLimit(2);
+		mBtnUse = (Button) view.findViewById(R.id.btn_use);
+		mCbxOrigin = (CheckBox) view.findViewById(R.id.preview_cb);
+		mTvTitle = (TextView) view.findViewById(R.id.tv_picture_preview_title);
+		mCbSelect = (CheckBox) view.findViewById(R.id.cb_picture_preview_select);
+		mIvBack = (ImageView) view.findViewById(R.id.iv_picture_preview_back);
+		mReLayoutOriginal = (View) view.findViewById(R.id.preview_relayout_original);
+		mCompressBar = (ProgressBar) view.findViewById(R.id.compress_progressbar);
+		mImageSelected = (TextView) view.findViewById(R.id.image_selected);
+
+		mViewPager.setOnPageChangeListener(this);
+		mCbxOrigin.setOnClickListener(this);
+		mCbSelect.setOnClickListener(this);
+		mIvBack.setOnClickListener(this);
+		mTvTitle.setOnClickListener(this);
+		mReLayoutOriginal.setOnClickListener(this);
+		mBtnUse.setOnClickListener(this);
+		if (mOnGetPicDataListener.getFrom() == AllPicBrowserActivity.FROM_GALLERY) {
+			mBtnUse.setText(R.string.post_action);
+		} else {
+			mBtnUse.setText(R.string.image_send);
+		}
+
+		updateSendBtnAndOriginalCBState();
+	}
+
+	private void initData() {
+		AlbumBean ab = new AlbumBean();
+		ArrayList<MediaBean> previews = new ArrayList<MediaBean>();
+		previews.addAll(mOnGetPicDataListener.getSelected());
+		ab.setImageBeans(previews);
+		setAlbumBean(ab);
+
+		if (mAlbumBean != null) {
+			mTvTitle.setText(mAlbumBean.getAlbumName());
+		}
+
+		mPictureAdapter = new PictureAdapter(getActivity(), mImageDatas);
+		mViewPager.setAdapter(mPictureAdapter);
+		mViewPager.setCurrentItem(defaultPosition, false);
+		if (defaultPosition < mImageDatas.size()) {
+			mCbSelect.setChecked(mImageDatas.get(defaultPosition).isSelected());
+
+		}
+	}
+
+	/**
+	 * 点击原图按钮后对数据的处理
+	 */
+	private void updateSelectedDataWithOriginalCb() {
+		int index = mViewPager.getCurrentItem();
+		if (!mSelectedHelper.containsKey(mImageDatas.get(index).getPath())) {
+			// 从未选到已选
+			updateSelectedChange(mCbSelect.isChecked());
+		} else {
+			if (mCbSelect.isChecked() != mSelectedHelper.get(mImageDatas.get(index).getPath())) {
+				// 图片选择状态改变
+				updateSelectedChange(mCbSelect.isChecked());
+			}
+		}
+
+		mImageDatas.get(index).setSelected(mCbSelect.isChecked());
+		mSelectedHelper.put(mImageDatas.get(index).getPath(), mCbSelect.isChecked());
+	}
+
+	private void updateSendBtnAndOriginalCBState() {
+		mImageSelected.setText(getString(R.string.image_select_count, mOnGetPicDataListener.getSelected().size(),
+				mOnGetPicDataListener.getMaxNum()));
+	}
+
+	/**
+	 * 图片选择状态改变时更新相关数据和图片选择状态
+	 * 
+	 * @param select
+	 *            是否已选
+	 */
+	private void updateSelectedChange(boolean select) {
+
+		int index = mViewPager.getCurrentItem();
+		int size = mImageDatas.get(index).getmSize();
+		mImageDatas.get(index).setSelected(select);
+		if (select) {
+			mOnGetPicDataListener.getSelected().add(mImageDatas.get(index));
+			mSelectedSize = (mSelectedSize + size);
+		} else {
+			if (mOnGetPicDataListener.getSelected().size() == 0) {
+				return;
+			}
+			mOnGetPicDataListener.getSelected().remove(mImageDatas.get(index));
+			mSelectedSize = (mSelectedSize - size);
+		}
+
+	}
+
+	private void handleClickOriginalCb() {
+		mOnGetPicDataListener.setUseOriginal(!mOnGetPicDataListener.isUseOriginal());
+		if (mOnGetPicDataListener.getSelected().size() < mOnGetPicDataListener.getMaxNum()) {
+			if (mOnGetPicDataListener.isUseOriginal()) {
+				// 选原图必须选择图片，取消原图 图片选择状态不变
+				mCbSelect.setChecked(true);
+			}
+			updateSelectedDataWithOriginalCb();
+		}
+		updateSendBtnAndOriginalCBState();
+
+	}
+
+	private String translateUnit(int byteNum) {
+		String str = "";
+		if (byteNum > 1 * DIVISOR * DIVISOR) {
+			DecimalFormat fnum = new DecimalFormat("##0.00");
+			str = "(" + fnum.format(byteNum * 1.0f / (DIVISOR * DIVISOR)) + "M)";
+		} else if (byteNum > 1 * DIVISOR) {
+			str = "(" + byteNum / DIVISOR + "K)";
+		}
+		return str;
+	}
+
+	private boolean isViewPagerActive() {
+		return (mViewPager != null && mViewPager instanceof HackyViewPager);
+	}
+
+	public class PictureAdapter extends PagerAdapter implements View.OnClickListener {
+		Context context;
+		LinkedList<PhotoView> recycleBin = new LinkedList<PhotoView>();
+		Map<Integer, PhotoView> mListViews = new HashMap<Integer, PhotoView>();
+		ArrayList<MediaBean> datas = new ArrayList<MediaBean>();
+
+		public PictureAdapter(Context context, ArrayList al) {
+			this.context = context;
+			this.datas = al;
+		}
+
+		@Override
+		public int getCount() {
+			return datas.size();
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			if (mListViews.get(position) != null) {
+				PhotoView item = mListViews.remove(position);
+				((ViewPager) container).removeView(item);
+				recycleBin.addLast(item);
+			}
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			if (mListViews.get(position) == null) {
+				makeView(position, container);
+			}
+			View v = mListViews.get(position);
+			v.setTag(position);
+			((ViewPager) container).addView(v, 0);
+			return v;
+		}
+
+		private void makeView(int position, final View container) {
+			PhotoView item = recycleBin.size() >= 3 ? recycleBin.poll() : null;
+			if (item == null) {
+				item = new PhotoView(context);
+				item.setOnClickListener(this);
+			}
+			MediaBean imageBean = datas.get(position);
+			String path = TextUtils.isEmpty(imageBean.getPath()) ? imageBean.getThumbnailPath() : imageBean.getPath();
+			DisplayMetrics dm = context.getResources().getDisplayMetrics();
+			int w = container.getWidth() <= 0 ? dm.widthPixels : container.getWidth();
+			int h = container.getHeight() <= 0 ? dm.heightPixels : container.getHeight();
+			ViewGroup.LayoutParams lps = new ViewGroup.LayoutParams(w, h);
+			item.setLayoutParams(lps);
+			item.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			ImageLoader.getInstance().displayImage("file://" + path, item,
+					ImageLoaderManager.DEFAULT_IMAGE_DISPLAYER_200);
+			item.setTag(position);
+			mListViews.put(position, item);
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == (arg1);
+		}
+
+		public View getView(int position) {
+			return mListViews.get(position);
+		}
+
+
+		@Override
+		public Parcelable saveState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void restoreState(Parcelable state, ClassLoader loader) {
+
+		}
+
+		@Override
+		public void onClick(View view) {
+			if (view.getTag() == null) {
+				return;
+			}
+			int index = (Integer) view.getTag();
+			if (index == -1 || index >= mImageDatas.size()) {
+				return;
+			}
+
+			boolean state = !mImageDatas.get(index).isSelected();
+			if (state && mOnGetPicDataListener.getSelected().size() >= mOnGetPicDataListener.getMaxNum()
+					&& getActivity() != null) {
+				mCbSelect.setChecked(false);
+				Toast.makeText(getActivity(),
+						getResources().getString(R.string.image_beyong_limit, mOnGetPicDataListener.getMaxNum()),
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			mImageDatas.get(index).setSelected(state);
+			mCbSelect.setChecked(state);
+			mSelectedHelper.put(mImageDatas.get(index).getPath(), state);
+			updateSelectedChange(state);
+			updateSendBtnAndOriginalCBState();
+
+		}
+	}
+
+}
